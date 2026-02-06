@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AGEx Smart Money Academy</title>
+  <style>
+    :root{
+      --green:#0B3D2E;
+      --gold:#F4B41A;
+      --ink:#0F0F0F;
+      --bg:#F6F7F9;
+      --card:#FFFFFF;
+      --muted:#5b6770;
+      --radius:18px;
+      --shadow:0 18px 40px rgba(0,0,0,.10);
+    }
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--ink);background:var(--bg);}
+    header{
+      background:linear-gradient(180deg, rgba(11,61,46,1), rgba(11,61,46,.92));
+      color:#fff; padding:18px 16px;
+    }
+    .wrap{max-width:980px;margin:0 auto;padding:0 14px;}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
+    .brand .ex{color:var(--gold)}
+    .pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);padding:8px 12px;border-radius:999px;margin-top:10px}
+    .main{padding:18px 0 40px}
+    .grid{display:grid;grid-template-columns:1fr;gap:14px}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+    h1{margin:8px 0 6px;font-size:26px}
+    h2{margin:0 0 6px;font-size:18px}
+    p{margin:8px 0;color:var(--muted);line-height:1.55}
+    .levels{display:flex;gap:10px;flex-wrap:wrap}
+    .lvlbtn{
+      border:1px solid rgba(11,61,46,.18);
+      background:#fff;border-radius:999px;padding:10px 12px;
+      font-weight:700;cursor:pointer
+    }
+    .lvlbtn.locked{opacity:.45;cursor:not-allowed}
+    .lvlbtn.active{background:rgba(244,180,26,.18);border-color:rgba(244,180,26,.45)}
+    .lesson-title{display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .badge{font-weight:800;color:var(--green);background:rgba(11,61,46,.08);padding:6px 10px;border-radius:999px}
+    textarea,input{
+      width:100%;border:1px solid rgba(15,15,15,.14);border-radius:14px;
+      padding:12px 12px;font-size:15px;outline:none
+    }
+    textarea{min-height:140px;resize:vertical}
+    .row{display:grid;grid-template-columns:1fr;gap:10px}
+    .btn{
+      width:100%;border:none;border-radius:16px;padding:14px 14px;
+      font-weight:900;cursor:pointer;font-size:16px
+    }
+    .btn.primary{background:var(--gold);color:#0b1b14}
+    .btn.secondary{background:var(--green);color:#fff}
+    .hint{font-size:13px;color:var(--muted)}
+    .hr{height:1px;background:rgba(0,0,0,.08);margin:14px 0}
+    .footer{padding:18px 0;color:var(--muted);font-size:13px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="brand" aria-label="AGEx">
+        <span style="font-size:20px">AG<span class="ex">Ex</span></span>
+        <span style="opacity:.85;font-weight:700">Smart Money Academy</span>
+      </div>
+      <div class="pill">
+        <span>Stewardship First</span>
+        <span style="opacity:.55">•</span>
+        <span>Learn → Practice → Verify</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap main">
+    <div class="grid">
+
+      <section class="card">
+        <h1>Welcome, Builder.</h1>
+        <p>This academy is a guided workbook. You will complete each level, submit your work, and unlock the next level.</p>
+        <p class="hint"><b>Note:</b> Access is learning-first. A one-time <b>$1 entry verification</b> applies. After entry, the academy lessons are free.</p>
+      </section>
+
+      <section class="card">
+        <h2>Your Progress</h2>
+        <div class="levels" id="levels"></div>
+        <p class="hint">Locked levels will unlock only after you submit the current level.</p>
+      </section>
+
+      <section class="card" id="lessonCard">
+        <div class="lesson-title">
+          <h2 id="lessonHeading">Level 1 — Foundations of Stewardship</h2>
+          <span class="badge" id="statusBadge">Active</span>
+        </div>
+        <p id="lessonText"></p>
+
+        <div class="hr"></div>
+
+        <div class="row">
+          <input id="fullName" placeholder="Full Name" />
+          <input id="email" placeholder="Email Address" />
+          <input id="whatsapp" placeholder="WhatsApp Number (e.g. +234...)" />
+        </div>
+
+        <div class="hr"></div>
+
+        <label class="hint"><b>Your Answers (write clearly)</b></label>
+        <textarea id="answers" placeholder="Type your answers here..."></textarea>
+        <p class="hint">Tip: Use short headings inside your answer: “Q1: …”, “Q2: …”</p>
+
+        <div class="hr"></div>
+
+        <button class="btn primary" id="submitBtn">Submit & Unlock Next Level</button>
+        <p class="hint" id="submitHint"></p>
+
+        <div class="hr"></div>
+
+        <button class="btn secondary" id="openFormBtn" style="display:none;">Open Submission Link (Google Form)</button>
+        <p class="hint">If you don’t want auto-submit yet, this button will open your Google Form with the details copied.</p>
+      </section>
+
+      <section class="footer">
+        © <span id="year"></span> AGEx Smart Money Hub. All rights reserved.
+      </section>
+
+    </div>
+  </main>
+
+<script>
+  const year = new Date().getFullYear();
+  document.getElementById("year").textContent = year;
+
+  // ====== CONFIG ======
+  // Replace with your Google Form prefill link later.
+  // You can also keep it blank; the "Open Submission Link" button will still work as a normal link.
+  const GOOGLE_FORM_PREFILL_URL = "GOOGLE_FORM_PREFILL_URL_HERE";
+
+  const lessons = [
+    {
+      title: "Level 1 — Foundations of Stewardship",
+      text: "Define what money means to you. Write your current financial reality, your biggest leak, and one discipline you will commit to for 7 days.\n\nStewardship Action:\n1) Track every expense for 7 days.\n2) Identify your top 3 leaks.\n3) Write one rule you will keep."
+    },
+    {
+      title: "Level 2 — Budget & Order",
+      text: "Build a simple budget with 3 buckets: Needs, Growth, Giving. Write your weekly income plan and what you will cut.\n\nStewardship Action:\nCreate a weekly budget table and follow it for 7 days."
+    },
+    {
+      title: "Level 3 — Savings & Safety",
+      text: "Design your safety plan: savings goal, emergency rule, and how you’ll protect your money.\n\nStewardship Action:\nSet a savings target and automate/discipline the first deposit."
+    },
+    {
+      title: "Level 4 — Skills to Income",
+      text: "Choose one skill track (e.g., sales, design, content, digital marketing). Write a 14-day practice plan.\n\nStewardship Action:\nComplete one proof-of-skill output and attach evidence link."
+    },
+    {
+      title: "Level 5 — Legacy & Strategy",
+      text: "Write your 12-month money vision: income goal, savings goal, and one asset you want to build.\n\nStewardship Action:\nCreate a simple 1-page family finance plan."
+    }
+  ];
+
+  const STORAGE_KEY = "agex_academy_progress_v1";
+  const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+  let unlocked = Number(state.unlocked || 1); // 1..5
+  let activeLevel = Math.min(unlocked, 5);
+
+  const levelsEl = document.getElementById("levels");
+  const lessonHeading = document.getElementById("lessonHeading");
+  const lessonText = document.getElementById("lessonText");
+  const statusBadge = document.getElementById("statusBadge");
+  const answersEl = document.getElementById("answers");
+  const submitBtn = document.getElementById("submitBtn");
+  const submitHint = document.getElementById("submitHint");
+  const openFormBtn = document.getElementById("openFormBtn");
+
+  function saveState() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ unlocked }));
+  }
+
+  function renderLevels() {
+    levelsEl.innerHTML = "";
+    for (let i = 1; i <= lessons.length; i++) {
+      const btn = document.createElement("button");
+      btn.className = "lvlbtn" + (i === activeLevel ? " active" : "") + (i > unlocked ? " locked" : "");
+      btn.textContent = "Level " + i;
+      btn.onclick = () => {
+        if (i > unlocked) return;
+        activeLevel = i;
+        render();
+      };
+      levelsEl.appendChild(btn);
+    }
+  }
+
+  function render() {
+    renderLevels();
+    const lesson = lessons[activeLevel - 1];
+    lessonHeading.textContent = lesson.title;
+    lessonText.textContent = lesson.text;
+
+    statusBadge.textContent = activeLevel < unlocked ? "Completed" : "Active";
+    statusBadge.style.background = activeLevel < unlocked ? "rgba(244,180,26,.18)" : "rgba(11,61,46,.08)";
+    statusBadge.style.color = activeLevel < unlocked ? "#6a4b00" : "var(--green)";
+
+    answersEl.value = "";
+    submitHint.textContent = "";
+    openFormBtn.style.display = "none";
+  }
+
+  function getPayload() {
+    const fullName = document.getElementById("fullName").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const whatsapp = document.getElementById("whatsapp").value.trim();
+    const answers = answersEl.value.trim();
+    const levelName = "Level " + activeLevel;
+
+    return { fullName, email, whatsapp, answers, levelName };
+  }
+
+  submitBtn.onclick = () => {
+    const p = getPayload();
+    if (!p.fullName || !p.email || !p.whatsapp || !p.answers) {
+      submitHint.textContent = "Please fill Full Name, Email, WhatsApp, and your Answers before submitting.";
+      return;
+    }
+
+    // Unlock next level locally
+    if (activeLevel === unlocked && unlocked < lessons.length) {
+      unlocked++;
+      saveState();
+    }
+    submitHint.textContent = "Saved. Next level unlocked. Now submit your answers using the button below.";
+    openFormBtn.style.display = "block";
+
+    // Build a prefill link if available
+    // If you later create a Google Form with prefill fields, paste the prefill URL above.
+    let url = GOOGLE_FORM_PREFILL_URL;
+    if (!url || url.includes("GOOGLE_FORM_PREFILL_URL_HERE")) {
+      // fallback: open the plain form link (you’ll paste it later)
+      url = "PASTE_YOUR_GOOGLE_FORM_LINK_HERE";
+    }
+
+    // Copy payload to clipboard (helps you paste into form if needed)
+    const clip = `AGEx Academy Submission\nName: ${p.fullName}\nEmail: ${p.email}\nWhatsApp: ${p.whatsapp}\nLevel: ${p.levelName}\n\nAnswers:\n${p.answers}`;
+    navigator.clipboard?.writeText(clip);
+
+    openFormBtn.onclick = () => window.open(url, "_blank");
+    render();
+  };
+
+  render();
+</script>
+</body>
+</html>
