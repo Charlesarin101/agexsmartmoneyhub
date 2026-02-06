@@ -1,103 +1,1265 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AGEx Smart Money Hub</title>
-  <meta name="description" content="Stewardship-first learning: build money discipline, master skills, and unlock real opportunities." />
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header class="header">
-    <a class="brand" href="index.html">
-      <span class="brand-mark">AG<span class="brand-ex">Ex</span><span class="brand-arrow">→</span></span>
-      <span class="brand-sub">Smart Money Hub</span>
-    </a>
+  <!-- =========================================
+  AGEx Smart Money Hub — Phase 1 (GitHub Pages)
+  Single-file index.html (one-time powerful build)
+  Stewardship-first • Trust-first • Mobile-first
+  ========================================== -->
 
-    <nav class="nav">
-      <a href="academy.html">Academy</a>
-      <a href="skillpoints.html">Skill Points</a>
-      <a href="founder.html">Founder</a>
-      <a class="cta" href="request-access.html">Request Access</a>
-    </nav>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0B3D2E" />
+
+  <title>AGEx Smart Money Hub — Stewardship-First Financial Learning</title>
+  <meta name="description" content="AGEx is a stewardship-first learning platform. Learn smart money discipline, build verifiable skills, and unlock opportunities. One-time $1 entry verification. Academy access is free after verification." />
+  <meta name="keywords" content="AGEx, smart money, financial education Nigeria, Zaria, stewardship, budgeting, savings, skills, learn money, accountability, Paystack, academy" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="AGEx Smart Money Hub — Learn Smart Money. Build Skills. Grow with Discipline." />
+  <meta property="og:description" content="Stewardship-first learning platform. One-time $1 entry verification. Academy access is free after verification." />
+  <meta property="og:type" content="website" />
+
+  <!-- Favicon placeholders:
+       Put your files in /assets and uncomment if you upload them.
+       <link rel="icon" href="assets/favicon.ico" />
+       <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  -->
+
+  <!-- JSON-LD (Organization) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"AGEx Smart Money Hub",
+    "url":"",
+    "email":"arinonebusiness@gmail.com",
+    "telephone":"+2348136805462",
+    "address":{
+      "@type":"PostalAddress",
+      "addressLocality":"Zaria",
+      "addressRegion":"Kaduna",
+      "addressCountry":"NG"
+    }
+  }
+  </script>
+
+  <style>
+    :root{
+      --green:#0B3D2E;   /* Primary */
+      --gold:#F4B41A;    /* Accent */
+      --ink:#0F0F0F;
+      --white:#FFFFFF;
+      --muted:#6B7280;
+      --bg:#F7F8FA;
+
+      --card:#ffffff;
+      --border:rgba(15,15,15,.10);
+      --shadow:0 18px 55px rgba(0,0,0,.12);
+      --shadow-soft:0 12px 35px rgba(0,0,0,.08);
+
+      --radius:20px;
+      --radius2:28px;
+      --max:1120px;
+
+      --h1: clamp(2.2rem, 4.6vw, 3.4rem);
+      --h2: clamp(1.6rem, 3.2vw, 2.2rem);
+      --h3: clamp(1.15rem, 2.2vw, 1.45rem);
+      --p:  clamp(1rem, 1.6vw, 1.1rem);
+
+      --pad: clamp(18px, 3vw, 34px);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--ink);
+      background: radial-gradient(1000px 400px at 20% 0%, rgba(244,180,26,.18), transparent 60%),
+                  radial-gradient(900px 420px at 90% 10%, rgba(11,61,46,.16), transparent 55%),
+                  var(--bg);
+      line-height:1.55;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    a:focus, button:focus{ outline:3px solid rgba(244,180,26,.45); outline-offset:2px; border-radius:12px; }
+
+    .wrap{
+      width:100%;
+      max-width:var(--max);
+      margin:0 auto;
+      padding: 0 var(--pad);
+    }
+
+    /* Top announcement bar */
+    .topbar{
+      background: linear-gradient(90deg, var(--green), #0A2F24);
+      color:rgba(255,255,255,.92);
+      font-size:.95rem;
+      position:sticky;
+      top:0;
+      z-index:50;
+      border-bottom:1px solid rgba(255,255,255,.12);
+    }
+    .topbar .inner{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      padding: 10px var(--pad);
+      max-width:var(--max);
+      margin:0 auto;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.16);
+      white-space:nowrap;
+    }
+    .dot{ width:8px; height:8px; border-radius:999px; background: var(--gold); box-shadow:0 0 0 3px rgba(244,180,26,.25); }
+    .topbar .links{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      align-items:center;
+    }
+    .tinyLink{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.12);
+      font-size:.9rem;
+    }
+    .tinyLink:hover{ background: rgba(0,0,0,.22); }
+
+    /* Header */
+    header{
+      position:sticky;
+      top:54px; /* below topbar */
+      z-index:40;
+      backdrop-filter: blur(14px);
+      background: rgba(247,248,250,.72);
+      border-bottom:1px solid rgba(15,15,15,.08);
+    }
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding: 12px 0;
+    }
+
+    /* Logo lockup (text-based, matches your confirmed direction) */
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 220px;
+    }
+    .mark{
+      width:44px; height:44px;
+      border-radius:16px;
+      background: linear-gradient(145deg, rgba(11,61,46,1), rgba(11,61,46,.88));
+      display:grid;
+      place-items:center;
+      box-shadow: var(--shadow-soft);
+      border:1px solid rgba(255,255,255,.15);
+      position:relative;
+      overflow:hidden;
+    }
+    .mark:before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background: radial-gradient(circle at 30% 25%, rgba(244,180,26,.35), transparent 55%);
+      transform: rotate(15deg);
+    }
+    .mark svg{ position:relative; z-index:1; }
+    .brandTitle{
+      display:flex;
+      flex-direction:column;
+      line-height:1.1;
+    }
+    .brandName{
+      font-weight:800;
+      letter-spacing:.2px;
+      font-size:1.05rem;
+    }
+    .brandName .ex{ color: var(--gold); }
+    .brandSub{
+      font-size:.86rem;
+      color:rgba(15,15,15,.62);
+      font-weight:600;
+    }
+
+    nav .menu{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .navLink{
+      padding:10px 12px;
+      border-radius:999px;
+      font-weight:700;
+      color:rgba(15,15,15,.72);
+      border:1px solid rgba(15,15,15,.10);
+      background: rgba(255,255,255,.55);
+    }
+    .navLink:hover{
+      background:#fff;
+      box-shadow: 0 10px 22px rgba(0,0,0,.08);
+      color:rgba(15,15,15,.92);
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 14px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(15,15,15,.12);
+      background:#fff;
+      font-weight:800;
+      letter-spacing:.1px;
+      box-shadow: 0 14px 34px rgba(0,0,0,.10);
+      transition: transform .08s ease, box-shadow .2s ease;
+      cursor:pointer;
+    }
+    .btn:hover{ transform: translateY(-1px); box-shadow: 0 18px 44px rgba(0,0,0,.14); }
+    .btnPrimary{
+      background: linear-gradient(90deg, var(--gold), #f7c54a);
+      color: rgba(15,15,15,.92);
+      border: 1px solid rgba(244,180,26,.45);
+    }
+    .btnGhost{
+      background: rgba(255,255,255,.70);
+    }
+    .btnSmall{ padding: 10px 14px; font-size:.95rem; }
+
+    .hamburger{
+      display:none;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(15,15,15,.12);
+      background: rgba(255,255,255,.75);
+      font-weight:900;
+    }
+
+    /* Hero */
+    .hero{
+      padding: 54px 0 26px;
+    }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 22px;
+      align-items:stretch;
+    }
+    .heroCard{
+      border-radius: var(--radius2);
+      background: linear-gradient(180deg, rgba(11,61,46,.96), rgba(11,61,46,.88));
+      color: rgba(255,255,255,.92);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.14);
+      padding: 34px;
+      position:relative;
+      overflow:hidden;
+    }
+    .heroCard:before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:
+        radial-gradient(circle at 25% 18%, rgba(244,180,26,.35), transparent 55%),
+        radial-gradient(circle at 85% 30%, rgba(255,255,255,.10), transparent 60%);
+      transform: rotate(8deg);
+    }
+    .heroCard > *{ position:relative; z-index:1; }
+    .tagRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:16px;
+    }
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.12);
+      font-weight:800;
+      font-size:.95rem;
+      letter-spacing:.2px;
+    }
+    .tag .miniDot{ width:9px; height:9px; border-radius:999px; background: var(--gold); }
+
+    h1{ margin: 10px 0 14px; font-size: var(--h1); line-height:1.05; letter-spacing:-.6px; }
+    h1 .gold{ color: var(--gold); }
+    .heroP{
+      font-size: var(--p);
+      color: rgba(255,255,255,.86);
+      max-width: 60ch;
+      margin: 0 0 18px;
+    }
+    .heroBtns{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top: 14px;
+    }
+
+    /* Side card */
+    .sideCard{
+      border-radius: var(--radius2);
+      background: rgba(255,255,255,.80);
+      border:1px solid rgba(15,15,15,.10);
+      box-shadow: var(--shadow-soft);
+      padding: 22px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      overflow:hidden;
+      position:relative;
+    }
+    .sideCard:before{
+      content:"";
+      position:absolute;
+      inset:-35%;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(11,61,46,.14), transparent 55%),
+        radial-gradient(circle at 85% 30%, rgba(244,180,26,.20), transparent 60%);
+      transform: rotate(-6deg);
+    }
+    .sideCard > *{ position:relative; z-index:1; }
+
+    .sideTitle{
+      font-weight:900;
+      font-size:1.15rem;
+      margin:0;
+    }
+    .sideText{ color: rgba(15,15,15,.72); margin:0; }
+    .checklist{
+      margin: 8px 0 0;
+      padding:0;
+      list-style:none;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .check{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(15,15,15,.08);
+      background: rgba(255,255,255,.70);
+    }
+    .badge{
+      min-width:26px; height:26px;
+      border-radius: 999px;
+      display:grid;
+      place-items:center;
+      background: rgba(11,61,46,.10);
+      border:1px solid rgba(11,61,46,.18);
+      font-weight:900;
+      color: var(--green);
+    }
+
+    /* Sections */
+    section{ padding: 34px 0; }
+    .sectionCard{
+      border-radius: var(--radius2);
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(15,15,15,.10);
+      box-shadow: var(--shadow-soft);
+      padding: 26px;
+    }
+    .sectionHead{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 14px;
+      flex-wrap:wrap;
+      margin-bottom: 18px;
+    }
+    h2{
+      font-size: var(--h2);
+      margin:0;
+      letter-spacing:-.35px;
+      line-height:1.15;
+    }
+    .sub{
+      margin:0;
+      color: rgba(15,15,15,.68);
+      font-size: 1.02rem;
+      max-width: 70ch;
+    }
+
+    .grid3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .tile{
+      border-radius: 20px;
+      padding: 18px;
+      border: 1px solid rgba(15,15,15,.08);
+      background: rgba(255,255,255,.65);
+      box-shadow: 0 10px 22px rgba(0,0,0,.06);
+      position:relative;
+      overflow:hidden;
+      min-height: 160px;
+    }
+    .tile:before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background: radial-gradient(circle at 30% 20%, rgba(244,180,26,.18), transparent 55%);
+      transform: rotate(10deg);
+    }
+    .tile > *{ position:relative; z-index:1; }
+    .num{
+      width:34px; height:34px;
+      border-radius: 12px;
+      display:grid;
+      place-items:center;
+      background: rgba(11,61,46,.10);
+      border: 1px solid rgba(11,61,46,.18);
+      font-weight: 900;
+      color: var(--green);
+      margin-bottom: 10px;
+    }
+    .tile h3{
+      margin:0 0 6px;
+      font-size: var(--h3);
+      letter-spacing:-.2px;
+    }
+    .tile p{ margin:0; color: rgba(15,15,15,.70); }
+
+    /* Academy modules */
+    .modules{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 14px;
+    }
+    .moduleList{
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+    }
+    .module{
+      border-radius: 20px;
+      border: 1px solid rgba(15,15,15,.10);
+      background: rgba(255,255,255,.66);
+      padding: 16px;
+      box-shadow: 0 10px 22px rgba(0,0,0,.06);
+    }
+    .moduleTop{
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      margin-bottom: 8px;
+    }
+    .icon{
+      width:44px; height:44px;
+      border-radius: 16px;
+      display:grid;
+      place-items:center;
+      background: rgba(11,61,46,.10);
+      border: 1px solid rgba(11,61,46,.18);
+      color: var(--green);
+      font-weight: 900;
+    }
+    .moduleTitle{
+      margin:0;
+      font-weight: 900;
+      letter-spacing:-.2px;
+    }
+    .moduleObj{
+      margin: 0;
+      color: rgba(15,15,15,.72);
+      font-weight: 650;
+      font-size: .98rem;
+    }
+    .chips{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+    }
+    .chip{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(15,15,15,.10);
+      background: rgba(255,255,255,.70);
+      color: rgba(15,15,15,.72);
+      font-weight: 750;
+      font-size: .92rem;
+    }
+    .action{
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      border:1px solid rgba(244,180,26,.25);
+      background: rgba(244,180,26,.14);
+      color: rgba(15,15,15,.82);
+      font-weight: 800;
+    }
+
+    /* Skill Points whitepaper */
+    .whitepaper{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .miniCard{
+      border-radius: 20px;
+      padding: 18px;
+      border: 1px solid rgba(15,15,15,.10);
+      background: rgba(255,255,255,.68);
+      box-shadow: 0 10px 22px rgba(0,0,0,.06);
+    }
+    .miniCard h3{ margin:0 0 8px; }
+    .miniCard ul{ margin:0; padding-left: 18px; color: rgba(15,15,15,.72); }
+    .miniCard p{ margin:0; color: rgba(15,15,15,.72); }
+    .note{
+      margin-top: 10px;
+      color: rgba(15,15,15,.68);
+      font-weight:650;
+    }
+
+    /* CTA */
+    .cta{
+      border-radius: var(--radius2);
+      padding: 26px;
+      border: 1px solid rgba(244,180,26,.28);
+      background:
+        radial-gradient(circle at 25% 20%, rgba(244,180,26,.20), transparent 55%),
+        radial-gradient(circle at 85% 30%, rgba(11,61,46,.16), transparent 60%),
+        rgba(255,255,255,.82);
+      box-shadow: var(--shadow-soft);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 16px;
+      flex-wrap:wrap;
+    }
+    .cta h2{ margin:0; }
+    .cta p{ margin:8px 0 0; color: rgba(15,15,15,.72); max-width: 64ch; }
+
+    .ctaBtns{ display:flex; gap: 10px; flex-wrap:wrap; }
+
+    /* Footer */
+    footer{
+      padding: 26px 0 40px;
+      color: rgba(15,15,15,.70);
+    }
+    .footerGrid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 14px;
+      align-items:start;
+      border-top: 1px solid rgba(15,15,15,.10);
+      padding-top: 18px;
+    }
+    .footerLinks{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:flex-end;
+    }
+    .footerLinks a{
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(15,15,15,.10);
+      background: rgba(255,255,255,.70);
+      font-weight: 800;
+      font-size:.95rem;
+    }
+
+    /* Mobile */
+    @media (max-width: 980px){
+      .heroGrid{ grid-template-columns: 1fr; }
+      .grid3{ grid-template-columns: 1fr; }
+      .modules{ grid-template-columns: 1fr; }
+      .whitepaper{ grid-template-columns: 1fr; }
+      .footerGrid{ grid-template-columns: 1fr; }
+      .footerLinks{ justify-content:flex-start; }
+
+      nav .menu{ display:none; }
+      .hamburger{ display:inline-flex; }
+      header{ top:54px; }
+    }
+
+    /* Mobile menu drawer */
+    .drawer{
+      display:none;
+      border-top: 1px solid rgba(15,15,15,.10);
+      padding: 10px 0 14px;
+    }
+    .drawer.open{ display:block; }
+    .drawer .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    /* Small helpers */
+    .muted{ color: rgba(15,15,15,.66); }
+    .hr{
+      height:1px;
+      background: rgba(15,15,15,.10);
+      margin: 18px 0;
+    }
+    .kbd{
+      font-weight:900;
+      padding: 4px 8px;
+      border-radius: 10px;
+      border:1px solid rgba(15,15,15,.12);
+      background: rgba(255,255,255,.75);
+    }
+
+    /* Hide any builder disclaimers (if copied content includes them) */
+    .builder-warning, .builder-disclaimer, .free-disclaimer, .safety-disclaimer { display:none !important; }
+  </style>
+</head>
+
+<body>
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="inner">
+      <div class="pill" title="Phase 1 Foundation">
+        <span class="dot"></span>
+        <strong>Now in Beta • Zaria, Kaduna</strong>
+        <span style="opacity:.85;">Stewardship-first learning</span>
+      </div>
+      <div class="links">
+        <a class="tinyLink" href="#how-it-works">How it Works</a>
+        <a class="tinyLink" href="#academy">Academy</a>
+        <a class="tinyLink" href="#request-access">Request Access</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="wrap">
+      <div class="nav">
+        <a class="brand" href="#top" aria-label="AGEx Smart Money Hub">
+          <div class="mark" aria-hidden="true">
+            <!-- Simple forward-arrow mark (flat, no gradients in logo mark idea) -->
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <path d="M6 12h9" stroke="#F4B41A" stroke-width="2.4" stroke-linecap="round"/>
+              <path d="M12.5 7.5 17 12l-4.5 4.5" stroke="#F4B41A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6 12h4.5" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" opacity=".9"/>
+            </svg>
+          </div>
+          <div class="brandTitle">
+            <div class="brandName">AG<span class="ex">Ex</span> <span style="font-weight:900;">Smart Money Hub</span></div>
+            <div class="brandSub">Faith • Discipline • Craft • Legacy</div>
+          </div>
+        </a>
+
+        <nav class="menu" aria-label="Primary">
+          <a class="navLink" href="#how-it-works">How It Works</a>
+          <a class="navLink" href="#academy">Smart Money Academy</a>
+          <a class="navLink" href="#skill-points">Skill Points</a>
+          <a class="navLink" href="#founder">Founder’s Note</a>
+          <a class="navLink" href="#contact">Contact</a>
+        </nav>
+
+        <div style="display:flex; gap:10px; align-items:center;">
+          <a class="btn btnPrimary btnSmall" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">
+            Pay $1 Verification
+            <span aria-hidden="true">→</span>
+          </a>
+          <button class="hamburger" id="menuBtn" aria-expanded="false" aria-controls="drawer">Menu ☰</button>
+        </div>
+      </div>
+
+      <!-- Mobile drawer -->
+      <div class="drawer" id="drawer">
+        <div class="row" style="margin-top:6px;">
+          <a class="navLink" href="#how-it-works">How It Works</a>
+          <a class="navLink" href="#academy">Academy</a>
+          <a class="navLink" href="#skill-points">Skill Points</a>
+          <a class="navLink" href="#request-access">Request Access</a>
+          <a class="navLink" href="#founder">Founder</a>
+          <a class="navLink" href="#contact">Contact</a>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="pill">Now in Beta • Nigeria First 🇳🇬</div>
-      <h1>Learn Smart Money.<br><span class="gold">Earn With Proof.</span></h1>
-      <p class="lead">
-        AGEx is a stewardship-first learning platform. Build discipline, master practical skills,
-        and unlock verified opportunities — step by step.
-      </p>
+  <!-- Hero -->
+  <main id="top" class="hero">
+    <div class="wrap">
+      <div class="heroGrid">
+        <div class="heroCard">
+          <div class="tagRow">
+            <div class="tag"><span class="miniDot"></span> Stewardship First</div>
+            <div class="tag"><span class="miniDot"></span> Manual Access (Quality)</div>
+            <div class="tag"><span class="miniDot"></span> One-time $1 Verification</div>
+          </div>
 
-      <div class="actions">
-        <a class="btn primary" href="request-access.html">Request Access ($1 Entry)</a>
-        <a class="btn secondary" href="academy.html">Explore the Academy</a>
-      </div>
+          <h1>
+            Learn Smart Money.<br/>
+            <span class="gold">Build Skills.</span><br/>
+            Create Real Opportunities.
+          </h1>
 
-      <div class="note">
-        The $1 entry is a one-time verification step. Academy access becomes free after approval.
-      </div>
-    </section>
+          <p class="heroP">
+            AGEx Smart Money Hub is a <strong>trust-first learning platform</strong> built to raise disciplined, accountable learners.
+            Here, education and verifiable skill mastery come <strong>before</strong> any earning pathway.
+            <br/><br/>
+            Access is granted manually to ensure: <strong>Quality guidance</strong> • <strong>Accountability</strong> • <strong>Serious learners only</strong>.
+            A one-time <strong>$1 entry verification</strong> applies. After verification, academy access is free.
+          </p>
 
-    <section class="grid">
-      <h2>How AGEx Works</h2>
-      <p class="sub">A simple path: Learn → Practice → Verify.</p>
+          <div class="heroBtns">
+            <a class="btn btnPrimary" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">
+              Step 1: Pay $1 Verification <span aria-hidden="true">→</span>
+            </a>
+            <a class="btn btnGhost" href="#request-access">
+              Step 2: Request Access <span aria-hidden="true">→</span>
+            </a>
+            <a class="btn btnGhost" href="#academy">
+              Explore the Academy <span aria-hidden="true">→</span>
+            </a>
+          </div>
 
-      <div class="cards">
-        <div class="card">
-          <div class="num">1</div>
-          <h3>Learn</h3>
-          <p>Start with the Smart Money Academy and build your foundation.</p>
+          <div class="hr"></div>
+
+          <p class="muted" style="margin:0;">
+            <strong>Clarity over cleverness.</strong> Substance over scale. A flawless experience for the first 10 learners beats hype for 10,000.
+          </p>
         </div>
-        <div class="card">
-          <div class="num">2</div>
-          <h3>Practice</h3>
-          <p>Apply what you learn through projects and real skill exercises.</p>
-        </div>
-        <div class="card">
-          <div class="num">3</div>
-          <h3>Verify</h3>
-          <p>Submit proof, earn Skill Points, and unlock opportunities.</p>
-        </div>
-      </div>
-    </section>
 
-    <section class="split">
-      <div>
-        <h2>Stewardship is the Product.</h2>
-        <p>
-          No hype. No shortcuts. Just structure, discipline, and growth.
-          Your transformation is the value.
-        </p>
-        <ul class="list">
-          <li>Money as a tool — not pressure</li>
-          <li>Discipline before freedom</li>
-          <li>Skills as the new currency</li>
-          <li>Proof over promises</li>
-        </ul>
-      </div>
+        <aside class="sideCard">
+          <h3 class="sideTitle">What you get in Phase 1</h3>
+          <p class="sideText">
+            A focused path that builds real financial order, skill discipline, and proof of work.
+          </p>
 
-      <div class="panel">
-        <h3>Start Here</h3>
-        <p>Request access to join the first cohort in Zaria and begin the Academy.</p>
-        <a class="btn primary full" href="request-access.html">Request Access</a>
-        <a class="btn ghost full" href="skillpoints.html">Read Skill Points → Value</a>
+          <ul class="checklist">
+            <li class="check">
+              <div class="badge">1</div>
+              <div>
+                <strong>Smart Money Academy (Foundations)</strong><br/>
+                <span class="muted">5 modules that build discipline and money clarity.</span>
+              </div>
+            </li>
+            <li class="check">
+              <div class="badge">2</div>
+              <div>
+                <strong>Skill Points Ledger</strong><br/>
+                <span class="muted">Earn points through learning + verification.</span>
+              </div>
+            </li>
+            <li class="check">
+              <div class="badge">3</div>
+              <div>
+                <strong>Manual verification & accountability</strong><br/>
+                <span class="muted">We prioritize serious learners and clean outcomes.</span>
+              </div>
+            </li>
+          </ul>
+
+          <div class="hr"></div>
+
+          <p class="sideText">
+            <strong>Start now:</strong> Complete $1 verification → submit your request → receive access.
+          </p>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="btn btnPrimary btnSmall" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">Pay $1</a>
+            <a class="btn btnSmall" href="#request-access">Request Access</a>
+          </div>
+        </aside>
       </div>
-    </section>
+    </div>
   </main>
 
-  <footer class="footer">
-    <div>© <span id="y"></span> AGEx Smart Money Hub. All rights reserved.</div>
-    <div class="foot-links">
-      <a href="request-access.html">Request Access</a>
-      <a href="founder.html">Founder’s Note</a>
+  <!-- How it works -->
+  <section id="how-it-works">
+    <div class="wrap">
+      <div class="sectionCard">
+        <div class="sectionHead">
+          <div>
+            <h2>How AGEx Works</h2>
+            <p class="sub">A simple 3-step journey: <strong>Learn → Practice → Verify</strong>. This is the core of trust.</p>
+          </div>
+          <a class="btn btnPrimary btnSmall" href="#request-access">Request Access →</a>
+        </div>
+
+        <div class="grid3">
+          <div class="tile">
+            <div class="num">1</div>
+            <h3>Learn</h3>
+            <p>
+              Go through the Smart Money Academy Foundations modules:
+              budgeting, savings, discipline systems, basic investing thinking, and responsible income building.
+            </p>
+          </div>
+          <div class="tile">
+            <div class="num">2</div>
+            <h3>Practice</h3>
+            <p>
+              Apply each lesson immediately through “Stewardship Actions” (simple homework).
+              Your growth is measured by what you do—not what you say.
+            </p>
+          </div>
+          <div class="tile">
+            <div class="num">3</div>
+            <h3>Verify</h3>
+            <p>
+              You earn Skill Points by completing modules, passing checks, and submitting proof.
+              Verified learners unlock higher levels and future opportunities.
+            </p>
+          </div>
+        </div>
+
+        <p class="note">
+          <strong>Important:</strong> The one-time <span class="kbd">$1</span> verification is a commitment filter. After that, academy access is free.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Academy -->
+  <section id="academy">
+    <div class="wrap">
+      <div class="sectionCard">
+        <div class="sectionHead">
+          <div>
+            <h2>Smart Money Academy Mini-Course (Foundations)</h2>
+            <p class="sub">
+              <strong>Core Promise:</strong> You will build a practical personal money system—so you can track income, control spending, save consistently, and grow with discipline.
+            </p>
+          </div>
+        </div>
+
+        <div class="modules">
+          <div class="moduleList">
+
+            <div class="module">
+              <div class="moduleTop">
+                <div class="icon">🏗️</div>
+                <div>
+                  <p class="moduleTitle">Module 1 — The Steward’s Identity</p>
+                  <p class="moduleObj">Objective: Adopt the mindset that money is a tool for responsibility and legacy.</p>
+                </div>
+              </div>
+              <div class="chips">
+                <span class="chip">Money as stewardship</span>
+                <span class="chip">Identity & choices</span>
+                <span class="chip">Avoiding financial chaos</span>
+              </div>
+              <div class="action">Stewardship Action: Write your “Money Covenant” (rules you will live by for 30 days).</div>
+            </div>
+
+            <div class="module">
+              <div class="moduleTop">
+                <div class="icon">🧾</div>
+                <div>
+                  <p class="moduleTitle">Module 2 — Budget to Builder</p>
+                  <p class="moduleObj">Objective: Build a simple budget that tells your money where to go.</p>
+                </div>
+              </div>
+              <div class="chips">
+                <span class="chip">Income map</span>
+                <span class="chip">Needs vs wants</span>
+                <span class="chip">Weekly discipline</span>
+              </div>
+              <div class="action">Stewardship Action: Create a 7-day expense log and categorize every spend.</div>
+            </div>
+
+            <div class="module">
+              <div class="moduleTop">
+                <div class="icon">🛡️</div>
+                <div>
+                  <p class="moduleTitle">Module 3 — Security First</p>
+                  <p class="moduleObj">Objective: Stop financial emergencies from resetting your life.</p>
+                </div>
+              </div>
+              <div class="chips">
+                <span class="chip">Emergency plan</span>
+                <span class="chip">Bills discipline</span>
+                <span class="chip">Reducing leakage</span>
+              </div>
+              <div class="action">Stewardship Action: Set a “first savings target” and automate it weekly.</div>
+            </div>
+
+            <div class="module">
+              <div class="moduleTop">
+                <div class="icon">📈</div>
+                <div>
+                  <p class="moduleTitle">Module 4 — Wealth With Wisdom</p>
+                  <p class="moduleObj">Objective: Understand growth thinking without gambling or hype.</p>
+                </div>
+              </div>
+              <div class="chips">
+                <span class="chip">Risk basics</span>
+                <span class="chip">Long-term thinking</span>
+                <span class="chip">Avoiding scams</span>
+              </div>
+              <div class="action">Stewardship Action: Write your “Risk Rules” (what you will NEVER do with money).</div>
+            </div>
+
+            <div class="module">
+              <div class="moduleTop">
+                <div class="icon">🧠</div>
+                <div>
+                  <p class="moduleTitle">Module 5 — Skill to Income (Responsible)</p>
+                  <p class="moduleObj">Objective: Choose a practical skill path and build proof of work.</p>
+                </div>
+              </div>
+              <div class="chips">
+                <span class="chip">Skill selection</span>
+                <span class="chip">Proof of work</span>
+                <span class="chip">Accountability</span>
+              </div>
+              <div class="action">Stewardship Action: Pick one skill track and complete a small project you can show.</div>
+            </div>
+
+          </div>
+
+          <div class="miniCard" style="height:fit-content;">
+            <h3>Delivery Format (Simplest & Credible)</h3>
+            <p class="muted" style="margin:0 0 10px;">
+              Phase 1 is built for truth, speed, and clarity:
+            </p>
+            <ul>
+              <li><strong>Web-based lessons</strong> (on-site pages)</li>
+              <li><strong>Google Form</strong> for access requests + submissions</li>
+              <li><strong>Manual review</strong> for quality and accountability</li>
+              <li><strong>Skill Points</strong> recorded as a learner ledger</li>
+            </ul>
+
+            <div class="hr"></div>
+
+            <h3 style="margin:0 0 8px;">First CTA</h3>
+            <p style="margin:0 0 12px;" class="muted">
+              Begin the learning journey (not “pay money” energy).
+            </p>
+            <div class="ctaBtns">
+              <a class="btn btnPrimary btnSmall" href="#request-access">Start Your First Lesson →</a>
+              <a class="btn btnSmall" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">Complete $1 Verification →</a>
+            </div>
+
+            <p class="note" style="margin-top:12px;">
+              <strong>Coming next:</strong> A protected on-site workbook where learners type answers and unlock the next level after review.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skill Points -->
+  <section id="skill-points">
+    <div class="wrap">
+      <div class="sectionCard">
+        <div class="sectionHead">
+          <div>
+            <h2>Skill Points → Value System (Whitepaper V1)</h2>
+            <p class="sub">A simple, transparent ledger that turns learning into verified proof and trusted progression.</p>
+          </div>
+        </div>
+
+        <div class="whitepaper">
+          <div class="miniCard">
+            <h3>What It Is</h3>
+            <p>
+              Skill Points are a <strong>gamified learning and verification ledger</strong>.
+              They track what you completed, what you proved, and what you can actually do.
+            </p>
+          </div>
+
+          <div class="miniCard">
+            <h3>How You Earn</h3>
+            <ul>
+              <li>Complete a module + submit the Stewardship Action</li>
+              <li>Pass a short quiz/check (manual or simple)</li>
+              <li>Submit a verified project/proof of work</li>
+              <li>Show consistent discipline (weekly check-ins)</li>
+              <li>Contribute value in the community (accountability)</li>
+            </ul>
+          </div>
+
+          <div class="miniCard">
+            <h3>The Bridge to Value (Initial Pathways)</h3>
+            <ul>
+              <li><strong>Pathway A (Direct):</strong> Points unlock premium lessons, templates, or short 1-on-1 guidance time.</li>
+              <li><strong>Pathway B (Partnership):</strong> Points act as a verified “skills resume” for trusted local partners (priority interviews/opportunities).</li>
+            </ul>
+          </div>
+
+          <div class="miniCard">
+            <h3>Future Vision</h3>
+            <p>
+              Long-term, Skill Points become a structured reputation system that can support token/withdrawal mechanics—but only after trust, governance, and verification standards are mature.
+            </p>
+            <p class="note"><strong>AGEx rule:</strong> Stewardship first. Value second. Scale last.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Request Access (pay + form) -->
+  <section id="request-access">
+    <div class="wrap">
+      <div class="cta">
+        <div>
+          <h2>Request Access (Manual Approval)</h2>
+          <p>
+            Access is granted manually to ensure quality guidance and accountability.
+            Complete the one-time <strong>$1 entry verification</strong>, then submit your request form.
+            <strong>After verification, academy access is free.</strong>
+          </p>
+          <p class="note" style="margin-top:10px;">
+            <strong>Order:</strong> Step 1 Pay → Step 2 Submit → Step 3 Receive access.
+          </p>
+        </div>
+        <div class="ctaBtns">
+          <a class="btn btnPrimary" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">Step 1: Pay $1 Verification →</a>
+          <a class="btn" href="https://forms.gle/ZcvSoGdSA49wntmP9" target="_blank" rel="noopener">Step 2: Submit Request Form →</a>
+        </div>
+      </div>
+
+      <div style="height:14px;"></div>
+
+      <div class="sectionCard">
+        <div class="sectionHead">
+          <div>
+            <h2>Access Request Form</h2>
+            <p class="sub">
+              Fill this to join AGEx Smart Money Hub. Serious learners only.
+              If you can’t see the form below, use the button above.
+            </p>
+          </div>
+          <a class="btn btnSmall" href="https://forms.gle/ZcvSoGdSA49wntmP9" target="_blank" rel="noopener">Open Form in New Tab →</a>
+        </div>
+
+        <!-- Embedded Google Form (your provided iframe) -->
+        <div style="border-radius:20px; overflow:hidden; border:1px solid rgba(15,15,15,.10); background:#fff;">
+          <iframe
+            src="https://docs.google.com/forms/d/e/1FAIpQLSfCjBkLLq0UlnV2vg4K7H-79Gz0vx0-J1qdnRFW9d7CoUs5XA/viewform?embedded=true"
+            width="100%"
+            height="980"
+            frameborder="0"
+            marginheight="0"
+            marginwidth="0"
+            title="AGEx Request Access Form"
+            style="display:block;"
+          >Loading…</iframe>
+        </div>
+
+        <p class="note">
+          After submission, you’ll receive your next-step instructions manually.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Founder -->
+  <section id="founder">
+    <div class="wrap">
+      <div class="sectionCard">
+        <div class="sectionHead">
+          <div>
+            <h2>Founder’s Note (Covenant, Not Commerce)</h2>
+            <p class="sub">A platform built from calling, discipline, and the desire to restore order.</p>
+          </div>
+        </div>
+
+        <p style="margin:0; color: rgba(15,15,15,.76); font-size:1.05rem; max-width: 82ch;">
+          I’m Charles Arin. AGEx was born from a personal turning point in 2019—a moment that forced me to face the truth:
+          a life without discipline is a life that cannot carry destiny. I realized my assignment is not to hype people, but to help
+          build structure—financial order, skill mastery, and responsible growth.
+          <br/><br/>
+          AGEx is a stewardship covenant. We don’t sell dreams—we build people.
+          We learn, we practice, we verify. We move step by step, with accountability.
+          This is how real transformation happens, and how legacy is formed.
+          <br/><br/>
+          Welcome to the path. If you’re ready to learn and commit, we’ll walk with you.
+        </p>
+
+        <div class="hr"></div>
+
+        <p class="muted" style="margin:0;">
+          AGEx is a practical extension of the stewardship principles in <strong>The Billionaire’s Mindset Guide</strong> and <strong>The Steward’s Charter</strong>:
+          identity, discipline, strategy, and legacy.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust / Disclaimer -->
+  <section id="trust">
+    <div class="wrap">
+      <div class="sectionCard">
+        <div class="sectionHead">
+          <div>
+            <h2>Trust & Transparency</h2>
+            <p class="sub">We build credibility by being clear.</p>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="tile">
+            <div class="num">✓</div>
+            <h3>No income promises</h3>
+            <p>AGEx is an education platform. We do not promise profits or guaranteed earnings.</p>
+          </div>
+          <div class="tile">
+            <div class="num">✓</div>
+            <h3>Manual approval</h3>
+            <p>Access is granted manually to protect quality, guidance, and accountability.</p>
+          </div>
+          <div class="tile">
+            <div class="num">✓</div>
+            <h3>$1 verification only</h3>
+            <p>One-time entry verification filters spam. After verification, academy access is free.</p>
+          </div>
+        </div>
+
+        <p class="note">
+          If you have questions, use the contact details below.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="sectionCard">
+        <div class="sectionHead">
+          <div>
+            <h2>Contact</h2>
+            <p class="sub">Zaria, Kaduna • Nigeria. Reach us for guidance, support, and access follow-up.</p>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="tile">
+            <div class="num">☎</div>
+            <h3>Phone</h3>
+            <p><a href="tel:+2348136805462"><strong>+234 813 680 5462</strong></a></p>
+            <p class="muted">Tap to call</p>
+          </div>
+          <div class="tile">
+            <div class="num">✉</div>
+            <h3>Email</h3>
+            <p><a href="mailto:arinonebusiness@gmail.com"><strong>arinonebusiness@gmail.com</strong></a></p>
+            <p class="muted">Tap to email</p>
+          </div>
+          <div class="tile">
+            <div class="num">📍</div>
+            <h3>Location</h3>
+            <p><strong>Zaria, Kaduna</strong></p>
+            <p class="muted">Nigeria</p>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="cta" style="padding:18px;">
+          <div>
+            <h2 style="font-size:1.45rem;">Ready to begin?</h2>
+            <p style="margin:6px 0 0;">Complete the $1 verification, then submit your access request.</p>
+          </div>
+          <div class="ctaBtns">
+            <a class="btn btnPrimary btnSmall" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">Pay $1 →</a>
+            <a class="btn btnSmall" href="https://forms.gle/ZcvSoGdSA49wntmP9" target="_blank" rel="noopener">Request Access →</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="wrap">
+      <div class="footerGrid">
+        <div>
+          <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+            <div class="mark" style="width:38px;height:38px;border-radius:14px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 12h9" stroke="#F4B41A" stroke-width="2.4" stroke-linecap="round"/>
+                <path d="M12.5 7.5 17 12l-4.5 4.5" stroke="#F4B41A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 12h4.5" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" opacity=".9"/>
+              </svg>
+            </div>
+            <div>
+              <div style="font-weight:900;">AG<span style="color:var(--gold);">Ex</span> Smart Money Hub</div>
+              <div class="muted" style="font-weight:700;">Stewardship-first financial learning</div>
+            </div>
+          </div>
+
+          <div class="muted">
+            © <span id="year"></span> AGEx Smart Money Hub. All rights reserved.
+            <br/>
+            <strong>Disclaimer:</strong> AGEx is an educational platform. We do not promise income or profits.
+          </div>
+        </div>
+
+        <div class="footerLinks">
+          <a href="#how-it-works">How it Works</a>
+          <a href="#academy">Academy</a>
+          <a href="#skill-points">Skill Points</a>
+          <a href="#request-access">Request Access</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
     </div>
   </footer>
 
   <script>
-    document.getElementById("y").textContent = new Date().getFullYear();
+    // Mobile menu toggle
+    const btn = document.getElementById('menuBtn');
+    const drawer = document.getElementById('drawer');
+    if(btn && drawer){
+      btn.addEventListener('click', () => {
+        const isOpen = drawer.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(isOpen));
+      });
+    }
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Smooth scroll for in-page links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const id = a.getAttribute('href');
+        if(!id || id === "#") return;
+        const el = document.querySelector(id);
+        if(el){
+          e.preventDefault();
+          el.scrollIntoView({behavior:"smooth", block:"start"});
+          if(drawer && drawer.classList.contains('open')){
+            drawer.classList.remove('open');
+            btn && btn.setAttribute('aria-expanded','false');
+          }
+        }
+      });
+    });
   </script>
 </body>
 </html>
