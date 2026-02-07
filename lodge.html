@@ -208,7 +208,35 @@
 
 <main id="main">
 
-  <!-- Gate screen -->
+  <!-- Gate screen --><!-- LODGE GATE -->
+<section id="lodge-gate" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px;">
+  <div style="max-width:520px;width:100%;background:#ffffff;border:1px solid #ddd;border-radius:20px;padding:30px;text-align:center;">
+    <h1 style="color:#0B3D2E;">The Steward’s Lodge</h1>
+    <p style="color:#555;font-size:14px;">
+      This space is reserved for verified stewards only.<br>
+      Enter your Lodge Access Key to continue.
+    </p>
+
+    <input
+      type="password"
+      id="accessInput"
+      placeholder="Enter Lodge Access Key"
+      style="width:100%;padding:14px;border-radius:12px;border:1px solid #ccc;margin:20px 0;font-size:14px;"
+    />
+
+    <button
+      onclick="unlockLodge()"
+      style="width:100%;padding:14px;border-radius:999px;border:none;background:#F4B41A;color:#1b1607;font-weight:800;cursor:pointer;"
+    >
+      Enter the Lodge
+    </button>
+
+    <p id="errorMsg" style="display:none;color:red;margin-top:14px;font-size:13px;">
+      Invalid access key. Please check and try again.
+    </p>
+  </div>
+</section>
+
   <section class="hero" id="gate">
     <div class="container">
       <div class="badge"><span class="dot"></span> Verified Stewards Only • Manual Approval</div>
