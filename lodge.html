@@ -1,4 +1,4 @@
-<!doctype html>
+nonenedoctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -277,7 +277,27 @@
     </div>
   </section>
 
-  <!-- Lodge content (hidden until unlocked) -->
+  <!-- Lodge content (hidden until unlocked) --><!-- LODGE CONTENT --><script>
+  const ACCESS_KEY = "ARIN-LODGE-KEY-001";
+
+  function unlockLodge() {
+    const input = document.getElementById("accessInput").value.trim();
+    const error = document.getElementById("errorMsg");
+
+    if (input === ACCESS_KEY) {
+      document.getElementById("lodge-gate").style.display = "none";
+      document.getElementById("lodge-content").style.display = "block";
+      error.style.display = "none";
+    } else {
+      error.style.display = "block";
+    }
+  }
+</script>
+
+<div id="lodge-content" style="display:none;">
+  <!-- EVERYTHING ELSE YOU ALREADY WROTE GOES HERE -->
+</div>
+
   <div class="lodge" id="lodgeContent">
 
     <!-- Dashboard -->
