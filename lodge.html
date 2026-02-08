@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#0B3D2E" />
   <title>The Steward’s Lodge | AGEx Smart Money Hub</title>
-  <meta name="description" content="The Steward’s Lodge is the gated learning space for verified stewards of AGEx Smart Money Hub. Stewardship First. Learn → Practice → Verify." />
+  <meta name="description" content="The Steward’s Lodge gateway for verified stewards of AGEx Smart Money Hub. Stewardship First. Learn → Practice → Verify." />
   <meta name="robots" content="noindex,nofollow" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +23,6 @@
       --card:#F7FAF9;
       --line:rgba(15,15,15,.10);
       --shadow: 0 18px 45px rgba(0,0,0,.12);
-      --radius: 18px;
       --radius2: 26px;
       --max: 1120px;
     }
@@ -40,15 +39,6 @@
     }
     a{color:inherit;text-decoration:none}
     .container{max-width:var(--max);margin:0 auto;padding:0 18px}
-    .skip{
-      position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden;
-    }
-    .skip:focus{
-      left:18px;top:18px;width:auto;height:auto;background:#fff;padding:10px 12px;border-radius:12px;
-      box-shadow:var(--shadow);z-index:9999
-    }
-
-    /* Header */
     header{
       position:sticky;top:0;z-index:60;
       background:rgba(255,255,255,.88);
@@ -78,7 +68,6 @@
     .brand-title .top .ex{color:var(--gold)}
     .brand-title .sub{font-size:12px;color:var(--muted);font-weight:800;margin-top:4px}
 
-    .nav-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:10px;
       border-radius:999px;padding:12px 16px;font-weight:900;
@@ -99,56 +88,8 @@
       box-shadow:0 12px 26px rgba(11,61,46,.28)
     }
     .btn.dark:hover{transform:translateY(-1px)}
-    .btn.small{padding:10px 12px;font-size:12px}
 
     main{overflow:hidden}
-    section{padding:28px 0}
-    h1,h2,h3,h4{letter-spacing:-.3px}
-    h1{margin:0;color:var(--green);font-size:34px;line-height:1.1}
-    h2{margin:0;color:var(--green);font-size:22px}
-    p{margin:0}
-    .lead{margin-top:10px;color:rgba(15,15,15,.70);font-weight:700;max-width:80ch}
-
-    .grid-2{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;align-items:stretch}
-    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-
-    .card{
-      background:var(--card);border:1px solid var(--line);border-radius:var(--radius2);
-      padding:16px;box-shadow:0 12px 30px rgba(0,0,0,.06)
-    }
-    .tile{
-      background:#fff;border:1px solid var(--line);border-radius:var(--radius2);
-      padding:16px;box-shadow:0 10px 24px rgba(0,0,0,.05)
-    }
-    .pill{
-      display:inline-flex;align-items:center;gap:10px;
-      padding:9px 12px;border-radius:999px;
-      background:rgba(11,61,46,.08);border:1px solid rgba(11,61,46,.12);
-      font-weight:900;color:var(--green);font-size:12px;
-      width:fit-content
-    }
-    .pill .dot{width:10px;height:10px;border-radius:99px;background:var(--gold);box-shadow:0 0 0 4px rgba(244,180,26,.18)}
-    .muted{color:rgba(15,15,15,.62);font-weight:750;font-size:13px}
-    .hint{color:rgba(15,15,15,.60);font-weight:750;font-size:12px;margin-top:10px}
-    .kpi{
-      display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px
-    }
-    .kpi .box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px}
-    .kpi .num{font-weight:900;color:var(--green);font-size:16px;letter-spacing:-.2px}
-    .kpi .txt{font-weight:850;font-size:12px;color:rgba(15,15,15,.62);margin-top:6px}
-
-    .row{display:flex;gap:12px;align-items:flex-start}
-    .mini{
-      width:42px;height:42px;border-radius:16px;display:grid;place-items:center;
-      background:rgba(11,61,46,.08);border:1px solid rgba(11,61,46,.12);color:var(--green);
-      flex:0 0 auto;font-weight:900
-    }
-    ul{margin:10px 0 0;padding-left:16px}
-    li{margin:7px 0;color:rgba(15,15,15,.66);font-weight:750;font-size:13px}
-
-    .divider{height:1px;background:var(--line);margin:14px 0}
-
-    /* Gate */
     .gate-wrap{
       min-height:calc(100vh - 74px);
       display:grid;
@@ -173,6 +114,19 @@
     }
     .gate > *{position:relative;z-index:1}
 
+    .pill{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:9px 12px;border-radius:999px;
+      background:rgba(11,61,46,.08);border:1px solid rgba(11,61,46,.12);
+      font-weight:900;color:var(--green);font-size:12px;
+      width:fit-content
+    }
+    .pill .dot{width:10px;height:10px;border-radius:99px;background:var(--gold);box-shadow:0 0 0 4px rgba(244,180,26,.18)}
+    h1{margin:12px 0 0;color:var(--green);font-size:34px;line-height:1.1;letter-spacing:-.3px}
+    .lead{margin-top:10px;color:rgba(15,15,15,.70);font-weight:700}
+    .muted{color:rgba(15,15,15,.62);font-weight:750;font-size:13px}
+    .divider{height:1px;background:var(--line);margin:14px 0}
+
     label{display:block;font-weight:900;font-size:12px;color:rgba(15,15,15,.72);margin-top:12px}
     input{
       width:100%;
@@ -185,6 +139,8 @@
       background:#fff;
       margin-top:8px;
     }
+    .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px}
+    .hint{color:rgba(15,15,15,.60);font-weight:750;font-size:12px;margin-top:10px}
     .error{
       display:none;
       margin-top:10px;
@@ -197,25 +153,17 @@
       font-size:12px
     }
 
-    /* Footer */
     footer{border-top:1px solid var(--line);padding:18px 0 26px;background:#fff}
     .foot{display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:space-between}
     .foot small{color:rgba(15,15,15,.6);font-weight:750}
-    .foot .links{display:flex;gap:12px;flex-wrap:wrap}
-    .foot .links a{font-weight:900;font-size:12px;color:rgba(15,15,15,.68)}
-    .foot .links a:hover{color:var(--green)}
 
     @media (max-width: 920px){
-      .grid-2{grid-template-columns:1fr}
-      .grid-3{grid-template-columns:1fr}
       h1{font-size:30px}
     }
   </style>
 </head>
 
 <body>
-<a class="skip" href="#main">Skip to content</a>
-
 <header>
   <div class="container">
     <div class="nav">
@@ -228,11 +176,11 @@
         </div>
         <div class="brand-title">
           <div class="top"><span>AG</span><span class="ex">Ex</span> <span style="color:var(--green)">Smart Money</span></div>
-          <div class="sub">The Steward’s Lodge • Verified Space</div>
+          <div class="sub">The Steward’s Lodge • Gateway</div>
         </div>
       </a>
 
-      <div class="nav-actions">
+      <div class="row">
         <a class="btn ghost" href="index.html">Back to Gateway</a>
         <a class="btn primary" href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Request Access</a>
       </div>
@@ -240,17 +188,15 @@
   </div>
 </header>
 
-<main id="main">
-
-  <!-- LODGE GATE -->
-  <section id="lodge-gate" class="gate-wrap">
+<main>
+  <section class="gate-wrap">
     <div class="container">
       <div class="gate" role="region" aria-label="Lodge access gate">
         <div class="pill"><span class="dot"></span> Access Status: <b>Locked</b></div>
 
-        <h1 style="margin-top:12px">The Steward’s Lodge</h1>
+        <h1>The Steward’s Lodge</h1>
         <p class="lead">
-          This space is reserved for <b>verified stewards</b> only.
+          This space is reserved for <b>verified stewards</b> only.<br/>
           Enter your <b>Lodge Access Key</b> to continue.
         </p>
 
@@ -265,13 +211,13 @@
         <input
           type="password"
           id="accessInput"
-          placeholder="Enter Lodge Access Key (case-sensitive)"
+          placeholder="Enter key (case-sensitive)"
           autocomplete="off"
           inputmode="text"
         />
 
-        <div class="row" style="margin-top:12px;flex-wrap:wrap">
-          <button class="btn primary" type="button" onclick="unlockLodge()">Enter the Lodge</button>
+        <div class="row">
+          <button class="btn primary" type="button" id="enterBtn">Enter the Lodge</button>
           <a class="btn dark" href="index.html" type="button">Return to Gateway</a>
         </div>
 
@@ -286,227 +232,46 @@
       </div>
     </div>
   </section>
-
-  <!-- LODGE CONTENT (hidden until unlocked) -->
-  <section id="lodge-content" style="display:none;">
-    <div class="container">
-      <div class="pill"><span class="dot"></span> Access Status: <b>Active</b></div>
-
-      <div class="grid-2" style="margin-top:12px">
-        <div class="card">
-          <h1>The Steward’s Lodge</h1>
-          <p class="lead">
-            Welcome, Verified Steward. Your journey of discipline continues here.
-            This lodge is a covenant space: learning, practice, and verification—done with clarity and accountability.
-          </p>
-
-          <div class="kpi" role="list" aria-label="Status dashboard">
-            <div class="box" role="listitem">
-              <div class="num">Current Focus</div>
-              <div class="txt">Smart Money Academy (Foundations)</div>
-            </div>
-            <div class="box" role="listitem">
-              <div class="num">Skill Points</div>
-              <div class="txt">To be awarded (manual verification)</div>
-            </div>
-            <div class="box" role="listitem">
-              <div class="num">Ledger</div>
-              <div class="txt">Recorded privately (Phase 1)</div>
-            </div>
-            <div class="box" role="listitem">
-              <div class="num">Support</div>
-              <div class="txt">High-touch onboarding</div>
-            </div>
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="row" style="flex-wrap:wrap">
-            <a class="btn dark" href="index.html#academy">Public Academy Preview</a>
-            <a class="btn ghost" href="index.html">Back to Gateway</a>
-          </div>
-
-          <p class="hint">
-            Phase 1 is intentionally manual. Quality and trust come before automation.
-          </p>
-        </div>
-
-        <div class="tile">
-          <h2>Today’s Orientation</h2>
-          <p class="muted" style="margin-top:8px">
-            Begin with order, not urgency. The Lodge starts with foundations:
-          </p>
-          <ul>
-            <li>Read the Academy module list and choose your starting module.</li>
-            <li>Complete the Stewardship Action attached to that module.</li>
-            <li>Submit proof through the process you were given at approval.</li>
-            <li>Receive Skill Points + feedback once verified.</li>
-          </ul>
-          <p class="hint">
-            If you need onboarding help, contact: <b>arinonebusiness@gmail.com</b> • WhatsApp <b>+234 813 680 5462</b>.
-          </p>
-        </div>
-      </div>
-
-      <section style="padding:18px 0 0">
-        <div class="grid-3">
-          <!-- Academy Card -->
-          <div class="tile">
-            <div class="row">
-              <div class="mini">A</div>
-              <div>
-                <h2 style="font-size:18px;margin:0">Smart Money Academy</h2>
-                <p class="muted" style="margin-top:6px">
-                  The foundation of your stewardship journey. Complete the modules to build your financial system and earn Skill Points.
-                </p>
-              </div>
-            </div>
-            <div class="divider"></div>
-            <a class="btn primary" href="index.html#academy">Continue Your Learning</a>
-            <p class="hint">In Phase 1, modules are presented on the main site while the Lodge holds the covenant system.</p>
-          </div>
-
-          <!-- Verification Tasks -->
-          <div class="tile">
-            <div class="row">
-              <div class="mini">V</div>
-              <div>
-                <h2 style="font-size:18px;margin:0">Verification Tasks & Skill Points</h2>
-                <p class="muted" style="margin-top:6px">
-                  Skill Points are earned by applying knowledge, not performing labor. They represent verified competence and discipline,
-                  unlocking deeper guidance and curated opportunities.
-                </p>
-              </div>
-            </div>
-
-            <div class="divider"></div>
-
-            <div class="card" style="background:#fff;box-shadow:none">
-              <h3 style="margin:0;color:var(--green);font-size:14px">Stewardship Action: Weekly Expense Audit</h3>
-              <p class="muted" style="margin-top:6px">
-                Submit your categorized 7-day expense log from Module 2 for verification and feedback.
-              </p>
-              <p class="hint"><b>Reward:</b> 25 Skill Points + Written Feedback</p>
-            </div>
-
-            <div class="card" style="background:#fff;box-shadow:none;margin-top:10px">
-              <h3 style="margin:0;color:var(--green);font-size:14px">Verification Project: Personal Risk Rule Analysis</h3>
-              <p class="muted" style="margin-top:6px">
-                Expand your Risk Rules from Module 5. Analyze a common scam and write a 300-word guide on how to identify it.
-              </p>
-              <p class="hint"><b>Reward:</b> 50 Skill Points + Qualification for Level 2 Consultation</p>
-            </div>
-
-            <p class="hint" style="margin-top:10px">
-              Proof and verification protect your progress. You grow by order, not by speed.
-            </p>
-          </div>
-
-          <!-- Lodge Code -->
-          <div class="tile">
-            <div class="row">
-              <div class="mini">C</div>
-              <div>
-                <h2 style="font-size:18px;margin:0">The Lodge Code</h2>
-                <p class="muted" style="margin-top:6px">This is a covenant space. Violation breaks access.</p>
-              </div>
-            </div>
-            <div class="divider"></div>
-            <ul>
-              <li><b>No shortcuts.</b> Discipline is mandatory.</li>
-              <li><b>No manipulation.</b> Proof must be true and verifiable.</li>
-              <li><b>No noise.</b> Progress is based on understanding, not hype.</li>
-              <li><b>Accountability is real.</b> High-touch review protects quality.</li>
-              <li><b>Violations lead to removal</b> from the Lodge.</li>
-            </ul>
-            <p class="hint">
-              AGEx Smart Money Hub — A Stewardship Covenant, not a marketplace.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section style="padding:18px 0">
-        <div class="card">
-          <h2>Need to Request Access Again?</h2>
-          <p class="muted" style="margin-top:8px">
-            If you have paid verification but did not receive approval, submit the Request Access form using the same email used for payment.
-          </p>
-          <div class="row" style="margin-top:12px;flex-wrap:wrap">
-            <a class="btn primary" href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Open Request Access Form</a>
-            <a class="btn ghost" href="index.html">Back to Gateway</a>
-          </div>
-          <p class="hint">
-            Support: <b>arinonebusiness@gmail.com</b> • WhatsApp: <b>+234 813 680 5462</b>
-          </p>
-        </div>
-      </section>
-
-    </div>
-  </section>
-
 </main>
 
 <footer>
   <div class="container">
     <div class="foot">
-      <small>© <span id="year"></span> AGEx Smart Money Hub. The Steward’s Lodge — A private covenant space for verified stewards.</small>
-      <div class="links">
-        <a href="index.html">Gateway</a>
-        <a href="index.html#academy">Academy</a>
-        <a href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Request Access</a>
-      </div>
+      <small>© <span id="year"></span> AGEx Smart Money Hub — A Stewardship Covenant, not a marketplace.</small>
     </div>
   </div>
 </footer>
 
 <script>
-  // Year
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // ✅ LODGE ACCESS KEY (case-sensitive)
-  // IMPORTANT: this is not secure against a determined attacker (front-end only).
-  // It is acceptable for Phase 1 gating while approvals are manual.
-  const ACCESS_KEY = "ARIN-LODGE-KEY-001";
+  // SECURITY: For Phase 1, key is hard-coded. Change this variable manually for each cohort of learners.
+  const MASTER_KEY = "ARIN-LODGE-KEY-001";
 
-  function unlockLodge(){
-    const inputEl = document.getElementById("accessInput");
-    const errorEl = document.getElementById("errorMsg");
-    const gateEl = document.getElementById("lodge-gate");
-    const contentEl = document.getElementById("lodge-content");
+  const input = document.getElementById("accessInput");
+  const err = document.getElementById("errorMsg");
+  const enterBtn = document.getElementById("enterBtn");
 
-    const typed = (inputEl.value || "").trim();
-
-    if (typed === ACCESS_KEY){
-      gateEl.style.display = "none";
-      contentEl.style.display = "block";
-      errorEl.style.display = "none";
-      localStorage.setItem("AGEX_LODGE_UNLOCKED", "1");
-      location.hash = "#main";
+  function attempt(){
+    const typed = (input.value || "").trim();
+    if (typed === MASTER_KEY){
+      err.style.display = "none";
+      // Optional: remember access on this device for convenience
+      localStorage.setItem("AGEX_LODGE_OK", "1");
+      // Redirect to the interior
+      window.location.href = "dashboard.html";
     } else {
-      errorEl.style.display = "block";
+      err.style.display = "block";
     }
   }
 
-  // Press Enter to unlock
-  document.getElementById("accessInput")?.addEventListener("keydown", (e)=>{
-    if (e.key === "Enter") unlockLodge();
-  });
+  enterBtn.addEventListener("click", attempt);
+  input.addEventListener("keydown", (e)=>{ if (e.key === "Enter") attempt(); });
 
-  // Auto-unlock on this device if previously unlocked
-  (function(){
-    if (localStorage.getItem("AGEX_LODGE_UNLOCKED") === "1"){
-      const gateEl = document.getElementById("lodge-gate");
-      const contentEl = document.getElementById("lodge-content");
-      const errorEl = document.getElementById("errorMsg");
-      if (gateEl && contentEl){
-        gateEl.style.display = "none";
-        contentEl.style.display = "block";
-      }
-      if (errorEl) errorEl.style.display = "none";
-    }
-  })();
+  // If already unlocked on this device, go straight in
+  if (localStorage.getItem("AGEX_LODGE_OK") === "1"){
+    window.location.href = "dashboard.html";
+  }
 </script>
-
 </body>
 </html>
