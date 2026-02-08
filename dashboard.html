@@ -216,9 +216,61 @@
 
         <div class="tile">
           <h2>Primary Action</h2>
-          <p class="muted" style="margin-top:8px">
-            Continue your foundational stewardship journey. Complete modules to build your financial system and earn Skill Points.
-          </p>
+          <div class="card" style="margin-top:14px">
+  <h3 style="margin:0 0 8px;color:var(--green);letter-spacing:-.2px">Your Progress Ladder</h3>
+  <p style="margin:0;font-size:13px;font-weight:750;color:rgba(15,15,15,.66)">
+    You advance by verified discipline. Finish a level before the next opens.
+  </p>
+
+  <div style="margin-top:12px;display:grid;gap:10px">
+    <!-- ACTIVE -->
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px">
+      <div>
+        <div style="font-weight:900;color:var(--green)">Foundations (Entry)</div>
+        <div style="font-size:12px;font-weight:800;color:rgba(15,15,15,.62)">Module 1 → Identity & Stewardship</div>
+      </div>
+      <a class="btn primary small" href="module-1.html">Start</a>
+    </div>
+
+    <!-- LOCKED (Phase 1 static) -->
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;opacity:.65">
+      <div>
+        <div style="font-weight:900;color:rgba(15,15,15,.7)">Apprentice (Level 1)</div>
+        <div style="font-size:12px;font-weight:800;color:rgba(15,15,15,.55)">Locked until Foundations is verified</div>
+      </div>
+      <span class="btn ghost small" style="pointer-events:none">Locked</span>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;opacity:.55">
+      <div>
+        <div style="font-weight:900;color:rgba(15,15,15,.65)">Builder (Level 2)</div>
+        <div style="font-size:12px;font-weight:800;color:rgba(15,15,15,.52)">Locked until Apprentice is complete</div>
+      </div>
+      <span class="btn ghost small" style="pointer-events:none">Locked</span>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;opacity:.5">
+      <div>
+        <div style="font-weight:900;color:rgba(15,15,15,.6)">Contributor (Level 3)</div>
+        <div style="font-size:12px;font-weight:800;color:rgba(15,15,15,.5)">Locked until Builder is verified</div>
+      </div>
+      <span class="btn ghost small" style="pointer-events:none">Locked</span>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;opacity:.48">
+      <div>
+        <div style="font-weight:900;color:rgba(15,15,15,.58)">Trusted Operator (Level 4+)</div>
+        <div style="font-size:12px;font-weight:800;color:rgba(15,15,15,.48)">Unlocks referral + higher packages</div>
+      </div>
+      <span class="btn ghost small" style="pointer-events:none">Locked</span>
+    </div>
+  </div>
+
+  <p class="hint" style="margin-top:12px">
+    Rule: No level opens without verified completion of the one before it.
+  </p>
+</div>
+
 
           <div class="divider"></div>
 
