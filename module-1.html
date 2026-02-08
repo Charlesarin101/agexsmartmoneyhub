@@ -1,234 +1,358 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Module 1 — The Steward’s Mindset | AGEx Smart Money Hub</title>
-  <meta name="theme-color" content="#0B3D2E"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0B3D2E" />
+  <title>Module 1 — Identity & Stewardship | AGEx Smart Money Academy</title>
+  <meta name="description" content="AGEx Smart Money Academy — Module 1: Identity & Stewardship. Learn, write, practice, and submit proof for verification." />
+  <meta name="robots" content="noindex,nofollow" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
+    :root{
+      --green:#0B3D2E;
+      --green2:#083326;
+      --gold:#F4B41A;
+      --ink:#0F0F0F;
+      --muted:#5F6B66;
+      --bg:#FFFFFF;
+      --card:#F7FAF9;
+      --line:rgba(15,15,15,.10);
+      --shadow: 0 18px 45px rgba(0,0,0,.12);
+      --radius: 18px;
+      --radius2: 26px;
+      --max: 980px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
     body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      background:#ffffff;
-      color:#111;
+      font-family:"Manrope",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink);
+      background:var(--bg);
       line-height:1.6;
     }
-    .wrap{
-      max-width:900px;
-      margin:0 auto;
-      padding:32px 18px 80px;
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--max);margin:0 auto;padding:0 18px}
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(255,255,255,.92);
+      backdrop-filter:saturate(180%) blur(10px);
+      border-bottom:1px solid var(--line);
     }
-    h1,h2,h3{
-      color:#0B3D2E;
-      letter-spacing:-0.4px;
-    }
-    h1{font-size:36px;margin-bottom:8px}
-    h2{font-size:22px;margin-top:36px}
-    h3{font-size:18px;margin-top:28px}
-    p{font-size:15px;color:#333}
-    .muted{color:#666;font-size:14px}
-
-    .badge{
-      display:inline-block;
-      padding:8px 14px;
-      border-radius:999px;
-      background:#eef5f2;
-      border:1px solid #cfe1da;
-      font-weight:700;
-      color:#0B3D2E;
-      font-size:12px;
-      margin-bottom:16px;
-    }
-
-    .box{
-      border:1px solid #e3e3e3;
-      border-radius:16px;
-      padding:18px;
-      background:#fafafa;
-      margin-top:20px;
-    }
-
-    .covenant{
-      background:#0B3D2E;
-      color:#fff;
-      border-radius:20px;
-      padding:22px;
-      margin-top:40px;
-    }
-    .covenant h3{color:#F4B41A;margin-top:0}
-    .covenant p{color:#e6f1ec}
-
-    ul{
-      padding-left:18px;
-      margin-top:10px;
-    }
-    li{
-      margin:6px 0;
-      font-size:14px;
-      color:#444;
-    }
-
-    .task{
-      background:#fff;
-      border:2px solid #0B3D2E;
-      border-radius:18px;
-      padding:20px;
-      margin-top:28px;
-    }
-    .task h3{margin-top:0}
-
-    .steps{
-      margin-top:12px;
-    }
-
-    .footer-note{
-      margin-top:48px;
-      padding-top:20px;
-      border-top:1px solid #ddd;
-      font-size:13px;
-      color:#555;
-    }
-
     .nav{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      margin-top:40px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 0;
       flex-wrap:wrap;
     }
+    .brand{display:flex;align-items:center;gap:12px}
+    .mark{
+      width:42px;height:42px;border-radius:14px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--green),var(--green2));
+      box-shadow:0 10px 26px rgba(11,61,46,.28);
+      position:relative;overflow:hidden
+    }
+    .mark:before{
+      content:"";position:absolute;inset:-40%;
+      background:radial-gradient(circle at 30% 30%, rgba(244,180,26,.55), transparent 55%);
+      transform:rotate(10deg)
+    }
+    .mark svg{position:relative;z-index:1}
+    .brand-title{display:flex;flex-direction:column;line-height:1.05}
+    .brand-title .top{font-weight:800;letter-spacing:.2px;font-size:14px}
+    .brand-title .top .ex{color:var(--gold)}
+    .brand-title .sub{font-size:12px;color:var(--muted);font-weight:800;margin-top:4px}
+
+    .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     .btn{
-      padding:12px 18px;
-      border-radius:999px;
-      font-weight:700;
-      border:none;
-      cursor:pointer;
-      text-decoration:none;
-      font-size:14px;
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      border-radius:999px;padding:12px 16px;font-weight:900;
+      border:1px solid transparent;cursor:pointer;transition:.15s ease;
+      user-select:none;white-space:nowrap
     }
-    .btn.primary{
-      background:#0B3D2E;
-      color:#fff;
+    .btn.primary{background:var(--gold);color:#1b1607;box-shadow:0 12px 26px rgba(244,180,26,.35)}
+    .btn.primary:hover{transform:translateY(-1px)}
+    .btn.dark{background:var(--green);color:#fff;box-shadow:0 12px 26px rgba(11,61,46,.28)}
+    .btn.dark:hover{transform:translateY(-1px)}
+    .btn.ghost{background:transparent;border-color:rgba(11,61,46,.25);color:var(--green)}
+    .btn.ghost:hover{background:rgba(11,61,46,.06)}
+    .btn.small{padding:10px 12px;font-size:12px}
+
+    main{padding:22px 0 46px}
+    .hero{
+      border:1px solid rgba(11,61,46,.12);
+      background:
+        radial-gradient(900px 520px at 15% 0%, rgba(244,180,26,.18), transparent 65%),
+        radial-gradient(900px 520px at 85% 10%, rgba(11,61,46,.12), transparent 62%),
+        linear-gradient(180deg, rgba(11,61,46,.04), transparent 50%);
+      border-radius:34px;
+      padding:18px;
+      box-shadow:0 12px 30px rgba(0,0,0,.06)
     }
-    .btn.ghost{
+    .badge{
+      display:inline-flex;align-items:center;gap:10px;
+      background:rgba(11,61,46,.08);border:1px solid rgba(11,61,46,.12);
+      padding:10px 14px;border-radius:999px;font-weight:900;color:var(--green);font-size:12px;
+      width:fit-content
+    }
+    .badge .dot{width:10px;height:10px;border-radius:99px;background:var(--gold);box-shadow:0 0 0 4px rgba(244,180,26,.18)}
+    h1{margin:12px 0 6px;font-size:34px;letter-spacing:-.4px;line-height:1.12;color:var(--green)}
+    .lead{margin:0;color:rgba(15,15,15,.72);font-weight:750;max-width:72ch}
+    .grid{
+      display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:14px
+    }
+    .card{
+      background:var(--card);border:1px solid var(--line);border-radius:var(--radius2);
+      padding:16px;box-shadow:0 10px 24px rgba(0,0,0,.05)
+    }
+    .card h2{margin:0 0 8px;font-size:18px;letter-spacing:-.2px;color:var(--green)}
+    .card p{margin:0;color:rgba(15,15,15,.70);font-weight:750;font-size:13px}
+    .list{margin:10px 0 0;padding-left:16px}
+    .list li{margin:8px 0;color:rgba(15,15,15,.68);font-weight:750;font-size:13px}
+
+    .callout{
+      background:#fff;border:1px solid rgba(11,61,46,.14);border-radius:22px;padding:14px;
+    }
+    .callout strong{color:var(--green)}
+    .muted{color:rgba(15,15,15,.62);font-weight:750;font-size:12px;margin-top:8px}
+
+    .work{
+      margin-top:14px;
+      border-radius:34px;
+      border:1px solid var(--line);
       background:#fff;
-      border:1px solid #0B3D2E;
-      color:#0B3D2E;
+      box-shadow:0 12px 30px rgba(0,0,0,.06);
+      overflow:hidden;
+    }
+    .work-head{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+      background:linear-gradient(180deg, rgba(11,61,46,.06), #fff);
+    }
+    .work-head h3{margin:0;color:var(--green);letter-spacing:-.2px}
+    .work-body{padding:16px}
+    .field{display:grid;gap:6px;margin:12px 0}
+    label{font-weight:900;font-size:12px;color:rgba(15,15,15,.72)}
+    textarea,input{
+      width:100%;
+      padding:12px 12px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      outline:none;
+      font-family:inherit;
+      font-weight:750;
+      background:#fff;
+    }
+    textarea{min-height:120px;resize:vertical}
+    .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .hr{height:1px;background:var(--line);margin:14px 0}
+    .toast{
+      display:none;margin-top:10px;
+      padding:12px 12px;border-radius:16px;
+      background:rgba(11,61,46,.06);border:1px solid rgba(11,61,46,.12);
+      font-weight:850;color:rgba(15,15,15,.72);font-size:12px
+    }
+    footer{margin-top:18px}
+    footer small{color:rgba(15,15,15,.6);font-weight:750}
+
+    @media (max-width: 920px){
+      .grid{grid-template-columns:1fr}
+      .row2{grid-template-columns:1fr}
     }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
+<header>
+  <div class="container">
+    <div class="nav">
+      <a class="brand" href="dashboard.html" aria-label="Back to Steward Dashboard">
+        <div class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2.6l8 3.2v6.2c0 5.1-3.5 9.2-8 9.9-4.5-.7-8-4.8-8-9.9V5.8L12 2.6z" stroke="rgba(255,255,255,.92)" stroke-width="1.6"/>
+            <path d="M8.3 12h6.9l-2.2-2.2 1.3-1.3 4.4 4.4-4.4 4.4-1.3-1.3 2.2-2.2H8.3V12z" fill="#F4B41A"/>
+          </svg>
+        </div>
+        <div class="brand-title">
+          <div class="top"><span>AG</span><span class="ex">Ex</span> <span style="color:var(--green)">Academy</span></div>
+          <div class="sub">Module 1 • Identity & Stewardship</div>
+        </div>
+      </a>
 
-    <span class="badge">Module 1 • Foundations</span>
+      <div class="actions">
+        <a class="btn ghost small" href="dashboard.html">Back to Dashboard</a>
+        <a class="btn dark small" href="lodge.html">Lodge Gate</a>
+      </div>
+    </div>
+  </div>
+</header>
 
-    <h1>The Steward’s Mindset</h1>
-    <p class="muted">
-      This module establishes identity before income, order before opportunity,
-      and discipline before reward.
+<main class="container">
+  <section class="hero">
+    <div class="badge"><span class="dot"></span> Learn → Practice → Verify</div>
+    <h1>Module 1 — Identity & Stewardship</h1>
+    <p class="lead">
+      Money is not your master and not your enemy. It is a tool.
+      This module rebuilds your foundation: identity, responsibility, and discipline.
     </p>
 
-    <div class="box">
-      <h3>Why This Comes First</h3>
-      <p>
-        Most financial systems fail because they begin with tactics instead of identity.
-        AGEx begins differently.
-      </p>
-      <p>
-        Before budgets, before skills, before opportunities,
-        you must understand <strong>what money is for</strong>
-        and <strong>who you are in relation to it</strong>.
-      </p>
-    </div>
-
-    <h2>Core Principles</h2>
-    <ul>
-      <li>Money is a tool, not a trophy.</li>
-      <li>Discipline creates freedom.</li>
-      <li>Consistency outperforms intensity.</li>
-      <li>Stewardship precedes earning.</li>
-      <li>Proof matters more than promises.</li>
-    </ul>
-
-    <div class="box">
-      <h3>The Steward Identity</h3>
-      <p>
-        A steward does not chase money.
-        A steward builds systems that money respects.
-      </p>
-      <p>
-        You are here to replace chaos with order,
-        impulse with structure,
-        and hope with verifiable progress.
-      </p>
-    </div>
-
-    <div class="task">
-      <h3>Stewardship Action — Module 1</h3>
-      <p>
-        This is your first verification task.
-        It confirms that you understand the mindset,
-        not just the words.
-      </p>
-
-      <h4>Your Assignment</h4>
-      <p>
-        Write your <strong>Five Personal Money Rules</strong>.
-        These are non-negotiable rules that will guide your financial decisions.
-      </p>
-
-      <div class="steps">
-        <ul>
-          <li>Rule 1 must address spending discipline</li>
-          <li>Rule 2 must address saving or reserves</li>
-          <li>Rule 3 must address debt or risk</li>
-          <li>Rule 4 must address skill or growth</li>
-          <li>Rule 5 must address integrity or long-term thinking</li>
+    <div class="grid">
+      <div class="card">
+        <h2>Objective</h2>
+        <p>
+          Replace chaos with a clear stewardship identity and simple rules you can actually live by.
+        </p>
+        <ul class="list">
+          <li>Understand money as responsibility, not pressure.</li>
+          <li>Identify your “leaks” — where money silently goes.</li>
+          <li>Create a personal Money Rulebook (5 rules).</li>
+          <li>Start a small discipline action today (not tomorrow).</li>
         </ul>
       </div>
 
-      <p class="muted">
-        Length: 1–2 sentences per rule.  
-        Clarity matters more than elegance.
-      </p>
+      <div class="card">
+        <h2>Lesson Summary</h2>
+        <div class="callout">
+          <p>
+            <strong>Stewardship</strong> means: “I manage what I have with order, truth, and restraint.”
+            The beginning of wealth is not money — it is discipline.
+          </p>
+          <p class="muted">
+            This Academy does not promise profit. It builds competence. Verified competence unlocks deeper guidance.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      <p><strong>Reward:</strong> 10 Skill Points (upon verification)</p>
+  <section class="work" aria-label="Module workbook">
+    <div class="work-head">
+      <h3>Workbook — Write Your Answers Here</h3>
+      <div class="actions">
+        <button class="btn primary small" type="button" id="saveBtn">Save Progress</button>
+        <button class="btn ghost small" type="button" id="clearBtn">Clear</button>
+      </div>
     </div>
 
-    <div class="box">
-      <h3>How Verification Works</h3>
-      <ul>
-        <li>You submit your work through the official submission channel</li>
-        <li>An admin reviews for clarity and seriousness</li>
-        <li>Skill Points are added to your ledger</li>
-        <li>You unlock the next module</li>
-      </ul>
-    </div>
+    <div class="work-body">
+      <div class="field">
+        <label for="identity">1) Steward Identity (one paragraph)</label>
+        <textarea id="identity" placeholder="Write who you are becoming and why. Example: 'I am a steward. I manage my money with truth, restraint, and a plan…'"></textarea>
+      </div>
 
-    <div class="covenant">
-      <h3>The Module Covenant</h3>
-      <p>
-        Do not rush. Do not copy. Do not perform.
-      </p>
-      <p>
-        This work is for you.
-        Progress here compounds quietly,
-        but it compounds honestly.
-      </p>
-    </div>
+      <div class="row2">
+        <div class="field">
+          <label for="leak1">2) Your #1 Money Leak</label>
+          <input id="leak1" placeholder="e.g., small daily snacks, random online buys" />
+        </div>
+        <div class="field">
+          <label for="leak2">3) Your #2 Money Leak</label>
+          <input id="leak2" placeholder="e.g., unplanned transport, impulse airtime" />
+        </div>
+      </div>
 
-    <div class="nav">
-      <a href="dashboard.html" class="btn ghost">← Back to Lodge</a>
-      <span class="btn primary">Module 1 Active</span>
-    </div>
+      <div class="field">
+        <label for="rules">4) Your 5 Money Rules (number them 1–5)</label>
+        <textarea id="rules" placeholder="1) …&#10;2) …&#10;3) …&#10;4) …&#10;5) …"></textarea>
+      </div>
 
-    <div class="footer-note">
-      AGEx Smart Money Hub — Learn → Practice → Verify  
-      <br/>
-      Stewardship is the path. Discipline is the gate.
-    </div>
+      <div class="field">
+        <label for="action">5) Stewardship Action (do today)</label>
+        <textarea id="action" placeholder="Example: 'Today I will write down every expense I make, no matter how small, and total it at night.'"></textarea>
+      </div>
 
-  </div>
+      <div class="hr"></div>
+
+      <div class="card" style="margin:0">
+        <h2 style="margin-bottom:6px">Verification Instruction</h2>
+        <p>
+          When you finish this module, your proof is simple:
+          <b>your 5 Money Rules + your identified leaks + your Stewardship Action.</b>
+          Submit it for review when requested.
+        </p>
+        <p class="muted">
+          Tip: Screenshot your answers before submission (for your records).
+        </p>
+
+        <div class="actions" style="margin-top:12px">
+          <!-- Replace SUBMISSION_LINK with your private “submit proof” form when ready -->
+          <a class="btn dark" href="#" id="submitProofBtn">Submit Proof (when instructed)</a>
+          <a class="btn ghost" href="dashboard.html">Return to Dashboard</a>
+        </div>
+
+        <div class="toast" id="toast">Saved. Your answers are stored on this device only.</div>
+      </div>
+
+      <footer>
+        <small>
+          AGEx Smart Money Hub — A Stewardship Covenant. Progress is verified understanding, not speed.
+        </small>
+      </footer>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Local storage keys
+  const KEY = "agex_module1_v1";
+  const fields = ["identity","leak1","leak2","rules","action"];
+
+  function load(){
+    try{
+      const raw = localStorage.getItem(KEY);
+      if(!raw) return;
+      const data = JSON.parse(raw);
+      fields.forEach(id => {
+        const el = document.getElementById(id);
+        if(el && data[id] !== undefined) el.value = data[id];
+      });
+    }catch(e){}
+  }
+
+  function save(){
+    const data = {};
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      data[id] = el ? el.value : "";
+    });
+    localStorage.setItem(KEY, JSON.stringify(data));
+    const t = document.getElementById("toast");
+    t.style.display = "block";
+    setTimeout(()=>t.style.display="none", 2600);
+  }
+
+  function clearAll(){
+    localStorage.removeItem(KEY);
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.value = "";
+    });
+  }
+
+  document.getElementById("saveBtn")?.addEventListener("click", save);
+  document.getElementById("clearBtn")?.addEventListener("click", clearAll);
+
+  // Optional: auto-save every 10 seconds if user is typing
+  let timer = null;
+  fields.forEach(id => {
+    document.getElementById(id)?.addEventListener("input", () => {
+      clearTimeout(timer);
+      timer = setTimeout(save, 10000);
+    });
+  });
+
+  // Submission button currently disabled by default (#)
+  document.getElementById("submitProofBtn")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    alert("Submission will be enabled when the proof form is attached. For now: Save your work and return to Dashboard.");
+  });
+
+  load();
+</script>
 </body>
 </html>
