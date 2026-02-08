@@ -1,11 +1,11 @@
-nonenedoctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#0B3D2E" />
-  <title>The Steward’s Lodge — AGEx Smart Money Hub</title>
-  <meta name="description" content="The Steward’s Lodge is the private learning space for Verified Stewards of AGEx Smart Money Hub." />
+  <title>The Steward’s Lodge | AGEx Smart Money Hub</title>
+  <meta name="description" content="The Steward’s Lodge is the gated learning space for verified stewards of AGEx Smart Money Hub. Stewardship First. Learn → Practice → Verify." />
   <meta name="robots" content="noindex,nofollow" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,14 +32,23 @@ nonenedoctype html>
     body{
       font-family:"Manrope",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--ink);
-      background:var(--bg);
+      background:
+        radial-gradient(1000px 600px at 15% 0%, rgba(244,180,26,.12), transparent 65%),
+        radial-gradient(900px 600px at 85% 10%, rgba(11,61,46,.10), transparent 62%),
+        var(--bg);
       line-height:1.55;
     }
     a{color:inherit;text-decoration:none}
     .container{max-width:var(--max);margin:0 auto;padding:0 18px}
-    .skip{position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden}
-    .skip:focus{left:18px;top:18px;width:auto;height:auto;background:#fff;padding:10px 12px;border-radius:12px;box-shadow:var(--shadow);z-index:9999}
+    .skip{
+      position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden;
+    }
+    .skip:focus{
+      left:18px;top:18px;width:auto;height:auto;background:#fff;padding:10px 12px;border-radius:12px;
+      box-shadow:var(--shadow);z-index:9999
+    }
 
+    /* Header */
     header{
       position:sticky;top:0;z-index:60;
       background:rgba(255,255,255,.88);
@@ -67,56 +76,45 @@ nonenedoctype html>
     .brand-title{display:flex;flex-direction:column;line-height:1.05}
     .brand-title .top{font-weight:800;letter-spacing:.2px;font-size:15px}
     .brand-title .top .ex{color:var(--gold)}
-    .brand-title .sub{font-size:12px;color:var(--muted);font-weight:700;margin-top:4px}
+    .brand-title .sub{font-size:12px;color:var(--muted);font-weight:800;margin-top:4px}
 
-    nav ul{list-style:none;display:flex;gap:10px;margin:0;padding:0;align-items:center;flex-wrap:wrap}
-    nav a{
-      font-weight:800;font-size:12px;color:rgba(15,15,15,.78);
-      padding:10px 12px;border-radius:14px
-    }
-    nav a:hover{background:rgba(11,61,46,.06);color:var(--green)}
+    .nav-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:10px;
       border-radius:999px;padding:12px 16px;font-weight:900;
       border:1px solid transparent;cursor:pointer;transition:.15s ease;
       user-select:none;white-space:nowrap
     }
-    .btn.dark{
-      background:var(--green);color:#fff;
-      box-shadow:0 12px 26px rgba(11,61,46,.28)
-    }
-    .btn.dark:hover{transform:translateY(-1px)}
-    .btn.ghost{background:transparent;border-color:rgba(11,61,46,.25);color:var(--green)}
-    .btn.ghost:hover{background:rgba(11,61,46,.06)}
     .btn.primary{
       background:var(--gold);color:#1b1607;
       box-shadow:0 12px 26px rgba(244,180,26,.35)
     }
     .btn.primary:hover{transform:translateY(-1px)}
+    .btn.ghost{
+      background:transparent;border-color:rgba(11,61,46,.25);color:var(--green)
+    }
+    .btn.ghost:hover{background:rgba(11,61,46,.06)}
+    .btn.dark{
+      background:var(--green);color:#fff;
+      box-shadow:0 12px 26px rgba(11,61,46,.28)
+    }
+    .btn.dark:hover{transform:translateY(-1px)}
+    .btn.small{padding:10px 12px;font-size:12px}
 
     main{overflow:hidden}
-    section{padding:30px 0}
-    .hero{
-      padding:34px 0 20px;
-      background:
-        radial-gradient(1000px 600px at 15% 0%, rgba(244,180,26,.18), transparent 65%),
-        radial-gradient(900px 600px at 85% 10%, rgba(11,61,46,.12), transparent 62%),
-        linear-gradient(180deg, rgba(11,61,46,.04), transparent 40%);
-    }
-    .badge{
-      display:inline-flex;align-items:center;gap:10px;
-      background:rgba(11,61,46,.08);border:1px solid rgba(11,61,46,.12);
-      padding:10px 14px;border-radius:999px;font-weight:900;color:var(--green);font-size:12px;
-      width:fit-content
-    }
-    .badge .dot{width:10px;height:10px;border-radius:99px;background:var(--gold);box-shadow:0 0 0 4px rgba(244,180,26,.18)}
-    h1{margin:14px 0 10px;font-size:42px;letter-spacing:-.6px;line-height:1.08;color:var(--green)}
-    .lead{font-size:15px;color:rgba(15,15,15,.72);max-width:75ch;margin:0 0 16px;font-weight:700}
+    section{padding:28px 0}
+    h1,h2,h3,h4{letter-spacing:-.3px}
+    h1{margin:0;color:var(--green);font-size:34px;line-height:1.1}
+    h2{margin:0;color:var(--green);font-size:22px}
+    p{margin:0}
+    .lead{margin-top:10px;color:rgba(15,15,15,.70);font-weight:700;max-width:80ch}
+
+    .grid-2{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;align-items:stretch}
     .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
     .card{
       background:var(--card);border:1px solid var(--line);border-radius:var(--radius2);
-      padding:18px;box-shadow:0 12px 30px rgba(0,0,0,.06)
+      padding:16px;box-shadow:0 12px 30px rgba(0,0,0,.06)
     }
     .tile{
       background:#fff;border:1px solid var(--line);border-radius:var(--radius2);
@@ -126,17 +124,80 @@ nonenedoctype html>
       display:inline-flex;align-items:center;gap:10px;
       padding:9px 12px;border-radius:999px;
       background:rgba(11,61,46,.08);border:1px solid rgba(11,61,46,.12);
-      font-weight:900;color:var(--green);font-size:12px
+      font-weight:900;color:var(--green);font-size:12px;
+      width:fit-content
     }
-    .pill .dot{width:10px;height:10px;border-radius:99px;background:var(--gold)}
-    .muted{color:rgba(15,15,15,.66);font-weight:750;font-size:13px}
-    .bullets{margin:10px 0 0;padding-left:16px}
-    .bullets li{font-size:12px;font-weight:750;color:rgba(15,15,15,.66);margin:6px 0}
-    .kpi{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-    .kpi .box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px}
-    .kpi .num{font-weight:900;color:var(--green);font-size:18px;letter-spacing:-.2px}
-    .kpi .txt{font-weight:800;font-size:12px;color:rgba(15,15,15,.62);margin-top:6px}
+    .pill .dot{width:10px;height:10px;border-radius:99px;background:var(--gold);box-shadow:0 0 0 4px rgba(244,180,26,.18)}
+    .muted{color:rgba(15,15,15,.62);font-weight:750;font-size:13px}
+    .hint{color:rgba(15,15,15,.60);font-weight:750;font-size:12px;margin-top:10px}
+    .kpi{
+      display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px
+    }
+    .kpi .box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px}
+    .kpi .num{font-weight:900;color:var(--green);font-size:16px;letter-spacing:-.2px}
+    .kpi .txt{font-weight:850;font-size:12px;color:rgba(15,15,15,.62);margin-top:6px}
 
+    .row{display:flex;gap:12px;align-items:flex-start}
+    .mini{
+      width:42px;height:42px;border-radius:16px;display:grid;place-items:center;
+      background:rgba(11,61,46,.08);border:1px solid rgba(11,61,46,.12);color:var(--green);
+      flex:0 0 auto;font-weight:900
+    }
+    ul{margin:10px 0 0;padding-left:16px}
+    li{margin:7px 0;color:rgba(15,15,15,.66);font-weight:750;font-size:13px}
+
+    .divider{height:1px;background:var(--line);margin:14px 0}
+
+    /* Gate */
+    .gate-wrap{
+      min-height:calc(100vh - 74px);
+      display:grid;
+      place-items:center;
+      padding:22px 0;
+    }
+    .gate{
+      width:min(560px, 100%);
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:32px;
+      box-shadow:var(--shadow);
+      padding:18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .gate:before{
+      content:"";
+      position:absolute;inset:-40%;
+      background:radial-gradient(circle at 20% 20%, rgba(244,180,26,.18), transparent 55%);
+      transform:rotate(12deg);
+    }
+    .gate > *{position:relative;z-index:1}
+
+    label{display:block;font-weight:900;font-size:12px;color:rgba(15,15,15,.72);margin-top:12px}
+    input{
+      width:100%;
+      padding:14px 14px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      outline:none;
+      font-family:inherit;
+      font-weight:750;
+      background:#fff;
+      margin-top:8px;
+    }
+    .error{
+      display:none;
+      margin-top:10px;
+      padding:12px 12px;
+      border-radius:18px;
+      background:rgba(255,0,0,.06);
+      border:1px solid rgba(255,0,0,.14);
+      font-weight:850;
+      color:rgba(120,0,0,.85);
+      font-size:12px
+    }
+
+    /* Footer */
     footer{border-top:1px solid var(--line);padding:18px 0 26px;background:#fff}
     .foot{display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:space-between}
     .foot small{color:rgba(15,15,15,.6);font-weight:750}
@@ -144,28 +205,10 @@ nonenedoctype html>
     .foot .links a{font-weight:900;font-size:12px;color:rgba(15,15,15,.68)}
     .foot .links a:hover{color:var(--green)}
 
-    /* Gate */
-    .gate-wrap{display:grid;place-items:center;min-height:55vh;padding:24px 0}
-    .gate{width:min(560px,100%);background:#fff;border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:18px}
-    .field{display:grid;gap:6px;margin:10px 0}
-    label{font-weight:900;font-size:12px;color:rgba(15,15,15,.72)}
-    input{
-      width:100%;padding:12px 12px;border-radius:16px;border:1px solid var(--line);
-      outline:none;font-family:inherit;font-weight:750;background:#fff;
-    }
-    .hint{font-size:12px;color:rgba(15,15,15,.58);font-weight:750;margin-top:4px}
-    .error{
-      display:none;margin-top:10px;padding:12px 12px;border-radius:16px;
-      background:rgba(180,40,40,.08);border:1px solid rgba(180,40,40,.18);
-      font-weight:850;color:rgba(120,20,20,.92);font-size:12px
-    }
-
-    .lodge{display:none}
     @media (max-width: 920px){
+      .grid-2{grid-template-columns:1fr}
       .grid-3{grid-template-columns:1fr}
-      .two{grid-template-columns:1fr}
-      h1{font-size:36px}
-      nav ul{display:none}
+      h1{font-size:30px}
     }
   </style>
 </head>
@@ -176,7 +219,7 @@ nonenedoctype html>
 <header>
   <div class="container">
     <div class="nav">
-      <a class="brand" href="index.html" aria-label="Back to AGEx public page">
+      <a class="brand" href="index.html" aria-label="Back to Gateway">
         <div class="mark" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none">
             <path d="M12 2.6l8 3.2v6.2c0 5.1-3.5 9.2-8 9.9-4.5-.7-8-4.8-8-9.9V5.8L12 2.6z" stroke="rgba(255,255,255,.92)" stroke-width="1.6"/>
@@ -185,22 +228,13 @@ nonenedoctype html>
         </div>
         <div class="brand-title">
           <div class="top"><span>AG</span><span class="ex">Ex</span> <span style="color:var(--green)">Smart Money</span></div>
-          <div class="sub">The Steward’s Lodge • Private Learning Space</div>
+          <div class="sub">The Steward’s Lodge • Verified Space</div>
         </div>
       </a>
 
-      <nav aria-label="Lodge navigation">
-        <ul>
-          <li><a href="#dashboard">Dashboard</a></li>
-          <li><a href="#academy">Academy</a></li>
-          <li><a href="#verification">Verification Tasks</a></li>
-          <li><a href="#code">Lodge Code</a></li>
-        </ul>
-      </nav>
-
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <a class="btn ghost" href="index.html#academy">Public Academy Preview</a>
-        <a class="btn dark" href="index.html">Back to Gateway</a>
+      <div class="nav-actions">
+        <a class="btn ghost" href="index.html">Back to Gateway</a>
+        <a class="btn primary" href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Request Access</a>
       </div>
     </div>
   </div>
@@ -208,316 +242,271 @@ nonenedoctype html>
 
 <main id="main">
 
-  <!-- Gate screen --><!-- LODGE GATE -->
-<section id="lodge-gate" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px;">
-  <div style="max-width:520px;width:100%;background:#ffffff;border:1px solid #ddd;border-radius:20px;padding:30px;text-align:center;">
-    <h1 style="color:#0B3D2E;">The Steward’s Lodge</h1>
-    <p style="color:#555;font-size:14px;">
-      This space is reserved for verified stewards only.<br>
-      Enter your Lodge Access Key to continue.
-    </p>
-
-    <input
-      type="password"
-      id="accessInput"
-      placeholder="Enter Lodge Access Key"
-      style="width:100%;padding:14px;border-radius:12px;border:1px solid #ccc;margin:20px 0;font-size:14px;"
-    />
-
-    <button
-      onclick="unlockLodge()"
-      style="width:100%;padding:14px;border-radius:999px;border:none;background:#F4B41A;color:#1b1607;font-weight:800;cursor:pointer;"
-    >
-      Enter the Lodge
-    </button>
-
-    <p id="errorMsg" style="display:none;color:red;margin-top:14px;font-size:13px;">
-      Invalid access key. Please check and try again.
-    </p>
-  </div>
-</section>
-
-  <section class="hero" id="gate">
+  <!-- LODGE GATE -->
+  <section id="lodge-gate" class="gate-wrap">
     <div class="container">
-      <div class="badge"><span class="dot"></span> Verified Stewards Only • Manual Approval</div>
-      <h1>The Steward’s Lodge</h1>
-      <p class="lead">
-        Welcome, Verified Steward. Your journey of discipline continues here.
-        This space is shared only with learners who have completed verification and received approval.
-      </p>
+      <div class="gate" role="region" aria-label="Lodge access gate">
+        <div class="pill"><span class="dot"></span> Access Status: <b>Locked</b></div>
 
-      <div class="gate-wrap">
-        <div class="gate" role="region" aria-label="Access gate">
-          <div class="pill"><span class="dot"></span> Access Status: <b>Locked</b></div>
+        <h1 style="margin-top:12px">The Steward’s Lodge</h1>
+        <p class="lead">
+          This space is reserved for <b>verified stewards</b> only.
+          Enter your <b>Lodge Access Key</b> to continue.
+        </p>
 
-          <p class="muted" style="margin-top:12px">
-            Enter your <b>Lodge Access Key</b> to continue. This key is provided only after verification and approval.
-          </p>
+        <div class="divider"></div>
 
-          <div class="field">
-            <label for="key">Lodge Access Key</label>
-            <input id="key" placeholder="Enter key (shared after approval)" autocomplete="off" />
-            <div class="hint">Tip: The key is case-sensitive (exactly as sent to you).</div>
-          </div>
+        <p class="muted">
+          <b>How you receive the key:</b> Pay the $1 verification → submit the access request → manual approval within 24 hours →
+          we send your Lodge key.
+        </p>
 
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
-            <button class="btn primary" id="unlockBtn" type="button">Enter the Lodge</button>
-            <a class="btn ghost" href="index.html" type="button">Return to Gateway</a>
-          </div>
+        <label for="accessInput">Lodge Access Key</label>
+        <input
+          type="password"
+          id="accessInput"
+          placeholder="Enter Lodge Access Key (case-sensitive)"
+          autocomplete="off"
+          inputmode="text"
+        />
 
-          <div class="error" id="err">
-            Access key is invalid. If you have completed verification, contact support to confirm approval.
-          </div>
-
-          <p class="hint" style="margin-top:12px">
-            Support: <b>arinonebusiness@gmail.com</b> • WhatsApp: <b>+234 813 680 5462</b>
-          </p>
+        <div class="row" style="margin-top:12px;flex-wrap:wrap">
+          <button class="btn primary" type="button" onclick="unlockLodge()">Enter the Lodge</button>
+          <a class="btn dark" href="index.html" type="button">Return to Gateway</a>
         </div>
+
+        <div class="error" id="errorMsg">
+          Access key is invalid. If you have completed verification, contact support:
+          <b>arinonebusiness@gmail.com</b> • WhatsApp: <b>+234 813 680 5462</b>.
+        </div>
+
+        <p class="hint">
+          Tip: The key is <b>case-sensitive</b> (exactly as sent to you).
+        </p>
       </div>
     </div>
   </section>
 
-  <!-- Lodge content (hidden until unlocked) --><!-- LODGE CONTENT --><script>
-  const ACCESS_KEY = "ARIN-LODGE-KEY-001";
+  <!-- LODGE CONTENT (hidden until unlocked) -->
+  <section id="lodge-content" style="display:none;">
+    <div class="container">
+      <div class="pill"><span class="dot"></span> Access Status: <b>Active</b></div>
 
-  function unlockLodge() {
-    const input = document.getElementById("accessInput").value.trim();
-    const error = document.getElementById("errorMsg");
-
-    if (input === ACCESS_KEY) {
-      document.getElementById("lodge-gate").style.display = "none";
-      document.getElementById("lodge-content").style.display = "block";
-      error.style.display = "none";
-    } else {
-      error.style.display = "block";
-    }
-  }
-</script>
-
-<div id="lodge-content" style="display:none;">
-  <!-- EVERYTHING ELSE YOU ALREADY WROTE GOES HERE -->
-</div>
-
-  <div class="lodge" id="lodgeContent">
-
-    <!-- Dashboard -->
-    <section id="dashboard">
-      <div class="container">
-        <div class="badge"><span class="dot"></span> Access Status: Active</div>
-        <h1 style="font-size:34px;margin-top:10px">Welcome, Verified Steward.</h1>
-        <p class="lead">
-          Your progress is based on verified understanding, not speed. Learn → Practice → Verify.
-        </p>
-
-        <div class="grid-3">
-          <div class="tile">
-            <div class="pill"><span class="dot"></span> Current Focus</div>
-            <div style="margin-top:10px;font-weight:900;color:var(--green);font-size:18px;letter-spacing:-.2px">
-              Smart Money Academy (Foundations)
-            </div>
-            <p class="muted" style="margin-top:8px">
-              Complete modules and Stewardship Actions to build order and earn Skill Points.
-            </p>
-          </div>
-
-          <div class="tile">
-            <div class="pill"><span class="dot"></span> Skill Points</div>
-            <div style="margin-top:10px;font-weight:900;color:var(--green);font-size:22px;letter-spacing:-.2px">
-              To Be Awarded
-            </div>
-            <p class="muted" style="margin-top:8px">
-              Skill Points are recorded after verification of your submissions.
-            </p>
-          </div>
-
-          <div class="tile">
-            <div class="pill"><span class="dot"></span> Steward Level</div>
-            <div style="margin-top:10px;font-weight:900;color:var(--green);font-size:18px;letter-spacing:-.2px">
-              Apprentice (Level 1)
-            </div>
-            <p class="muted" style="margin-top:8px">
-              Higher levels unlock deeper guidance and curated opportunities.
-            </p>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:14px">
-          <h3 style="margin:0 0 8px;color:var(--green);letter-spacing:-.2px">Your Next Move</h3>
-          <p class="muted" style="margin:0 0 12px">
-            Start with the Academy overview on the public gateway, then submit your first Stewardship Action for verification.
-          </p>
-          <div style="display:flex;gap:12px;flex-wrap:wrap">
-            <a class="btn primary" href="index.html#academy">Continue Your Learning</a>
-            <a class="btn dark" href="#verification">View Verification Tasks</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Academy card -->
-    <section id="academy">
-      <div class="container">
+      <div class="grid-2" style="margin-top:12px">
         <div class="card">
-          <h2 style="margin:0;color:var(--green);letter-spacing:-.2px">Enter the Smart Money Academy</h2>
+          <h1>The Steward’s Lodge</h1>
+          <p class="lead">
+            Welcome, Verified Steward. Your journey of discipline continues here.
+            This lodge is a covenant space: learning, practice, and verification—done with clarity and accountability.
+          </p>
+
+          <div class="kpi" role="list" aria-label="Status dashboard">
+            <div class="box" role="listitem">
+              <div class="num">Current Focus</div>
+              <div class="txt">Smart Money Academy (Foundations)</div>
+            </div>
+            <div class="box" role="listitem">
+              <div class="num">Skill Points</div>
+              <div class="txt">To be awarded (manual verification)</div>
+            </div>
+            <div class="box" role="listitem">
+              <div class="num">Ledger</div>
+              <div class="txt">Recorded privately (Phase 1)</div>
+            </div>
+            <div class="box" role="listitem">
+              <div class="num">Support</div>
+              <div class="txt">High-touch onboarding</div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="row" style="flex-wrap:wrap">
+            <a class="btn dark" href="index.html#academy">Public Academy Preview</a>
+            <a class="btn ghost" href="index.html">Back to Gateway</a>
+          </div>
+
+          <p class="hint">
+            Phase 1 is intentionally manual. Quality and trust come before automation.
+          </p>
+        </div>
+
+        <div class="tile">
+          <h2>Today’s Orientation</h2>
           <p class="muted" style="margin-top:8px">
-            The foundation of your stewardship journey. Complete the modules to build your financial system and earn Skill Points.
+            Begin with order, not urgency. The Lodge starts with foundations:
           </p>
-
-          <div class="kpi" role="list">
-            <div class="box" role="listitem">
-              <div class="num">Learn</div>
-              <div class="txt">Modules + simple checks</div>
-            </div>
-            <div class="box" role="listitem">
-              <div class="num">Practice</div>
-              <div class="txt">Stewardship Actions</div>
-            </div>
-            <div class="box" role="listitem">
-              <div class="num">Verify</div>
-              <div class="txt">Proof-based progression</div>
-            </div>
-            <div class="box" role="listitem">
-              <div class="num">Grow</div>
-              <div class="txt">Order → competence → opportunity</div>
-            </div>
-          </div>
-
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px">
-            <a class="btn primary" href="index.html#academy">Continue Your Learning</a>
-            <a class="btn ghost" href="index.html#how">Review How It Works</a>
-          </div>
-
-          <p class="hint" style="margin-top:10px">
-            Note: The Lodge is the private accountability space. The Academy preview lives on the gateway until we publish module pages.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Verification Tasks -->
-    <section id="verification">
-      <div class="container">
-        <div class="card">
-          <div class="pill"><span class="dot"></span> Verification Tasks & Skill Points</div>
-          <h2 style="margin:10px 0 6px;color:var(--green);letter-spacing:-.2px">Verification Tasks</h2>
-          <p class="muted" style="margin:0">
-            Skill Points are earned by applying knowledge, not performing labor.
-            They represent verified competence and discipline, unlocking deeper guidance and curated opportunities.
-          </p>
-
-          <div class="two" style="margin-top:14px">
-            <div class="tile">
-              <h3 style="margin:0 0 6px;letter-spacing:-.2px">Stewardship Action: Weekly Expense Audit</h3>
-              <p class="muted" style="margin:0">
-                Submit your categorized 7-day expense log from Academy Module 2 for verification and feedback.
-              </p>
-              <ul class="bullets">
-                <li><b>Proof:</b> Clear screenshot or document link</li>
-                <li><b>Standard:</b> Categories + totals + one reflection</li>
-                <li><b>Reward:</b> 25 Skill Points + Written Feedback</li>
-              </ul>
-            </div>
-
-            <div class="tile">
-              <h3 style="margin:0 0 6px;letter-spacing:-.2px">Verification Project: Personal Risk Rule Analysis</h3>
-              <p class="muted" style="margin:0">
-                Expand on your “Risk Rules” from Module 4. Analyze a common financial scam and write a 300-word guide on how to identify it.
-              </p>
-              <ul class="bullets">
-                <li><b>Proof:</b> Document link (readable + structured)</li>
-                <li><b>Standard:</b> 3 warning signs + 3 protections</li>
-                <li><b>Reward:</b> 50 Skill Points + Qualification for Level 2 Consultation</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="tile" style="margin-top:14px">
-            <h3 style="margin:0 0 8px;letter-spacing:-.2px">Submission Protocol</h3>
-            <ul class="bullets" style="margin-top:8px">
-              <li>Use your verified name and email (same identity used for approval).</li>
-              <li>Provide proof clearly (screenshots must show dates when possible).</li>
-              <li>One submission at a time. Quality over speed.</li>
-              <li>Verification outcomes: Approved (points awarded) / Needs revision (feedback provided).</li>
-            </ul>
-            <p class="hint" style="margin-top:10px">
-              Next: we can add a dedicated “Submit Stewardship Action” form once you confirm the submission method you want.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Lodge Code -->
-    <section id="code">
-      <div class="container">
-        <div class="card">
-          <h2 style="margin:0;color:var(--green);letter-spacing:-.2px">The Lodge Code</h2>
-          <p class="muted" style="margin-top:8px">
-            This is a covenant space. Discipline is mandatory.
-          </p>
-
-          <ul class="bullets" style="margin-top:10px">
-            <li><b>No shortcuts.</b> No manipulation. No dishonesty in proof.</li>
-            <li><b>Discipline is required.</b> Progress is based on verified understanding, not speed.</li>
-            <li><b>Respect the system.</b> Follow instructions. Keep submissions clear.</li>
-            <li><b>Integrity first.</b> Any violation of this code can result in removal from the Lodge.</li>
+          <ul>
+            <li>Read the Academy module list and choose your starting module.</li>
+            <li>Complete the Stewardship Action attached to that module.</li>
+            <li>Submit proof through the process you were given at approval.</li>
+            <li>Receive Skill Points + feedback once verified.</li>
           </ul>
-
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
-            <a class="btn dark" href="#dashboard">Back to Dashboard</a>
-            <a class="btn ghost" href="index.html#contact">Contact Support</a>
-          </div>
+          <p class="hint">
+            If you need onboarding help, contact: <b>arinonebusiness@gmail.com</b> • WhatsApp <b>+234 813 680 5462</b>.
+          </p>
         </div>
       </div>
-    </section>
 
-  </div>
+      <section style="padding:18px 0 0">
+        <div class="grid-3">
+          <!-- Academy Card -->
+          <div class="tile">
+            <div class="row">
+              <div class="mini">A</div>
+              <div>
+                <h2 style="font-size:18px;margin:0">Smart Money Academy</h2>
+                <p class="muted" style="margin-top:6px">
+                  The foundation of your stewardship journey. Complete the modules to build your financial system and earn Skill Points.
+                </p>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <a class="btn primary" href="index.html#academy">Continue Your Learning</a>
+            <p class="hint">In Phase 1, modules are presented on the main site while the Lodge holds the covenant system.</p>
+          </div>
+
+          <!-- Verification Tasks -->
+          <div class="tile">
+            <div class="row">
+              <div class="mini">V</div>
+              <div>
+                <h2 style="font-size:18px;margin:0">Verification Tasks & Skill Points</h2>
+                <p class="muted" style="margin-top:6px">
+                  Skill Points are earned by applying knowledge, not performing labor. They represent verified competence and discipline,
+                  unlocking deeper guidance and curated opportunities.
+                </p>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="card" style="background:#fff;box-shadow:none">
+              <h3 style="margin:0;color:var(--green);font-size:14px">Stewardship Action: Weekly Expense Audit</h3>
+              <p class="muted" style="margin-top:6px">
+                Submit your categorized 7-day expense log from Module 2 for verification and feedback.
+              </p>
+              <p class="hint"><b>Reward:</b> 25 Skill Points + Written Feedback</p>
+            </div>
+
+            <div class="card" style="background:#fff;box-shadow:none;margin-top:10px">
+              <h3 style="margin:0;color:var(--green);font-size:14px">Verification Project: Personal Risk Rule Analysis</h3>
+              <p class="muted" style="margin-top:6px">
+                Expand your Risk Rules from Module 5. Analyze a common scam and write a 300-word guide on how to identify it.
+              </p>
+              <p class="hint"><b>Reward:</b> 50 Skill Points + Qualification for Level 2 Consultation</p>
+            </div>
+
+            <p class="hint" style="margin-top:10px">
+              Proof and verification protect your progress. You grow by order, not by speed.
+            </p>
+          </div>
+
+          <!-- Lodge Code -->
+          <div class="tile">
+            <div class="row">
+              <div class="mini">C</div>
+              <div>
+                <h2 style="font-size:18px;margin:0">The Lodge Code</h2>
+                <p class="muted" style="margin-top:6px">This is a covenant space. Violation breaks access.</p>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <ul>
+              <li><b>No shortcuts.</b> Discipline is mandatory.</li>
+              <li><b>No manipulation.</b> Proof must be true and verifiable.</li>
+              <li><b>No noise.</b> Progress is based on understanding, not hype.</li>
+              <li><b>Accountability is real.</b> High-touch review protects quality.</li>
+              <li><b>Violations lead to removal</b> from the Lodge.</li>
+            </ul>
+            <p class="hint">
+              AGEx Smart Money Hub — A Stewardship Covenant, not a marketplace.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section style="padding:18px 0">
+        <div class="card">
+          <h2>Need to Request Access Again?</h2>
+          <p class="muted" style="margin-top:8px">
+            If you have paid verification but did not receive approval, submit the Request Access form using the same email used for payment.
+          </p>
+          <div class="row" style="margin-top:12px;flex-wrap:wrap">
+            <a class="btn primary" href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Open Request Access Form</a>
+            <a class="btn ghost" href="index.html">Back to Gateway</a>
+          </div>
+          <p class="hint">
+            Support: <b>arinonebusiness@gmail.com</b> • WhatsApp: <b>+234 813 680 5462</b>
+          </p>
+        </div>
+      </section>
+
+    </div>
+  </section>
+
 </main>
 
 <footer>
   <div class="container">
     <div class="foot">
-      <small>© <span id="year"></span> AGEx Smart Money Hub. The Steward’s Lodge — A Stewardship Covenant, Not a Marketplace.</small>
+      <small>© <span id="year"></span> AGEx Smart Money Hub. The Steward’s Lodge — A private covenant space for verified stewards.</small>
       <div class="links">
-        <a href="#dashboard">Dashboard</a>
-        <a href="#verification">Verification Tasks</a>
         <a href="index.html">Gateway</a>
+        <a href="index.html#academy">Academy</a>
+        <a href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Request Access</a>
       </div>
     </div>
   </div>
 </footer>
 
 <script>
+  // Year
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // === Lodge Access Key ===
-  // Change this key to whatever you want, then share it ONLY to approved learners.
-  // Example keys: "AGEX-STEWARD-2026", "LODGE-KEY-01", etc.
-  const ACCESS_KEY = "ARIN-LODGE-KEY-001";";
+  // ✅ LODGE ACCESS KEY (case-sensitive)
+  // IMPORTANT: this is not secure against a determined attacker (front-end only).
+  // It is acceptable for Phase 1 gating while approvals are manual.
+  const ACCESS_KEY = "ARIN-LODGE-KEY-001";
 
-  const unlockBtn = document.getElementById("unlockBtn");
-  const keyInput = document.getElementById("key");
-  const err = document.getElementById("err");
-  const lodge = document.getElementById("lodgeContent");
+  function unlockLodge(){
+    const inputEl = document.getElementById("accessInput");
+    const errorEl = document.getElementById("errorMsg");
+    const gateEl = document.getElementById("lodge-gate");
+    const contentEl = document.getElementById("lodge-content");
 
-  function unlock(){
-    const v = (keyInput.value || "").trim();
-    if (v === ACCESS_KEY){
-      err.style.display = "none";
-      lodge.style.display = "block";
-      // scroll to dashboard
-      location.hash = "#dashboard";
-      // hide gate section
-      document.getElementById("gate").style.display = "none";
+    const typed = (inputEl.value || "").trim();
+
+    if (typed === ACCESS_KEY){
+      gateEl.style.display = "none";
+      contentEl.style.display = "block";
+      errorEl.style.display = "none";
+      localStorage.setItem("AGEX_LODGE_UNLOCKED", "1");
+      location.hash = "#main";
     } else {
-      err.style.display = "block";
+      errorEl.style.display = "block";
     }
   }
 
-  unlockBtn.addEventListener("click", unlock);
-  keyInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") unlock();
+  // Press Enter to unlock
+  document.getElementById("accessInput")?.addEventListener("keydown", (e)=>{
+    if (e.key === "Enter") unlockLodge();
   });
+
+  // Auto-unlock on this device if previously unlocked
+  (function(){
+    if (localStorage.getItem("AGEX_LODGE_UNLOCKED") === "1"){
+      const gateEl = document.getElementById("lodge-gate");
+      const contentEl = document.getElementById("lodge-content");
+      const errorEl = document.getElementById("errorMsg");
+      if (gateEl && contentEl){
+        gateEl.style.display = "none";
+        contentEl.style.display = "block";
+      }
+      if (errorEl) errorEl.style.display = "none";
+    }
+  })();
 </script>
+
 </body>
 </html>
