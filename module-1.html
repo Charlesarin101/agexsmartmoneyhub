@@ -2,443 +2,286 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Foundation Class — AGEx Smart Money Hub</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0B3D2E">
+<title>Foundation Class — Day 1 | AGEx Smart Money Hub</title>
 
 <style>
 :root{
   --green:#0B3D2E;
   --gold:#F4B41A;
+  --ink:#0F0F0F;
+  --muted:#5F6B66;
   --bg:#F7FAF9;
   --card:#FFFFFF;
-  --line:#E2E8E5;
+  --line:rgba(15,15,15,.12);
+  --radius:18px;
+  --shadow: 0 16px 40px rgba(0,0,0,.10);
 }
+*{box-sizing:border-box}
 body{
   margin:0;
-  font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
   background:var(--bg);
-  color:#222;
+  color:var(--ink);
+  line-height:1.55;
 }
-.container{
-  max-width:900px;
-  margin:0 auto;
-  padding:24px 18px 60px;
-}
+a{color:inherit;text-decoration:none}
+.container{max-width:920px;margin:0 auto;padding:22px 18px 60px}
+
 header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
+  position:sticky;top:0;z-index:50;
+  background:rgba(247,250,249,.92);
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid var(--line);
 }
-.small{
-  font-size:13px;
-  color:#555;
-  line-height:1.45;
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 0;
 }
-h1,h2,h3{
-  margin-top:0;
-  color:var(--green);
+.brand{
+  display:flex;gap:10px;align-items:center;
 }
+.mark{
+  width:40px;height:40px;border-radius:14px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--green),#06261c);
+  box-shadow:0 10px 26px rgba(11,61,46,.26);
+}
+.brand strong{color:var(--green)}
+.badge{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:8px 12px;border-radius:999px;
+  background:rgba(11,61,46,.08);
+  border:1px solid rgba(11,61,46,.14);
+  font-weight:800;font-size:12px;color:var(--green);
+}
+.dot{width:10px;height:10px;border-radius:99px;background:var(--gold);box-shadow:0 0 0 4px rgba(244,180,26,.18)}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:12px 16px;border-radius:999px;font-weight:900;
+  border:1px solid transparent;cursor:pointer;
+}
+.btn.primary{background:var(--gold);color:#1b1607;box-shadow:0 12px 24px rgba(244,180,26,.30)}
+.btn.dark{background:var(--green);color:#fff;box-shadow:0 12px 24px rgba(11,61,46,.22)}
+.btn.ghost{background:transparent;border:1px solid rgba(11,61,46,.25);color:var(--green)}
+.btn.small{padding:10px 12px;font-size:12px}
+
 .card{
   background:var(--card);
   border:1px solid var(--line);
-  border-radius:18px;
+  border-radius:var(--radius);
   padding:18px;
-  margin-bottom:14px;
+  box-shadow:0 12px 30px rgba(0,0,0,.06);
+  margin-top:14px;
 }
-.badge{
-  display:inline-block;
-  padding:6px 12px;
-  border-radius:999px;
-  background:#E6F2EE;
-  color:var(--green);
-  font-weight:700;
-  font-size:12px;
-  margin-bottom:10px;
+h1{margin:10px 0 8px;color:var(--green);letter-spacing:-.5px;line-height:1.08}
+h2{margin:0 0 8px;color:var(--green);letter-spacing:-.2px}
+.small{font-size:13px;color:rgba(15,15,15,.66);font-weight:700}
+hr{border:none;border-top:1px solid var(--line);margin:14px 0}
+
+.grid{
+  display:grid;grid-template-columns:1.15fr .85fr;gap:14px;align-items:start;
 }
-.hr{
-  height:1px;
-  background:var(--line);
-  margin:14px 0;
+@media (max-width: 900px){
+  .grid{grid-template-columns:1fr}
 }
-.field{
-  margin-bottom:12px;
-}
-label{
-  display:block;
-  font-weight:700;
-  margin-bottom:6px;
-}
-input, textarea, select{
-  width:100%;
-  box-sizing:border-box;
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:10px 12px;
-  font-size:14px;
-  background:#fff;
-}
-textarea{
-  min-height:84px;
-  resize:vertical;
-}
-.row{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  align-items:flex-end;
-}
-.row .field{
-  flex:1;
-  min-width:220px;
-}
-.pill{
-  padding:10px 12px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:#fff;
-  font-weight:700;
-}
-.actions{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  align-items:center;
-}
-.btn{
-  padding:10px 16px;
-  border-radius:999px;
-  border:1px solid var(--line);
-  font-weight:800;
-  cursor:pointer;
-  text-decoration:none;
-  display:inline-block;
-}
-.btn.dark{
-  background:var(--green);
-  border-color:var(--green);
-  color:#fff;
-}
-.btn.gold{
-  background:var(--gold);
-  border-color:var(--gold);
-  color:#111;
-}
-.btn.ghost{
-  background:transparent;
-  color:#111;
-}
-.toast{
-  display:none;
-  margin-top:10px;
-  padding:10px 12px;
-  border-radius:12px;
-  background:#E6F2EE;
-  color:#123;
-  font-weight:700;
-}
-footer{
-  margin-top:16px;
+
+.list{margin:0;padding-left:18px}
+.list li{margin:8px 0;font-weight:750;color:rgba(15,15,15,.70);font-size:13px}
+.quote{
+  border-left:5px solid var(--gold);
+  padding:12px 14px;
+  background:rgba(244,180,26,.10);
+  border-radius:14px;
+  font-weight:850;
+  color:rgba(15,15,15,.78);
   font-size:13px;
-  color:#666;
+}
+.callout{
+  background:linear-gradient(135deg, rgba(11,61,46,.08), rgba(255,255,255,.95));
+  border:1px solid rgba(11,61,46,.14);
+  border-radius:18px;
+  padding:16px;
+}
+.kpi{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px
+}
+.kpi .box{
+  background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px
+}
+.kpi .num{font-weight:900;color:var(--green);font-size:16px}
+.kpi .txt{margin-top:6px;font-weight:800;font-size:12px;color:rgba(15,15,15,.62)}
+.footer{
+  margin-top:22px;
+  font-size:13px;
+  color:rgba(15,15,15,.62);
+  font-weight:750;
 }
 </style>
 </head>
 
 <body>
-<div class="container">
 
 <header>
-  <div>
-    <strong>AGEx Smart Money</strong><br>
-    <span class="small">Foundation Class · Module 1 (21 Days)</span>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+            <path d="M12 2.6l8 3.2v6.2c0 5.1-3.5 9.2-8 9.9-4.5-.7-8-4.8-8-9.9V5.8L12 2.6z" stroke="rgba(255,255,255,.92)" stroke-width="1.6"/>
+            <path d="M8.3 12h6.9l-2.2-2.2 1.3-1.3 4.4 4.4-4.4 4.4-1.3-1.3 2.2-2.2H8.3V12z" fill="#F4B41A"/>
+          </svg>
+        </div>
+        <div>
+          <strong>AGEx Smart Money Hub</strong><br>
+          <span class="small">Foundation Class • Learn → Practice → Verify</span>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+        <a class="btn ghost small" href="dashboard.html">← Back to Lodge</a>
+        <a class="btn dark small" href="index.html">Gateway</a>
+      </div>
+    </div>
   </div>
-  <a class="btn ghost" href="dashboard.html">← Return to Dashboard</a>
 </header>
 
-<div class="card">
-  <span class="badge">Access Status: Verified</span>
-  <h1>Foundation Class</h1>
-  <p class="small">
-    Daily action + daily proof. Consistency is the currency.
-    Your work is stored on this device only.
-  </p>
-</div>
+<main>
+  <div class="container">
 
-<!-- 21-DAY DAILY ENGINE -->
-<div class="card">
-  <h2>Day Pathway</h2>
-  <p class="small" style="margin-top:0">
-    Choose a day, complete the action, capture proof, and mark it done.
-  </p>
+    <div class="badge"><span class="dot"></span> Foundation Class • Day 1 of 21 • Identity: Initiate Steward</div>
 
-  <div class="row">
-    <div class="field">
-      <label for="daySelect">Choose Day</label>
-      <select id="daySelect"></select>
+    <h1>Day 1 — The Steward’s Covenant</h1>
+    <p class="small">
+      Purpose: replace chaos with identity. Today you will define your relationship with money—so money stops defining you.
+    </p>
+
+    <div class="grid">
+
+      <!-- MAIN CONTENT -->
+      <div>
+
+        <div class="card">
+          <h2>Lesson</h2>
+          <p class="small">
+            Most people don’t have a money problem. They have an <b>identity problem</b>.
+            If money is your identity, you will chase it, fear it, waste it, or worship it.
+            In AGEx, money is reclassified:
+          </p>
+
+          <div class="quote">
+            Money is a tool for stewardship — to create order, protect progress, and build legacy.
+          </div>
+
+          <hr>
+
+          <h2>Three Core Laws (Day 1)</h2>
+          <ul class="list">
+            <li><b>Law 1:</b> Money follows structure. Chaos consumes money.</li>
+            <li><b>Law 2:</b> Discipline beats motivation.</li>
+            <li><b>Law 3:</b> Proof beats claims. What you track, you control.</li>
+          </ul>
+
+          <hr>
+
+          <h2>Reflection (Answer honestly)</h2>
+          <ul class="list">
+            <li>When money enters your hand, what usually happens?</li>
+            <li>What is your biggest leak (food, data, impulse, family pressure, loans)?</li>
+            <li>What would change if you had a simple system?</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Stewardship Action (Homework)</h2>
+          <p class="small">
+            Your first proof is not a test. It is a covenant.
+            Complete this action today and submit proof.
+          </p>
+
+          <div class="callout">
+            <h3 style="margin:0 0 6px;color:var(--green);letter-spacing:-.2px">Write Your “5 Money Rules”</h3>
+            <p class="small" style="margin:0">
+              Create five rules you will obey for the next 21 days. Keep them simple and enforceable.
+            </p>
+
+            <div class="kpi">
+              <div class="box">
+                <div class="num">Required</div>
+                <div class="txt">5 rules written clearly</div>
+              </div>
+              <div class="box">
+                <div class="num">Proof</div>
+                <div class="txt">Screenshot or typed submission</div>
+              </div>
+            </div>
+
+            <p class="small" style="margin-top:10px">
+              Example rules:
+              <br>• I will track every expense daily.
+              <br>• I will not borrow money for vanity.
+              <br>• I will save first before spending.
+              <br>• I will pause 24 hours before impulse purchases.
+              <br>• I will not spend without a weekly plan.
+            </p>
+
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+              <!-- Use your current Request Access form for now; later replace with proof form -->
+              <a class="btn primary" href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">
+                Submit Proof (Google Form)
+              </a>
+              <a class="btn ghost" href="dashboard.html">Return to Lodge</a>
+            </div>
+
+            <p class="small" style="margin-top:10px">
+              Note: If you don’t yet have a dedicated “Proof Form”, we’ll create it next. For now, submit in the same form and write “DAY 1 PROOF” clearly.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SIDE PANEL -->
+      <div>
+        <div class="card">
+          <h2>Today’s Checklist</h2>
+          <ul class="list">
+            <li>Read the Day 1 lesson</li>
+            <li>Write your 5 Money Rules</li>
+            <li>Submit proof</li>
+            <li>Return to Lodge dashboard</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Next Lesson</h2>
+          <p class="small">
+            Day 2 will define “Needs vs Wants vs Vanity” and expose your spending leaks.
+          </p>
+          <button class="btn dark" type="button" onclick="alert('Day 2 page will be added next. For now: complete Day 1 proof.')">
+            Continue to Day 2 →
+          </button>
+        </div>
+
+        <div class="card">
+          <h2>The Covenant</h2>
+          <p class="small">
+            You are not judged by speed. You are measured by consistency.
+            <br><br><b>No shortcuts.</b> Proof-based progression only.
+          </p>
+        </div>
+      </div>
+
     </div>
 
-    <div class="field" style="min-width:190px;flex:0.8">
-      <label>Progress</label>
-      <div class="pill" id="progressPill">0 / 21 completed</div>
+    <div class="footer">
+      AGEx Smart Money Hub — A Stewardship Covenant, Not a Marketplace.
     </div>
 
-    <div class="field" style="min-width:190px;flex:0.8">
-      <label>Today</label>
-      <div class="pill" id="todayTitle">—</div>
-    </div>
   </div>
-
-  <div class="hr"></div>
-
-  <div class="field">
-    <label for="dayObjective">Objective</label>
-    <textarea id="dayObjective" readonly></textarea>
-  </div>
-
-  <div class="field">
-    <label for="dayActionPlan">Stewardship Action (do today)</label>
-    <textarea id="dayActionPlan"></textarea>
-  </div>
-
-  <div class="field">
-    <label for="dayProof">Daily Proof (submit / screenshot / write)</label>
-    <textarea id="dayProof"></textarea>
-  </div>
-
-  <div class="field">
-    <label for="dayReflection">Reflection (2–4 lines)</label>
-    <textarea id="dayReflection" placeholder="What did you notice today? What did you correct? What will you repeat tomorrow?"></textarea>
-  </div>
-
-  <label style="display:flex;gap:10px;align-items:center">
-    <input type="checkbox" id="dayDone" />
-    <span><b>Mark Day as Completed</b> (daily commitment proof)</span>
-  </label>
-
-  <div class="actions" style="margin-top:12px">
-    <button class="btn gold" id="saveBtn" type="button">Save</button>
-    <button class="btn ghost" id="clearBtn" type="button">Clear All</button>
-  </div>
-
-  <div class="toast" id="toast">Saved. Your answers are stored on this device only.</div>
-</div>
-
-<!-- FOUNDATION BACKBONE (YOUR ORIGINAL ESSENCE) -->
-<div class="card">
-  <h2>Foundation Backbone</h2>
-  <p class="small" style="margin-top:0">
-    These are your core foundations. You will use them throughout the 21 days.
-  </p>
-
-  <div class="field">
-    <label for="identity">1) Your Money Identity (one sentence)</label>
-    <input id="identity" placeholder="Example: I manage money with discipline and clarity." />
-  </div>
-
-  <div class="row">
-    <div class="field">
-      <label for="leak1">2) Your #1 Money Leak</label>
-      <input id="leak1" placeholder="e.g., daily snacks, impulse data" />
-    </div>
-
-    <div class="field">
-      <label for="leak2">3) Your #2 Money Leak</label>
-      <input id="leak2" placeholder="e.g., unplanned transport, impulse airtime" />
-    </div>
-
-    <div class="field">
-      <label for="leak3">4) Your #3 Money Leak</label>
-      <input id="leak3" placeholder="e.g., subscriptions, late-night spending" />
-    </div>
-  </div>
-
-  <div class="field">
-    <label for="rules">5) Your 5 Money Rules (number them 1–5)</label>
-    <textarea id="rules" placeholder="1) …&#10;2) …&#10;3) …&#10;4) …&#10;5) …"></textarea>
-  </div>
-
-  <div class="field">
-    <label for="action">6) Your Default Stewardship Action (baseline)</label>
-    <textarea id="action" placeholder="Example: Every day I record all expenses and total them at night."></textarea>
-  </div>
-</div>
-
-<!-- VERIFICATION -->
-<div class="card">
-  <h2 style="margin-bottom:6px">Verification Instruction</h2>
-  <p class="small" style="margin-top:0">
-    Proof is simple: complete daily actions, capture daily proof, and mark days done.
-    Your milestone proof includes: <b>Identity + 3 leaks + 5 rules + your routine/review items</b>.
-  </p>
-  <p class="small">
-    Tip: Screenshot your answers before submission (for your records).
-  </p>
-
-  <div class="actions" style="margin-top:12px">
-    <a class="btn dark" href="#" id="submitProofBtn">Submit Proof (when instructed)</a>
-    <a class="btn ghost" href="dashboard.html">Return to Dashboard</a>
-  </div>
-</div>
-
-<footer>
-  AGEx Smart Money Hub — A Stewardship Covenant. Progress is verified understanding, not speed.
-</footer>
-
-</div>
-
-<script>
-  const KEY = "agex_foundation21_v1";
-
-  const coreFields = ["identity","leak1","leak2","leak3","rules","action"];
-  const dailyFields = ["dayActionPlan","dayProof","dayReflection","dayDone"];
-
-  const curriculum = [
-    { title:"Day 1 — Money as a Tool", objective:"Replace chaos with identity. Define what money is FOR in your life.", action:"Write your Money Origin Story (5–10 lines). Then write 1 sentence: “Money is a tool for _____.”", proof:"Proof: Money Origin Story + 1 sentence (text or screenshot)." },
-    { title:"Day 2 — Needs vs Wants vs Vanity", objective:"Classify spending without shame—only clarity.", action:"List 10 recent expenses. Label each: Need, Want, or Vanity.", proof:"Proof: list + labels + 1 sentence summary." },
-    { title:"Day 3 — Identify Your Top 3 Leaks", objective:"Expose where money escapes unnoticed.", action:"Identify your #1, #2, #3 money leaks. Add one example for each.", proof:"Proof: 3 leaks + examples." },
-    { title:"Day 4 — Define “Enough”", objective:"Stop chasing vague goals. Define a stable target.", action:"Write what “enough” means for this season: food, transport, bills, savings, support.", proof:"Proof: your “Enough Definition” paragraph." },
-    { title:"Day 5 — Draft Your Stewardship Covenant", objective:"Commit to rules you can actually obey.", action:"Write your personal Stewardship Covenant (5–7 lines).", proof:"Proof: covenant draft." },
-    { title:"Day 6 — Add Constraints", objective:"Discipline becomes real when it has boundaries.", action:"Add 3 constraints to your covenant (limits, caps, or refusals).", proof:"Proof: covenant + 3 constraints." },
-    { title:"Day 7 — Write Your 5 Money Rules", objective:"Lock your non-negotiables.", action:"Write your 5 Money Rules (1–5). Keep them simple and enforceable.", proof:"Proof (Milestone): your 5 Money Rules." },
-
-    { title:"Day 8 — Track Every Expense", objective:"Awareness is the beginning of control.", action:"Track every expense today. Total at night.", proof:"Proof: total spend + 3 biggest categories." },
-    { title:"Day 9 — One Leak Cut", objective:"Prove that discipline can be immediate.", action:"Choose 1 leak and cut it today (or reduce by 50%).", proof:"Proof: leak chosen + result." },
-    { title:"Day 10 — Daily Money Routine", objective:"Build a repeatable rhythm.", action:"Design a 10-minute daily routine: Morning check + Evening total.", proof:"Proof: routine + confirmation." },
-    { title:"Day 11 — Saving Rule", objective:"Stability requires a saving habit.", action:"Write one saving rule you can keep weekly (even small).", proof:"Proof: saving rule + next save date." },
-    { title:"Day 12 — Emergency Discipline", objective:"Prepare for pressure.", action:"Write what you will do when emergencies strike (3 steps).", proof:"Proof: 3-step emergency plan." },
-    { title:"Day 13 — Weekly Review Template", objective:"Stewards review. They don’t guess.", action:"Create a weekly review template: income, expenses, leaks, wins, next actions.", proof:"Proof: review template." },
-    { title:"Day 14 — 7-Day Review", objective:"Confirm change through proof.", action:"Review Days 8–14. Write 3 wins and 2 corrections.", proof:"Proof (Milestone): 3 wins + 2 corrections." },
-
-    { title:"Day 15 — Refusal Practice", objective:"Protection begins with refusal.", action:"Identify 2 spending triggers. Write a refusal script for each.", proof:"Proof: triggers + refusal scripts." },
-    { title:"Day 16 — Budget in One Page", objective:"Simple enough to obey.", action:"Write a one-page budget: needs, wants cap, savings, support, buffer.", proof:"Proof: one-page budget." },
-    { title:"Day 17 — Accountability Loop", objective:"Consistency is easier when verified.", action:"Choose accountability (buddy/group/self). Define rules.", proof:"Proof: method + rules." },
-    { title:"Day 18 — Discipline Stress Test", objective:"Follow rules under pressure.", action:"Simulate temptation and enforce your rules anyway.", proof:"Proof: temptation + rule enforced." },
-    { title:"Day 19 — Recommitment", objective:"Stewardship is maintained.", action:"Rewrite your covenant tighter (3–5 lines).", proof:"Proof: new covenant version." },
-    { title:"Day 20 — System Lock", objective:"Turn lessons into a system.", action:"Write your system: Routine + Rules + Review + Refusal.", proof:"Proof: 4-part summary." },
-    { title:"Day 21 — Foundation Completion Proof", objective:"Submit complete foundation snapshot.", action:"Compile: Identity + 3 leaks + 5 rules + routine/review items.", proof:"Proof (Final): complete Foundation Proof bundle." }
-  ];
-
-  function $(id){ return document.getElementById(id); }
-
-  function defaultState(){
-    return { core:{}, days: curriculum.map(() => ({ actionPlan:"", proof:"", reflection:"", done:false })) };
-  }
-
-  function loadState(){
-    try{
-      const raw = localStorage.getItem(KEY);
-      if(!raw) return defaultState();
-      const data = JSON.parse(raw);
-      if(!data.days || data.days.length !== 21) return defaultState();
-      return data;
-    }catch(e){
-      return defaultState();
-    }
-  }
-
-  function saveState(state){
-    localStorage.setItem(KEY, JSON.stringify(state));
-    const t = $("toast");
-    if(t){
-      t.style.display="block";
-      setTimeout(()=>t.style.display="none", 2200);
-    }
-  }
-
-  function completedCount(state){
-    return state.days.filter(d => d.done).length;
-  }
-
-  function initDaySelect(){
-    const sel = $("daySelect");
-    sel.innerHTML = "";
-    curriculum.forEach((d, i) => {
-      const opt = document.createElement("option");
-      opt.value = String(i);
-      opt.textContent = d.title;
-      sel.appendChild(opt);
-    });
-  }
-
-  function renderDay(state, dayIndex){
-    const d = curriculum[dayIndex];
-    const day = state.days[dayIndex];
-
-    $("todayTitle").textContent = `Day ${dayIndex+1}`;
-    $("dayObjective").value = d.objective;
-
-    if(!day.actionPlan) day.actionPlan = d.action;
-    if(!day.proof) day.proof = d.proof;
-
-    $("dayActionPlan").value = day.actionPlan;
-    $("dayProof").value = day.proof;
-    $("dayReflection").value = day.reflection || "";
-    $("dayDone").checked = !!day.done;
-
-    $("progressPill").textContent = `${completedCount(state)} / 21 completed`;
-  }
-
-  function bindCore(state){
-    coreFields.forEach(id => {
-      const el = $(id);
-      if(state.core[id] !== undefined) el.value = state.core[id];
-      el.addEventListener("input", () => {
-        state.core[id] = el.value;
-        saveState(state);
-      });
-    });
-  }
-
-  function bindDay(state){
-    const sel = $("daySelect");
-
-    function persistDay(){
-      const idx = parseInt(sel.value, 10);
-      const day = state.days[idx];
-      day.actionPlan = $("dayActionPlan").value;
-      day.proof = $("dayProof").value;
-      day.reflection = $("dayReflection").value;
-      day.done = $("dayDone").checked;
-      saveState(state);
-      $("progressPill").textContent = `${completedCount(state)} / 21 completed`;
-    }
-
-    sel.addEventListener("change", () => {
-      renderDay(state, parseInt(sel.value, 10));
-    });
-
-    dailyFields.forEach(id => {
-      $(id).addEventListener("input", persistDay);
-      $(id).addEventListener("change", persistDay);
-    });
-  }
-
-  function clearAll(){
-    localStorage.removeItem(KEY);
-    location.reload();
-  }
-
-  // INIT
-  const state = loadState();
-  initDaySelect();
-
-  const firstIncomplete = state.days.findIndex(d => !d.done);
-  const startIndex = firstIncomplete === -1 ? 20 : firstIncomplete;
-  $("daySelect").value = String(startIndex);
-
-  bindCore(state);
-  bindDay(state);
-  renderDay(state, startIndex);
-
-  $("saveBtn").addEventListener("click", () => saveState(state));
-  $("clearBtn").addEventListener("click", clearAll);
-
-  $("submitProofBtn").addEventListener("click", (e) => {
-    e.preventDefault();
-    alert("Submission will be enabled when the proof form is attached. For now: Save your work and return to Dashboard.");
-  });
-</script>
+</main>
 
 </body>
 </html>
