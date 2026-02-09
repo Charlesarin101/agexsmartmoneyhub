@@ -1,8 +1,64 @@
 <script>
   // STORAGE
   const KEY = "agex_foundation21_v1";
+<div class="card" style="margin-bottom:14px">
+  <h2 style="margin-bottom:6px">Foundation Class — 21 Days</h2>
+  <p class="muted" style="margin-top:0">
+    Daily action + daily proof. Consistency is the currency.
+  </p>
 
-  // CORE FOUNDATION FIELDS (your essence)
+  <div class="row" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <div class="field" style="min-width:220px;flex:1">
+      <label for="daySelect">Choose Day</label>
+      <select id="daySelect"></select>
+    </div>
+
+    <div class="field" style="min-width:180px">
+      <label>Progress</label>
+      <div class="pill" id="progressPill" style="padding:10px 12px;border:1px solid var(--line);border-radius:12px">
+        0 / 21 completed
+      </div>
+    </div>
+
+    <div class="field" style="min-width:180px">
+      <label>Today</label>
+      <div class="pill" id="todayTitle" style="padding:10px 12px;border:1px solid var(--line);border-radius:12px">
+        —
+      </div>
+    </div>
+  </div>
+
+  <div class="hr"></div>
+
+  <div class="field">
+    <label for="dayObjective">Objective</label>
+    <textarea id="dayObjective" readonly></textarea>
+  </div>
+
+  <div class="field">
+    <label for="dayActionPlan">Stewardship Action (do today)</label>
+    <textarea id="dayActionPlan" placeholder="Complete the action shown above. You may edit to fit your reality."></textarea>
+  </div>
+
+  <div class="field">
+    <label for="dayProof">Daily Proof (submit / screenshot / write)</label>
+    <textarea id="dayProof" placeholder="Example: Screenshot your spending log OR write your 2–4 line reflection OR paste your totals."></textarea>
+  </div>
+
+  <div class="field">
+    <label for="dayReflection">Reflection (2–4 lines)</label>
+    <textarea id="dayReflection" placeholder="What did you notice today? What did you correct? What will you repeat tomorrow?"></textarea>
+  </div>
+
+  <div class="row" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    <label style="display:flex;gap:10px;align-items:center">
+      <input type="checkbox" id="dayDone" />
+      <span><b>Mark Day as Completed</b> (daily commitment proof)</span>
+    </label>
+  </div>
+</div>
+
+  // dayIndexNDATION FIELDS (your essence)
   const coreFields = ["identity","leak1","leak2","leak3","rules","action"];
 
   // DAILY FIELDS
