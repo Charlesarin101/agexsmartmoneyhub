@@ -1,617 +1,216 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#0B3D2E" />
-  <title>The Steward’s Lodge — Dashboard | AGEx Smart Money Hub</title>
-  <meta name="description" content="The Steward’s Lodge dashboard. Learn → Practice → Verify. Skill Points record discipline and competence." />
-  <meta name="robots" content="noindex,nofollow" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Steward’s Lodge — AGEx Smart Money Hub</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --green:#0B3D2E;
-      --green2:#083326;
-      --gold:#F4B41A;
-      --ink:#0F0F0F;
-      --muted:#5F6B66;
-      --bg:#FFFFFF;
-      --card:#F7FAF9;
-      --line:rgba(15,15,15,.10);
-      --shadow: 0 18px 45px rgba(0,0,0,.12);
-      --radius: 18px;
-      --radius2: 26px;
-      --max: 1120px;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
-    body{
-      font-family:"Manrope",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--ink);
-      background:linear-gradient(180deg, rgba(11,61,46,.04), transparent 30%), var(--bg);
-      line-height:1.55;
-    }
-    a{color:inherit;text-decoration:none}
-    .container{max-width:var(--max);margin:0 auto;padding:0 18px}
-    header{
-      position:sticky;top:0;z-index:60;
-      background:rgba(255,255,255,.88);
-      backdrop-filter:saturate(180%) blur(10px);
-      border-bottom:1px solid var(--line);
-    }
-    .nav{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
-      padding:14px 0;
-    }
-    .brand{display:flex;align-items:center;gap:12px}
-    .mark{
-      width:44px;height:44px;border-radius:14px;
-      display:grid;place-items:center;
-      background:linear-gradient(135deg,var(--green),var(--green2));
-      box-shadow:0 10px 26px rgba(11,61,46,.28);
-      position:relative;overflow:hidden
-    }
-    .mark:before{
-      content:"";position:absolute;inset:-40%;
-      background:radial-gradient(circle at 30% 30%, rgba(244,180,26,.55), transparent 55%);
-      transform:rotate(10deg)
-    }
-    .mark svg{position:relative;z-index:1}
-    .brand-title{display:flex;flex-direction:column;line-height:1.05}
-    .brand-title .top{font-weight:800;letter-spacing:.2px;font-size:15px}
-    .brand-title .top .ex{color:var(--gold)}
-    .brand-title .sub{font-size:12px;color:var(--muted);font-weight:700;margin-top:4px}
-
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:10px;
-      border-radius:999px;padding:12px 16px;font-weight:900;
-      border:1px solid transparent;cursor:pointer;transition:.15s ease;
-      user-select:none;white-space:nowrap
-    }
-    .btn.primary{
-      background:var(--gold);color:#1b1607;
-      box-shadow:0 12px 26px rgba(244,180,26,.35)
-    }
-    .btn.primary:hover{transform:translateY(-1px)}
-    .btn.ghost{
-      background:transparent;border-color:rgba(11,61,46,.25);color:var(--green)
-    }
-    .btn.ghost:hover{background:rgba(11,61,46,.06)}
-    .btn.dark{
-      background:var(--green);color:#fff;
-      box-shadow:0 12px 26px rgba(11,61,46,.28)
-    }
-    .btn.dark:hover{transform:translateY(-1px)}
-    .btn.small{padding:10px 12px;font-size:12px}
-    .btn.locked{opacity:.6;cursor:not-allowed}
-    .btn.locked:hover{transform:none}
-
-    main{padding:22px 0 44px}
-    .grid{
-      display:grid;grid-template-columns:1fr;gap:14px;
-    }
-    .card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:var(--radius2);
-      padding:18px;
-      box-shadow:0 12px 30px rgba(0,0,0,.06)
-    }
-    .hero{
-      background:
-        radial-gradient(900px 500px at 15% 0%, rgba(244,180,26,.16), transparent 60%),
-        radial-gradient(900px 500px at 85% 10%, rgba(11,61,46,.10), transparent 60%),
-        linear-gradient(180deg, rgba(11,61,46,.06), rgba(255,255,255,.92));
-      border:1px solid rgba(11,61,46,.12);
-    }
-    h1{margin:0 0 6px;font-size:30px;letter-spacing:-.4px;color:var(--green)}
-    .lead{margin:0;color:rgba(15,15,15,.66);font-weight:750;font-size:13px;max-width:80ch}
-    .badge{
-      display:inline-flex;align-items:center;gap:10px;
-      background:rgba(11,61,46,.08);border:1px solid rgba(11,61,46,.12);
-      padding:10px 14px;border-radius:999px;font-weight:900;color:var(--green);font-size:12px;
-      width:fit-content;margin-bottom:12px
-    }
-    .badge .dot{width:10px;height:10px;border-radius:99px;background:var(--gold);box-shadow:0 0 0 4px rgba(244,180,26,.18)}
-    .statusbar{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px
-    }
-    .statusbox{
-      background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px
-    }
-    .statusbox .k{font-size:12px;font-weight:900;color:rgba(15,15,15,.6)}
-    .statusbox .v{margin-top:6px;font-weight:900;color:var(--green);letter-spacing:-.2px}
-    .hint{font-size:12px;color:rgba(15,15,15,.58);font-weight:750;margin-top:10px}
-
-    .row2{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;align-items:start}
-    .panel{
-      background:#fff;border:1px solid var(--line);border-radius:22px;padding:14px;
-    }
-    .panel h3{margin:0 0 8px;color:var(--green);letter-spacing:-.2px}
-    .panel p{margin:0;color:rgba(15,15,15,.66);font-weight:750;font-size:13px}
-
-    .ladder{display:grid;gap:10px;margin-top:12px}
-    .level{
-      display:flex;justify-content:space-between;align-items:center;gap:10px;
-      background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;
-    }
-    .level .title{font-weight:900;color:var(--green)}
-    .level .sub{font-size:12px;font-weight:800;color:rgba(15,15,15,.62);margin-top:4px}
-    .level.locked{opacity:.62}
-    .level .left{min-width:0}
-    .divider{height:1px;background:var(--line);margin:12px 0}
-
-    .tasks{margin-top:10px;display:grid;gap:10px}
-    .task{
-      background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px
-    }
-    .task .t{font-weight:900;color:rgba(15,15,15,.86)}
-    .task .d{margin-top:6px;font-size:12px;font-weight:800;color:rgba(15,15,15,.62)}
-    .task .r{margin-top:8px;font-size:12px;font-weight:900;color:var(--green)}
-    .pill{
-      display:inline-flex;align-items:center;gap:10px;
-      padding:9px 12px;border-radius:999px;
-      background:rgba(11,61,46,.08);border:1px solid rgba(11,61,46,.12);
-      font-weight:900;color:var(--green);font-size:12px
-    }
-    .pill .dot{width:10px;height:10px;border-radius:99px;background:var(--gold)}
-
-    /* Unlock box */
-    .unlockBox{
-      background:linear-gradient(180deg, rgba(244,180,26,.10), rgba(255,255,255,.92));
-      border:1px solid rgba(244,180,26,.26);
-      border-radius:22px;padding:14px;
-    }
-    label{font-weight:900;font-size:12px;color:rgba(15,15,15,.72)}
-    input{
-      width:100%;padding:12px 12px;border-radius:16px;border:1px solid var(--line);
-      outline:none;font-family:inherit;font-weight:800;background:#fff;margin-top:8px
-    }
-    .msg{
-      display:none;margin-top:10px;padding:12px 12px;border-radius:16px;font-weight:850;font-size:12px
-    }
-    .msg.ok{background:rgba(11,61,46,.06);border:1px solid rgba(11,61,46,.12);color:rgba(15,15,15,.72)}
-    .msg.err{background:rgba(255,0,0,.06);border:1px solid rgba(255,0,0,.14);color:rgba(15,15,15,.74)}
-    footer{border-top:1px solid var(--line);padding:18px 0 26px;background:#fff}
-    .foot{display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:space-between}
-    .foot small{color:rgba(15,15,15,.6);font-weight:750}
-
-    @media (max-width: 920px){
-      .row2{grid-template-columns:1fr}
-      .statusbar{grid-template-columns:1fr}
-    }
-  </style>
+<style>
+:root{
+  --green:#0B3D2E;
+  --gold:#F4B41A;
+  --bg:#F7FAF9;
+  --card:#FFFFFF;
+  --line:#E2E8E5;
+}
+body{
+  margin:0;
+  font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background:var(--bg);
+  color:#222;
+}
+.container{
+  max-width:900px;
+  margin:0 auto;
+  padding:24px 18px 60px;
+}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:28px;
+}
+.brand{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+.badge{
+  padding:6px 12px;
+  border-radius:999px;
+  background:#E6F2EE;
+  color:var(--green);
+  font-weight:700;
+  font-size:12px;
+}
+.btn{
+  padding:10px 16px;
+  border-radius:999px;
+  border:none;
+  font-weight:700;
+  cursor:pointer;
+}
+.btn-primary{
+  background:var(--gold);
+}
+.btn-outline{
+  background:transparent;
+  border:1px solid var(--line);
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:18px;
+}
+h1,h2,h3{
+  margin-top:0;
+  color:var(--green);
+}
+.level{
+  border-left:6px solid var(--line);
+  padding-left:14px;
+  margin-bottom:18px;
+}
+.level.active{
+  border-left-color:var(--gold);
+}
+.level.locked{
+  opacity:.5;
+}
+.small{
+  font-size:13px;
+  color:#555;
+}
+ul{
+  padding-left:18px;
+}
+.footer{
+  margin-top:40px;
+  font-size:13px;
+  color:#666;
+}
+</style>
 </head>
 
 <body>
-<header>
-  <div class="container">
-    <div class="nav">
-      <a class="brand" href="index.html" aria-label="AGEx Smart Money Hub">
-        <div class="mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M12 2.6l8 3.2v6.2c0 5.1-3.5 9.2-8 9.9-4.5-.7-8-4.8-8-9.9V5.8L12 2.6z" stroke="rgba(255,255,255,.92)" stroke-width="1.6"/>
-            <path d="M8.3 12h6.9l-2.2-2.2 1.3-1.3 4.4 4.4-4.4 4.4-1.3-1.3 2.2-2.2H8.3V12z" fill="#F4B41A"/>
-          </svg>
-        </div>
-        <div class="brand-title">
-          <div class="top"><span>AG</span><span class="ex">Ex</span> <span style="color:var(--green)">Smart Money</span></div>
-          <div class="sub">The Steward’s Lodge • Interior</div>
-        </div>
-      </a>
 
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <a class="btn ghost" href="index.html">Gateway</a>
-        <button class="btn dark" id="lockBtn" type="button">Lock This Device</button>
-      </div>
+<div class="container">
+
+<header>
+  <div class="brand">
+    <div>
+      <strong>AGEx Smart Money</strong><br>
+      <span class="small">The Steward’s Lodge · Interior</span>
     </div>
   </div>
+  <a class="btn btn-outline" href="index.html">Gateway</a>
 </header>
 
-<main>
-  <div class="container">
-    <div class="grid">
+<div class="card">
+  <span class="badge">Access Status: Active</span>
+  <h1>Welcome, Verified Steward</h1>
+  <p class="small">
+    This is a covenant space. Learning comes first.  
+    Verification protects progress. Skill Points record discipline and competence.
+  </p>
+</div>
 
-      <!-- Welcome / Status -->
-      <section class="card hero">
-        <div class="badge"><span class="dot"></span> Access Status: Active</div>
-        <h1>The Steward’s Lodge</h1>
-        <p class="lead">
-          Welcome, Verified Steward. Your discipline builds here.
-          Learning comes first. Verification protects progress. Skill Points record competence.
-        </p>
+<!-- PRIMARY ACTION -->
+<div class="card">
+  <h2>Primary Action</h2>
+  <p class="small">
+    Continue your foundational stewardship journey.
+    Complete modules to build your financial system and earn Skill Points.
+  </p>
+  <a class="btn btn-primary" href="module-1.html">
+    ▶ Begin Foundation Class
+  </a>
+</div>
 
-        <div class="statusbar">
-          <div class="statusbox">
-            <div class="k">Current Rank</div>
-            <div class="v" id="rankLabel">Foundations</div>
-          </div>
-          <div class="statusbox">
-            <div class="k">Current Focus</div>
-            <div class="v" id="focusLabel">Smart Money Academy</div>
-          </div>
-          <div class="statusbox">
-            <div class="k">Skill Points</div>
-            <div class="v" id="pointsLabel">0</div>
-          </div>
-        </div>
+<!-- LEVEL PATHWAY -->
+<div class="card">
+  <h2>The Steward Pathway</h2>
+  <p class="small">Each level is unlocked through daily action + proof submission.</p>
 
-        <p class="hint">
-          Note: In Phase 1, Skill Points are tracked manually. This dashboard records your level on this device.
-        </p>
-      </section>
-
-      <section class="row2">
-
-        <!-- Ladder -->
-        <div class="card">
-          <h2 style="margin:0 0 6px;color:var(--green);letter-spacing:-.3px">Progress Ladder</h2>
-          <p style="margin:0;color:rgba(15,15,15,.66);font-weight:750;font-size:13px">
-            You advance by verified discipline. Finish a level before the next opens.
-          </p>
-
-          <div class="ladder" id="ladder"></div>
-
-          <div class="divider"></div>
-
-          <div class="pill"><span class="dot"></span> Rule: No shortcuts. Progress is verified understanding.</div>
-
-          <div style="margin-top:12px" class="unlockBox">
-            <h3 style="margin:0 0 6px;color:var(--green);letter-spacing:-.2px">Unlock Next Level</h3>
-            <p style="margin:0;color:rgba(15,15,15,.66);font-weight:750;font-size:13px">
-              When your work is verified, you receive a level key. Enter it here to unlock the next rank on this device.
-            </p>
-
-            <div style="margin-top:12px">
-              <label for="keyInput">Level Unlock Key</label>
-              <input id="keyInput" placeholder="e.g., LEVEL-1-APPRENTICE-XXXX" />
-            </div>
-
-            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
-              <button class="btn primary small" id="unlockBtn" type="button">Apply Key</button>
-              <button class="btn ghost small" id="resetBtn" type="button">Reset Device Progress</button>
-            </div>
-
-            <div class="msg ok" id="okMsg"></div>
-            <div class="msg err" id="errMsg"></div>
-
-            <p class="hint" style="margin-top:10px">
-              Tip: Keys are case-sensitive (exactly as sent).
-            </p>
-          </div>
-        </div>
-
-        <!-- Tasks + Code -->
-        <aside class="card">
-          <h2 style="margin:0 0 6px;color:var(--green);letter-spacing:-.3px">Skill Point Verification Tasks</h2>
-          <p style="margin:0;color:rgba(15,15,15,.66);font-weight:750;font-size:13px">
-            Skill Points are earned by applying knowledge, not performing labor. They represent verified competence and unlock deeper guidance.
-          </p>
-
-          <div class="tasks" id="tasks"></div>
-
-          <div class="divider"></div>
-
-          <div class="panel">
-            <h3>The Lodge Code</h3>
-            <ul style="margin:10px 0 0;padding-left:16px;color:rgba(15,15,15,.66);font-weight:800;font-size:13px">
-              <li>No shortcuts.</li>
-              <li>Discipline is mandatory.</li>
-              <li>Progress is based on verified understanding, not speed.</li>
-              <li>Violation results in removal.</li>
-            </ul>
-          </div>
-
-          <p class="hint" style="margin-top:12px">
-            Support: <b>arinonebusiness@gmail.com</b> • WhatsApp: <b>+234 813 680 5462</b>
-          </p>
-        </aside>
-
-      </section>
-    </div>
+  <div class="level active">
+    <h3>Foundation Class — 21 Days</h3>
+    <strong>Identity: Initiate Steward</strong>
+    <p class="small">
+      Replace chaos with identity, clarity, and responsibility.
+    </p>
+    <ul>
+      <li>Money as a tool</li>
+      <li>Needs vs wants</li>
+      <li>Personal covenant</li>
+      <li>5 Money Rules</li>
+    </ul>
+    <p class="small"><b>Status:</b> Active · Completion unlocks Level 1</p>
   </div>
-</main>
 
-<footer>
-  <div class="container">
-    <div class="foot">
-      <small>© <span id="year"></span> AGEx Smart Money Hub — A Stewardship Covenant, Not a Marketplace.</small>
-      <small><b>Phase 1:</b> Manual verification • Device-based progression</small>
-    </div>
+  <div class="level locked">
+    <h3>Level 1 — Apprentice (90 Days)</h3>
+    <strong>Identity: Apprentice Steward</strong>
+    <p class="small">
+      Build a simple budget + discipline systems.
+    </p>
+    <p class="small">
+      Symbolic micro-earning begins here (as low as $0.01/day) to prove consistency.
+    </p>
+    <p class="small"><b>Status:</b> Locked · Requires Foundation completion</p>
   </div>
-</footer>
 
-<script>
-  // ==========================
-  // PHASE 1 KEY FRAME (ADMIN)
-  // ==========================
-  // SECURITY: Phase 1 uses hard-coded keys. Change these manually per cohort.
-  // You can also change keys anytime; learners will need the new keys to unlock next levels.
+  <div class="level locked">
+    <h3>Level 2 — Builder (120 Days)</h3>
+    <strong>Identity: Builder Steward</strong>
+    <p class="small">
+      Skill training and value creation.
+    </p>
+    <p class="small"><b>Status:</b> Locked</p>
+  </div>
 
-  const KEYS = {
-    // Finish Foundations -> unlock Apprentice (Level 1)
-    apprentice: "LEVEL-1-APPRENTICE",
-    // Finish Apprentice -> unlock Builder (Level 2)
-    builder: "LEVEL-2-BUILDER",
-    // Finish Builder -> unlock Contributor (Level 3)
-    contributor: "LEVEL-3-CONTRIBUTOR",
-    // Finish Contributor -> unlock Trusted Operator (Level 4)
-    trusted: "LEVEL-4-TRUSTED"
-  };
+  <div class="level locked">
+    <h3>Level 3 — Contributor (180 Days)</h3>
+    <strong>Identity: Contributor Steward</strong>
+    <p class="small">
+      Verified contribution and reliability.
+    </p>
+    <p class="small"><b>Status:</b> Locked</p>
+  </div>
 
-  // Where each level starts
-  const LEVELS = [
-    {
-      id: "foundations",
-      name: "Foundations (Entry)",
-      statusName: "Foundations",
-      description: "Begin with identity, order, and simple financial discipline.",
-      primaryLinkText: "Start Module 1",
-      link: "module-1.html",
-      lockedBy: null,
-      nextUnlockKey: "apprentice"
-    },
-    {
-      id: "apprentice",
-      name: "Apprentice (Level 1)",
-      statusName: "Apprentice",
-      description: "Consistency tasks + foundational proof. Discipline becomes habit.",
-      primaryLinkText: "Enter Apprentice Track",
-      link: "#",
-      lockedBy: "foundations",
-      nextUnlockKey: "builder"
-    },
-    {
-      id: "builder",
-      name: "Builder (Level 2)",
-      statusName: "Builder",
-      description: "Systems-building. Budgeting, saving rules, and proof projects.",
-      primaryLinkText: "Enter Builder Track",
-      link: "#",
-      lockedBy: "apprentice",
-      nextUnlockKey: "contributor"
-    },
-    {
-      id: "contributor",
-      name: "Contributor (Level 3)",
-      statusName: "Contributor",
-      description: "Verified competence. Higher-value tasks and responsibility.",
-      primaryLinkText: "Enter Contributor Track",
-      link: "#",
-      lockedBy: "builder",
-      nextUnlockKey: "trusted"
-    },
-    {
-      id: "trusted",
-      name: "Trusted Operator (Level 4+)",
-      statusName: "Trusted Operator",
-      description: "Referral + higher packages. Stewardship proven over time.",
-      primaryLinkText: "Enter Trusted Operator Track",
-      link: "#",
-      lockedBy: "contributor",
-      nextUnlockKey: null
-    }
-  ];
+  <div class="level locked">
+    <h3>Level 4 — Trusted Operator (300 Days)</h3>
+    <strong>Identity: Steward Operator</strong>
+    <p class="small">
+      Risk control, protection, long-term planning.
+    </p>
+    <p class="small"><b>Status:</b> Locked · Full Steward Confirmation</p>
+  </div>
+</div>
 
-  // Task examples (Phase 1 starter tasks)
-  const TASKS_BY_LEVEL = {
-    foundations: [
-      {
-        title: "Stewardship Action: Money Rules (Module 1)",
-        desc: "Write your 5 Money Rules. Keep them simple, enforceable, and realistic.",
-        reward: "25 Skill Points + Written Feedback"
-      },
-      {
-        title: "Stewardship Action: Leak Check",
-        desc: "List your top 5 spending leaks from the last 7 days. Name what triggered them.",
-        reward: "10 Skill Points + Guidance Note"
-      }
-    ],
-    apprentice: [
-      {
-        title: "Apprentice Task: 7-Day Expense Audit (Module 2)",
-        desc: "Submit your categorized 7-day expense log for verification and feedback.",
-        reward: "25 Skill Points + Written Feedback"
-      }
-    ],
-    builder: [
-      {
-        title: "Builder Task: Budget System Draft",
-        desc: "Create a weekly budget sheet (simple) and explain your rule for savings.",
-        reward: "50 Skill Points + Level Review"
-      }
-    ],
-    contributor: [
-      {
-        title: "Verification Project: Risk Rule Analysis",
-        desc: "Analyze a common financial scam. Write a 300-word guide on how to identify it.",
-        reward: "50 Skill Points + Level 2 Qualification"
-      }
-    ],
-    trusted: [
-      {
-        title: "Trusted Operator: Stewardship Mentorship",
-        desc: "Support a new steward with a 3-message guidance sequence (template provided).",
-        reward: "Unlocks Referral + Trusted Track"
-      }
-    ]
-  };
+<!-- PROOF SECTION -->
+<div class="card">
+  <h2>Proof-Based Progression</h2>
+  <p class="small">Progress is earned through simple, real submissions:</p>
+  <ul>
+    <li>Written rules and reflections</li>
+    <li>Spending logs and screenshots</li>
+    <li>Daily discipline proof</li>
+    <li>Skill output or portfolio links</li>
+    <li>90-day plans and milestones</li>
+  </ul>
+  <p class="small">
+    You don’t need perfection.  
+    You need consistency.
+  </p>
+</div>
 
-  // ==========================
-  // DEVICE PROGRESS STORAGE
-  // ==========================
-  const STORAGE_KEY = "agex_level";
-  const DEFAULT_LEVEL = "foundations";
+<div class="footer">
+  AGEx Smart Money Hub is built for people who choose <b>structure over shortcuts</b>.
+</div>
 
-  function getLevel(){
-    return localStorage.getItem(STORAGE_KEY) || DEFAULT_LEVEL;
-  }
-  function setLevel(levelId){
-    localStorage.setItem(STORAGE_KEY, levelId);
-  }
+</div>
 
-  // ==========================
-  // UI RENDER
-  // ==========================
-  const ladderEl = document.getElementById("ladder");
-  const tasksEl = document.getElementById("tasks");
-
-  const rankLabel = document.getElementById("rankLabel");
-  const focusLabel = document.getElementById("focusLabel");
-  const pointsLabel = document.getElementById("pointsLabel");
-
-  const okMsg = document.getElementById("okMsg");
-  const errMsg = document.getElementById("errMsg");
-
-  function showOk(text){
-    okMsg.textContent = text;
-    okMsg.style.display = "block";
-    errMsg.style.display = "none";
-  }
-  function showErr(text){
-    errMsg.textContent = text;
-    errMsg.style.display = "block";
-    okMsg.style.display = "none";
-  }
-  function clearMsgs(){
-    okMsg.style.display = "none";
-    errMsg.style.display = "none";
-  }
-
-  function isUnlocked(levelId, currentId){
-    const order = LEVELS.map(l => l.id);
-    return order.indexOf(levelId) <= order.indexOf(currentId);
-  }
-
-  function render(){
-    const current = getLevel();
-
-    // status
-    const currentLevelObj = LEVELS.find(l => l.id === current) || LEVELS[0];
-    rankLabel.textContent = currentLevelObj.statusName;
-    focusLabel.textContent = "Smart Money Academy";
-    pointsLabel.textContent = "0";
-
-    // ladder
-    ladderEl.innerHTML = "";
-    LEVELS.forEach(l => {
-      const unlocked = isUnlocked(l.id, current);
-      const div = document.createElement("div");
-      div.className = "level" + (unlocked ? "" : " locked");
-
-      const left = document.createElement("div");
-      left.className = "left";
-      left.innerHTML = `
-        <div class="title" style="color:${unlocked ? "var(--green)" : "rgba(15,15,15,.7)"}">${l.name}</div>
-        <div class="sub">${unlocked ? l.description : (l.lockedBy ? "Locked until previous level is verified." : l.description)}</div>
-      `;
-
-      const right = document.createElement("div");
-      if (unlocked){
-        const a = document.createElement("a");
-        a.className = "btn primary small";
-        a.href = l.link;
-        a.textContent = (l.id === current) ? l.primaryLinkText : "Open";
-        right.appendChild(a);
-      } else {
-        const b = document.createElement("span");
-        b.className = "btn ghost small locked";
-        b.textContent = "Locked";
-        right.appendChild(b);
-      }
-
-      div.appendChild(left);
-      div.appendChild(right);
-      ladderEl.appendChild(div);
-    });
-
-    // tasks
-    tasksEl.innerHTML = "";
-    const tasks = TASKS_BY_LEVEL[current] || TASKS_BY_LEVEL["foundations"];
-    tasks.forEach(t => {
-      const box = document.createElement("div");
-      box.className = "task";
-      box.innerHTML = `
-        <div class="t">${t.title}</div>
-        <div class="d">${t.desc}</div>
-        <div class="r">Reward: ${t.reward}</div>
-      `;
-      tasksEl.appendChild(box);
-    });
-  }
-
-  // ==========================
-  // UNLOCK LOGIC
-  // ==========================
-  function applyKey(){
-    clearMsgs();
-    const raw = (document.getElementById("keyInput").value || "").trim();
-    if (!raw) return showErr("Enter a level key.");
-
-    const current = getLevel();
-    const currentObj = LEVELS.find(l => l.id === current) || LEVELS[0];
-    const nextKeyName = currentObj.nextUnlockKey;
-
-    if (!nextKeyName){
-      return showErr("You are already at the highest active rank for this pilot.");
-    }
-
-    // expected key format:
-    // We accept either exact match or match with a suffix code.
-    // Examples:
-    //  - LEVEL-1-APPRENTICE
-    //  - LEVEL-1-APPRENTICE-CHARLES01
-    const expected = KEYS[nextKeyName];
-
-    const isMatch = raw === expected || raw.startsWith(expected + "-");
-    if (!isMatch){
-      return showErr("Invalid key. If you have completed verification, contact support for the correct key.");
-    }
-
-    // advance level
-    const order = ["foundations","apprentice","builder","contributor","trusted"];
-    const i = order.indexOf(current);
-    const nextLevel = order[i+1];
-    if (!nextLevel) return showErr("No next level found.");
-
-    setLevel(nextLevel);
-    document.getElementById("keyInput").value = "";
-    showOk("Approved. Your next rank is now unlocked on this device.");
-    render();
-  }
-
-  // Reset progress on device (admin/help tool)
-  function resetProgress(){
-    const ok = confirm("Reset this device progress back to Foundations?");
-    if (!ok) return;
-    localStorage.removeItem(STORAGE_KEY);
-    clearMsgs();
-    showOk("Progress reset. This device is now set to Foundations.");
-    render();
-  }
-
-  // Lock device (optional extra friction)
-  function lockDevice(){
-    // simply resets progress; lodge key still controls entry.
-    resetProgress();
-  }
-
-  document.getElementById("unlockBtn").addEventListener("click", applyKey);
-  document.getElementById("resetBtn").addEventListener("click", resetProgress);
-  document.getElementById("lockBtn").addEventListener("click", lockDevice);
-  document.getElementById("keyInput").addEventListener("keydown", (e) => {
-    if (e.key === "Enter") applyKey();
-  });
-
-  // Footer year
-  document.getElementById("year").textContent = new Date().getFullYear();
-
-  // Initial render
-  render();
-</script>
 </body>
 </html>
