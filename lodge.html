@@ -97,7 +97,7 @@
       padding:22px 0;
     }
     .gate{
-      width:min(560px, 100%);
+      width:min(600px, 100%);
       background:#fff;
       border:1px solid var(--line);
       border-radius:32px;
@@ -153,6 +153,59 @@
       font-size:12px
     }
 
+    /* ROLE PICKER */
+    .roleWrap{
+      margin-top:12px;
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:rgba(11,61,46,.03);
+    }
+    .roleTitle{
+      font-weight:900;
+      font-size:12px;
+      color:rgba(15,15,15,.72);
+      margin-bottom:8px;
+    }
+    .roleGrid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+    }
+    @media(min-width:520px){
+      .roleGrid{ grid-template-columns:1fr 1fr; }
+    }
+    .roleCard{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:12px;
+      background:#fff;
+      cursor:pointer;
+      transition:.12s ease;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .roleCard:hover{ transform:translateY(-1px); }
+    .radio{
+      width:18px;height:18px;border-radius:99px;
+      border:2px solid rgba(11,61,46,.35);
+      margin-top:2px;
+      display:grid;place-items:center;
+      flex:0 0 auto;
+    }
+    .radio .dot{
+      width:10px;height:10px;border-radius:99px;background:transparent;
+    }
+    .roleCard.active{
+      border-color:rgba(244,180,26,.65);
+      box-shadow:0 10px 26px rgba(244,180,26,.16);
+    }
+    .roleCard.active .radio{ border-color:rgba(244,180,26,.75); }
+    .roleCard.active .radio .dot{ background:var(--gold); }
+    .roleName{ font-weight:900; color:var(--green); }
+    .roleDesc{ margin-top:4px; font-size:12px; color:rgba(15,15,15,.62); font-weight:750; }
+
     footer{border-top:1px solid var(--line);padding:18px 0 26px;background:#fff}
     .foot{display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:space-between}
     .foot small{color:rgba(15,15,15,.6);font-weight:750}
@@ -207,6 +260,31 @@
           we send your Lodge key.
         </p>
 
+        <!-- ROLE PICKER -->
+        <div class="roleWrap" aria-label="Choose your lodge wing">
+          <div class="roleTitle">Choose your Lodge Wing</div>
+          <div class="roleGrid">
+            <div class="roleCard active" id="roleLearner" role="button" tabindex="0" aria-label="Learners Wing">
+              <div class="radio" aria-hidden="true"><div class="dot"></div></div>
+              <div>
+                <div class="roleName">Learners Wing</div>
+                <div class="roleDesc">Learn → Practice → Verify. Foundation + levels. Proof-based progression.</div>
+              </div>
+            </div>
+
+            <div class="roleCard" id="roleCreator" role="button" tabindex="0" aria-label="Creator Wing">
+              <div class="radio" aria-hidden="true"><div class="dot"></div></div>
+              <div>
+                <div class="roleName">Creator Wing</div>
+                <div class="roleDesc">The Builder’s Hall. Tasks, proof, rewards, trust points. Create jobs.</div>
+              </div>
+            </div>
+          </div>
+          <div class="hint" style="margin-top:10px">
+            Tip: If you’re new, start in <b>Learners Wing</b>. Creator Wing is for verified builders.
+          </div>
+        </div>
+
         <label for="accessInput">Lodge Access Key</label>
         <input
           type="password"
@@ -227,7 +305,7 @@
         </div>
 
         <p class="hint">
-          Tip: The key is <b>case-sensitive</b> (exactly as sent to you).
+          The key is <b>case-sensitive</b> (exactly as sent to you).
         </p>
       </div>
     </div>
@@ -245,32 +323,67 @@
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // SECURITY: For Phase 1, key is hard-coded. Change this variable manually for each cohort of learners.
+  // SECURITY: For Phase 1, key is hard-coded. Change this variable manually for each cohort.
   const MASTER_KEY = "ARIN-LODGE-KEY-001";
+
+  // Choose where each wing goes
+  const ROUTES = {
+    learner: "dashboard.html",
+    creator: "creator-hall.html"
+  };
+
+  // Remember selected wing on this device
+  const ROLE_KEY = "AGEX_LODGE_ROLE";
+  const OK_KEY = "AGEX_LODGE_OK";
 
   const input = document.getElementById("accessInput");
   const err = document.getElementById("errorMsg");
   const enterBtn = document.getElementById("enterBtn");
 
+  const roleLearner = document.getElementById("roleLearner");
+  const roleCreator = document.getElementById("roleCreator");
+
+  let selectedRole = localStorage.getItem(ROLE_KEY) || "learner";
+
+  function setRole(role){
+    selectedRole = role;
+    localStorage.setItem(ROLE_KEY, role);
+
+    if(role === "learner"){
+      roleLearner.classList.add("active");
+      roleCreator.classList.remove("active");
+    }else{
+      roleCreator.classList.add("active");
+      roleLearner.classList.remove("active");
+    }
+  }
+
   function attempt(){
     const typed = (input.value || "").trim();
     if (typed === MASTER_KEY){
       err.style.display = "none";
-      // Optional: remember access on this device for convenience
-      localStorage.setItem("AGEX_LODGE_OK", "1");
-      // Redirect to the interior
-      window.location.href = "dashboard.html";
+      localStorage.setItem(OK_KEY, "1");
+      const target = ROUTES[selectedRole] || ROUTES.learner;
+      window.location.href = target;
     } else {
       err.style.display = "block";
     }
   }
 
+  // Click + keyboard access
+  roleLearner.addEventListener("click", ()=> setRole("learner"));
+  roleCreator.addEventListener("click", ()=> setRole("creator"));
+  roleLearner.addEventListener("keydown", (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); setRole("learner"); }});
+  roleCreator.addEventListener("keydown", (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); setRole("creator"); }});
+
   enterBtn.addEventListener("click", attempt);
   input.addEventListener("keydown", (e)=>{ if (e.key === "Enter") attempt(); });
 
-  // If already unlocked on this device, go straight in
-  if (localStorage.getItem("AGEX_LODGE_OK") === "1"){
-    window.location.href = "dashboard.html";
+  // If already unlocked on this device, go straight to the last chosen wing
+  setRole(selectedRole);
+  if (localStorage.getItem(OK_KEY) === "1"){
+    const target = ROUTES[selectedRole] || ROUTES.learner;
+    window.location.href = target;
   }
 </script>
 </body>
