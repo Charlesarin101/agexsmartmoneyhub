@@ -43,6 +43,14 @@ header{
   font-weight:700;
   font-size:12px;
 }
+.badge-warn{
+  padding:6px 12px;
+  border-radius:999px;
+  background:#FFF3D1;
+  color:#5A3B00;
+  font-weight:800;
+  font-size:12px;
+}
 .btn{
   padding:10px 16px;
   border-radius:999px;
@@ -101,6 +109,21 @@ hr{
   font-size:13px;
   color:#666;
 }
+.split{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.split > *{
+  flex:1;
+  min-width:260px;
+}
+.note{
+  border:1px dashed var(--line);
+  border-radius:14px;
+  padding:12px;
+  background:#fff;
+}
 </style>
 </head>
 
@@ -129,17 +152,38 @@ hr{
   </p>
 </div>
 
-<!-- TODAY -->
+<!-- TWO WINGS -->
 <div class="card">
-  <h2>Your Next Step</h2>
-  <p class="small">
-    Start the <b>Foundation Class (21 Days)</b>.
-    You’ll build identity, clarity, and practical money order—one day at a time.
+  <h2>The Lodge Has Two Wings</h2>
+  <p class="small" style="margin-top:-6px;">
+    Choose your lane. Learners build personal order. Creators build value and jobs for the ecosystem.
   </p>
-  <a class="btn btn-primary" href="module-1.html">▶ Begin Day 1</a>
-  <p class="small" style="margin-top:10px;">
-    <b>Rule:</b> Do today’s action. Submit today’s proof. Repeat tomorrow.
-  </p>
+
+  <div class="split">
+    <div class="note">
+      <span class="badge">Learners Wing</span>
+      <h3 style="margin-top:10px;">Learn → Practice → Verify</h3>
+      <p class="small">
+        Begin with Foundation Class (21 Days). Progress is earned through daily proof.
+      </p>
+      <a class="btn btn-primary" href="module-1.html">▶ Continue Learning</a>
+      <p class="small" style="margin-top:10px;">
+        <b>Rule:</b> Do today’s action. Submit today’s proof. Repeat tomorrow.
+      </p>
+    </div>
+
+    <div class="note">
+      <span class="badge-warn">Creator Wing</span>
+      <h3 style="margin-top:10px;">Build → Deliver → Verify</h3>
+      <p class="small">
+        Enter the <b>Builder’s Hall</b>. Apply to tasks with clear scope, proof, and reward.
+      </p>
+      <a class="btn btn-outline" href="creator-hall.html">▶ Enter Builder’s Hall</a>
+      <p class="small" style="margin-top:10px;">
+        <b>Note:</b> If you are new, finish Foundation first. Creator Wing is for verified builders.
+      </p>
+    </div>
+  </div>
 </div>
 
 <!-- HOW PROOF WORKS -->
@@ -218,7 +262,7 @@ hr{
   </div>
 </div>
 
-<!-- PROOF SECTION (RETAINED, TIGHTENED) -->
+<!-- PROOF SECTION -->
 <div class="card">
   <h2>Proof-Based Progression</h2>
   <p class="small">Progress is earned through simple, real submissions:</p>
