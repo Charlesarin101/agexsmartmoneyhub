@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,nofollow" />
+<title>AGEx Admin Console — Lodge Control</title>
+
+<style>
+:root{
+  --green:#0B3D2E;
+  --gold:#F4B41A;
+  --bg:#F7FAF9;
+  --card:#FFFFFF;
+  --line:#E2E8E5;
+  --muted:#566;
+  --danger:#b42318;
+  --ok:#1a7f37;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  background:var(--bg);
+  color:#222;
+}
+.container{
+  max-width:980px;
+  margin:0 auto;
+  padding:24px 18px 70px;
+}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:16px;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:14px;
+}
+h1,h2,h3{margin:0 0 10px;color:var(--green)}
+.small{font-size:13px;color:#555;line-height:1.45}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:14px;
+}
+@media(min-width:900px){
+  .grid{grid-template-columns:1fr 1fr;}
+}
+label{display:block;font-weight:900;font-size:12px;color:#333;margin-bottom:6px}
+input, textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px 12px;
+  font-size:14px;
+  background:#fff;
+}
+textarea{min-height:84px;resize:vertical}
+.btn{
+  padding:10px 16px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  font-weight:900;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-block;
+  background:transparent;
+  color:#111;
+}
+.btn.gold{background:var(--gold);border-color:var(--gold)}
+.btn.dark{background:var(--green);border-color:var(--green);color:#fff}
+.btn.red{background:#FFE4E4;border-color:#FFC9C9;color:var(--danger)}
+.badge{
+  display:inline-block;
+  padding:6px 12px;
+  border-radius:999px;
+  background:#E6F2EE;
+  color:var(--green);
+  font-weight:900;
+  font-size:12px;
+}
+.badge.red{background:#FFEFEF;color:var(--danger)}
+.badge.ok{background:#E7F7ED;color:var(--ok)}
+.hr{height:1px;background:var(--line);margin:14px 0}
+.kv{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+}
+@media(min-width:760px){
+  .kv{grid-template-columns:1fr 1fr;}
+}
+.pill{
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  font-weight:900;
+}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
+.toast{
+  display:none;
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:12px;
+  background:#E6F2EE;
+  color:#123;
+  font-weight:900;
+}
+.warn{
+  border-left:6px solid var(--gold);
+  padding-left:12px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <div>
+    <strong>AGEx Smart Money</strong><br>
+    <span class="small">Admin Console (Static Site Control)</span>
+  </div>
+  <div class="row">
+    <a class="btn" href="lodge.html">Gate</a>
+    <a class="btn" href="dashboard.html">Learners</a>
+    <a class="btn" href="creator-hall.html">Creators</a>
+  </div>
+</header>
+
+<div class="card warn">
+  <span class="badge red">Important</span>
+  <h2 style="margin-top:10px;">Static Security Truth</h2>
+  <p class="small" style="margin-top:0">
+    This console controls access flags on <b>your device</b> and sets rotating keys.
+    It improves flow and reduces casual abuse, but it is not equivalent to server-side security.
+    Keep sensitive operations on WhatsApp / Google Forms.
+  </p>
+</div>
+
+<div class="grid">
+
+  <!-- KEY CONTROL -->
+  <div class="card">
+    <h2>Key Control (Rotate Cohorts)</h2>
+    <p class="small" style="margin-top:-6px">
+      These keys are used by <b>lodge.html</b> (Lodge Access Key) and <b>creator-locked.html</b> (Creator Unlock Code),
+      if those pages are updated to read from localStorage (patch provided below).
+    </p>
+
+    <div class="kv">
+      <div>
+        <label for="lodgeKey">Lodge Master Key</label>
+        <input id="lodgeKey" class="mono" placeholder="e.g., ARIN-LODGE-KEY-002" />
+      </div>
+      <div>
+        <label for="creatorKey">Creator Unlock Code</label>
+        <input id="creatorKey" class="mono" placeholder="e.g., ARIN-CREATOR-KEY-002" />
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:10px">
+      <button class="btn gold" id="saveKeysBtn" type="button">Save Keys (this device)</button>
+      <button class="btn" id="genKeysBtn" type="button">Generate New Keys</button>
+      <button class="btn red" id="clearKeysBtn" type="button">Clear Saved Keys</button>
+    </div>
+
+    <div class="toast" id="toastKeys">Saved.</div>
+  </div>
+
+  <!-- DEVICE ACCESS CONTROL -->
+  <div class="card">
+    <h2>Device Access Flags (Testing / Control)</h2>
+    <p class="small" style="margin-top:-6px">
+      These flags decide what this device can open.
+    </p>
+
+    <div class="kv">
+      <div class="pill">
+        <div class="small">Lodge Verified Flag</div>
+        <div><b id="flagLodge">—</b></div>
+      </div>
+      <div class="pill">
+        <div class="small">Creator Unlocked Flag</div>
+        <div><b id="flagCreator">—</b></div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:10px">
+      <button class="btn dark" id="setVerifiedBtn" type="button">Set Verified (AGEX_LODGE_OK=1)</button>
+      <button class="btn dark" id="setCreatorBtn" type="button">Set Creator (AGEX_CREATOR_OK=1)</button>
+      <button class="btn" id="lockCreatorBtn" type="button">Lock Creator (remove creator flag)</button>
+      <button class="btn red" id="resetDeviceBtn" type="button">Reset Device (logout)</button>
+    </div>
+
+    <div class="toast" id="toastFlags">Updated.</div>
+  </div>
+
+</div>
+
+<!-- COPY TEMPLATES -->
+<div class="card">
+  <h2>Copy Templates (WhatsApp / Email)</h2>
+  <p class="small" style="margin-top:-6px">
+    Click a button to generate a ready message with your current keys.
+  </p>
+
+  <div class="row" style="margin-bottom:10px">
+    <button class="btn gold" id="copyLodgeMsgBtn" type="button">Copy “Your Lodge Key” Message</button>
+    <button class="btn gold" id="copyCreatorMsgBtn" type="button">Copy “Creator Approved” Message</button>
+  </div>
+
+  <label for="out">Generated Message</label>
+  <textarea id="out" class="mono" placeholder="Messages will appear here…"></textarea>
+
+  <div class="row" style="margin-top:10px">
+    <button class="btn dark" id="copyOutBtn" type="button">Copy Message</button>
+    <span class="small" id="copyStatus"></span>
+  </div>
+</div>
+
+<!-- REQUIRED PATCH NOTE -->
+<div class="card">
+  <h2>Required Patch (So Pages Use These Keys)</h2>
+  <p class="small" style="margin-top:-6px">
+    To allow key rotation without editing code, update:
+    <b>lodge.html</b> and <b>creator-locked.html</b> to read keys from localStorage.
+    Copy/paste the tiny patches below.
+  </p>
+
+  <div class="hr"></div>
+
+  <h3>Patch for lodge.html (replace MASTER_KEY line)</h3>
+  <pre class="mono" style="white-space:pre-wrap;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;margin:0">
+/* OLD:
+const MASTER_KEY = "ARIN-LODGE-KEY-001";
+*/
+
+const SAVED = localStorage.getItem("AGEX_MASTER_KEY");
+const MASTER_KEY = SAVED && SAVED.trim() ? SAVED.trim() : "ARIN-LODGE-KEY-001";
+  </pre>
+
+  <div class="hr"></div>
+
+  <h3>Patch for creator-locked.html (replace CREATOR_UNLOCK_CODE line)</h3>
+  <pre class="mono" style="white-space:pre-wrap;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;margin:0">
+/* OLD:
+const CREATOR_UNLOCK_CODE = "ARIN-CREATOR-KEY-001";
+*/
+
+const SAVED = localStorage.getItem("AGEX_CREATOR_KEY");
+const CREATOR_UNLOCK_CODE = SAVED && SAVED.trim() ? SAVED.trim() : "ARIN-CREATOR-KEY-001";
+  </pre>
+</div>
+
+<div class="card">
+  <h2>Quick Links</h2>
+  <div class="row">
+    <a class="btn" href="index.html">Public Gateway</a>
+    <a class="btn" href="lodge.html">Lodge Gate</a>
+    <a class="btn" href="dashboard.html">Learners Dashboard</a>
+    <a class="btn" href="module-1.html">Foundation Module</a>
+    <a class="btn" href="creator-locked.html">Creator Locked</a>
+    <a class="btn" href="creator-hall.html">Creator Hall</a>
+  </div>
+</div>
+
+</div>
+
+<script>
+  // ====== STORAGE KEYS ======
+  const KEY_MASTER = "AGEX_MASTER_KEY";
+  const KEY_CREATOR = "AGEX_CREATOR_KEY";
+
+  const FLAG_LODGE = "AGEX_LODGE_OK";
+  const FLAG_CREATOR = "AGEX_CREATOR_OK";
+
+  // ====== HELPERS ======
+  const $ = (id)=>document.getElementById(id);
+
+  function showToast(id){
+    const t = $(id);
+    t.style.display="block";
+    setTimeout(()=>t.style.display="none", 1200);
+  }
+
+  function randPart(n=3){
+    const chars="ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+    let out="";
+    for(let i=0;i<n;i++) out += chars[Math.floor(Math.random()*chars.length)];
+    return out;
+  }
+
+  function generateKeys(){
+    const lodge = `ARIN-LODGE-KEY-${randPart(3)}-${randPart(3)}`;
+    const creator = `ARIN-CREATOR-KEY-${randPart(3)}-${randPart(3)}`;
+    $("lodgeKey").value = lodge;
+    $("creatorKey").value = creator;
+  }
+
+  async function copyText(text){
+    try{
+      await navigator.clipboard.writeText(text);
+      $("copyStatus").textContent = "Copied.";
+      setTimeout(()=> $("copyStatus").textContent="", 1200);
+    }catch(e){
+      const ta=document.createElement("textarea");
+      ta.value=text; document.body.appendChild(ta);
+      ta.select(); document.execCommand("copy");
+      document.body.removeChild(ta);
+      $("copyStatus").textContent = "Copied.";
+      setTimeout(()=> $("copyStatus").textContent="", 1200);
+    }
+  }
+
+  function refreshFlags(){
+    $("flagLodge").textContent = localStorage.getItem(FLAG_LODGE)==="1" ? "ON (1)" : "OFF";
+    $("flagCreator").textContent = localStorage.getItem(FLAG_CREATOR)==="1" ? "ON (1)" : "OFF";
+  }
+
+  function loadKeys(){
+    $("lodgeKey").value = localStorage.getItem(KEY_MASTER) || "";
+    $("creatorKey").value = localStorage.getItem(KEY_CREATOR) || "";
+  }
+
+  function saveKeys(){
+    localStorage.setItem(KEY_MASTER, ($("lodgeKey").value||"").trim());
+    localStorage.setItem(KEY_CREATOR, ($("creatorKey").value||"").trim());
+    showToast("toastKeys");
+  }
+
+  function clearKeys(){
+    localStorage.removeItem(KEY_MASTER);
+    localStorage.removeItem(KEY_CREATOR);
+    loadKeys();
+    showToast("toastKeys");
+  }
+
+  function setVerified(){
+    localStorage.setItem(FLAG_LODGE, "1");
+    refreshFlags();
+    showToast("toastFlags");
+  }
+
+  function setCreator(){
+    localStorage.setItem(FLAG_CREATOR, "1");
+    refreshFlags();
+    showToast("toastFlags");
+  }
+
+  function lockCreator(){
+    localStorage.removeItem(FLAG_CREATOR);
+    refreshFlags();
+    showToast("toastFlags");
+  }
+
+  function resetDevice(){
+    localStorage.removeItem(FLAG_LODGE);
+    localStorage.removeItem(FLAG_CREATOR);
+    localStorage.removeItem("AGEX_LODGE_ROLE");
+    refreshFlags();
+    showToast("toastFlags");
+  }
+
+  function lodgeMsg(){
+    const lodgeKey = ($("lodgeKey").value||"").trim() || "ARIN-LODGE-KEY-001";
+    return `AGEx Smart Money Hub — Lodge Access
+
+You are approved as a Verified Steward.
+
+Your Lodge Access Key:
+${lodgeKey}
+
+How to enter:
+1) Open the Lodge Gate
+2) Paste the key (case-sensitive)
+3) Choose Learners Wing (start Foundation Class)
+
+Lodge Gate:
+${location.origin}${location.pathname.replace(/admin\.html.*/,"")}lodge.html
+
+— Charles Arin`;
+  }
+
+  function creatorMsg(){
+    const creatorKey = ($("creatorKey").value||"").trim() || "ARIN-CREATOR-KEY-001";
+    return `AGEx Smart Money Hub — Creator Approval
+
+You have been approved into the Creator Wing (Builder’s Hall).
+
+Your Creator Unlock Code:
+${creatorKey}
+
+How to unlock:
+1) Open Creator Locked page
+2) Paste the code (case-sensitive)
+3) You will enter the Builder’s Hall
+
+Creator Unlock Page:
+${location.origin}${location.pathname.replace(/admin\.html.*/,"")}creator-locked.html
+
+— Charles Arin`;
+  }
+
+  // ====== BIND ======
+  $("saveKeysBtn").addEventListener("click", saveKeys);
+  $("genKeysBtn").addEventListener("click", ()=>{
+    generateKeys();
+    saveKeys();
+  });
+  $("clearKeysBtn").addEventListener("click", clearKeys);
+
+  $("setVerifiedBtn").addEventListener("click", setVerified);
+  $("setCreatorBtn").addEventListener("click", setCreator);
+  $("lockCreatorBtn").addEventListener("click", lockCreator);
+  $("resetDeviceBtn").addEventListener("click", resetDevice);
+
+  $("copyLodgeMsgBtn").addEventListener("click", ()=>{
+    const msg = lodgeMsg();
+    $("out").value = msg;
+    copyText(msg);
+  });
+  $("copyCreatorMsgBtn").addEventListener("click", ()=>{
+    const msg = creatorMsg();
+    $("out").value = msg;
+    copyText(msg);
+  });
+  $("copyOutBtn").addEventListener("click", ()=>{
+    const msg = $("out").value || "";
+    if(!msg.trim()) return alert("Nothing to copy yet.");
+    copyText(msg);
+  });
+
+  // ====== INIT ======
+  loadKeys();
+  refreshFlags();
+</script>
+
+</body>
+</html>
