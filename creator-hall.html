@@ -5,6 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Creator Wing — The Builder’s Hall | AGEx Smart Money Hub</title>
 
+<script>
+  // ====== HARD GATE (best possible on GitHub Pages) ======
+  const OK_KEY = "AGEX_LODGE_OK";
+  const CREATOR_KEY = "AGEX_CREATOR_OK";
+
+  // If not verified, send to gate.
+  if (localStorage.getItem(OK_KEY) !== "1") {
+    window.location.href = "lodge.html";
+  }
+
+  // If not approved as creator, send to locked page.
+  if (localStorage.getItem(CREATOR_KEY) !== "1") {
+    window.location.href = "creator-locked.html";
+  }
+</script>
+
 <style>
 :root{
   --green:#0B3D2E;
@@ -87,7 +103,7 @@ h1,h2,h3{margin:0 0 10px;color:var(--green)}
   color:#111;
 }
 .btn.dark{ background:var(--green); border-color:var(--green); color:#fff; }
-.btn.gold{ background:var(--gold); border-color:var(--gold); color:#111; }
+.btn.gold{ background:var(--gold); border-color:var(--gold); }
 .btn.ghost{ background:transparent; }
 .grid{
   display:grid;
@@ -198,12 +214,11 @@ pre{
     <span class="small">The Steward’s Lodge · Creator Wing</span>
   </div>
   <div class="actions">
-    <a class="btn ghost" href="lodge.html">← Back to Lodge</a>
-    <button class="btn gold" id="copyCreatorProfileBtn" type="button">Copy My Creator Profile</button>
+    <a class="btn" href="dashboard.html">← Learners Wing</a>
+    <button class="btn ghost" id="logoutBtn" type="button">Logout (this device)</button>
   </div>
 </header>
 
-<!-- STATUS + IDENTITY -->
 <div class="card">
   <span class="badge gold" id="creatorStatusBadge">Creator Status: Operator (Active)</span>
   <h1>The Builder’s Hall</h1>
@@ -225,7 +240,6 @@ pre{
 
 <div class="grid">
 
-  <!-- TASK BOARD -->
   <div class="card">
     <h2>Task Board</h2>
     <p class="small" style="margin-top:0">
@@ -279,7 +293,6 @@ pre{
     <div class="toast" id="toast">Saved. Your creator data is stored on this device only.</div>
   </div>
 
-  <!-- CREATOR PROFILE + COVENANT + ACTIVE -->
   <div>
     <div class="card">
       <h2>Creator Profile</h2>
@@ -345,7 +358,7 @@ pre{
 
 </div>
 
-<!-- MODAL: TASK DETAILS + ACTIONS -->
+<!-- MODAL -->
 <div class="modalOverlay" id="modalOverlay">
   <div class="modal">
     <div class="modalHeader">
@@ -394,7 +407,7 @@ pre{
 
         <div class="hr"></div>
 
-        <h3>Admin Review (manual for now)</h3>
+        <h3>Admin Review (demo)</h3>
         <p class="small">
           Until a form is attached, approvals happen by creator proof message via WhatsApp.
         </p>
@@ -414,8 +427,10 @@ pre{
 <script>
   // STORAGE
   const KEY = "agex_creator_hall_v1";
+  const OK_KEY = "AGEX_LODGE_OK";
+  const CREATOR_KEY = "AGEX_CREATOR_OK";
 
-  // Demo Tasks (you can later replace these with real tasks or a connected form)
+  // Demo Tasks
   const demoTasks = [
     {
       id:"T-001",
@@ -461,7 +476,7 @@ pre{
       scope:"Take a list of 10 items (provided by admin) and format into clean rows: Title | Type | Proof | Reward | Deadline.",
       proof:"Paste the formatted rows or submit a link to a doc.",
       reward:{ kind:"₦", amount:1200, note:"Paid after approval." },
-      deadline:"72 hours",
+     deadline:"72 hours",
       status:"open",
       submission:""
     },
@@ -479,24 +494,13 @@ pre{
     }
   ];
 
-  // Helpers
   function $(id){ return document.getElementById(id); }
 
   function defaultState(){
     return {
-      profile:{
-        name:"",
-        skill:"",
-        proofLink:"",
-        whatsapp:""
-      },
-      tasks: JSON.parse(JSON.stringify(demoTasks)), // deep clone
-      totals:{
-        completed:0,
-        trustPoints:0,
-        naira:0,
-        dollars:0
-      }
+      profile:{ name:"", skill:"", proofLink:"", whatsapp:"" },
+      tasks: JSON.parse(JSON.stringify(demoTasks)),
+      totals:{ completed:0, trustPoints:0, naira:0, dollars:0 }
     };
   }
 
@@ -640,7 +644,6 @@ pre{
       rows.appendChild(tr);
     });
 
-    // Wire open buttons
     rows.querySelectorAll("[data-open]").forEach(btn=>{
       btn.addEventListener("click", ()=>{
         const id = btn.getAttribute("data-open");
@@ -662,7 +665,6 @@ pre{
     el.innerHTML = active.map(t => `• <b>${t.id}</b> — ${t.title} <span class="small">(Deadline: ${t.deadline})</span>`).join("<br>");
   }
 
-  // PROFILE
   function loadProfile(state){
     $("creatorName").value = state.profile.name || "";
     $("creatorSkill").value = state.profile.skill || "";
@@ -700,7 +702,6 @@ Portfolio/Proof: ${p || "—"}
 I agree to deliver work with clear proof, accept revisions, and complete commitments I accept.`;
   }
 
-  // MODAL
   let currentTaskId = null;
 
   function getTask(state, id){
@@ -724,10 +725,8 @@ I agree to deliver work with clear proof, accept revisions, and complete commitm
     statusEl.textContent = `Status: ${statusLabel(t.status)}`;
     statusEl.className = `badge ${statusBadgeClass(t.status)}`;
 
-    const template = buildTaskProofTemplate(state, t);
-    $("mTemplate").textContent = template;
+    $("mTemplate").textContent = buildTaskProofTemplate(state, t);
 
-    // Button visibility logic
     $("applyBtn").style.display = (t.status === "open") ? "inline-block" : "none";
     $("acceptBtn").style.display = (t.status === "applied") ? "inline-block" : "none";
     $("submitBtn").style.display = (t.status === "active") ? "inline-block" : "none";
@@ -777,7 +776,6 @@ I confirm the task scope is completed as required and proof is attached.`;
     }
   }
 
-  // ACTIONS
   function bindModalActions(state){
     $("closeModalBtn").addEventListener("click", closeModal);
     $("modalOverlay").addEventListener("click", (e)=>{
@@ -835,7 +833,6 @@ I confirm the task scope is completed as required and proof is attached.`;
       openModal(state, currentTaskId);
     });
 
-    // Demo review buttons
     $("markApprovedBtn").addEventListener("click", ()=>{
       if(!currentTaskId) return;
       const t = getTask(state, currentTaskId);
@@ -857,14 +854,12 @@ I confirm the task scope is completed as required and proof is attached.`;
     });
   }
 
-  // PAGE BUTTONS
   function bindPageActions(state){
     $("saveBtn").addEventListener("click", ()=> saveState(state));
 
     $("resetDemoBtn").addEventListener("click", ()=>{
       if(!confirm("Reset demo tasks? This will erase current task statuses on this device.")) return;
       const fresh = defaultState();
-      // preserve profile
       fresh.profile = Object.assign({}, state.profile);
       localStorage.setItem(KEY, JSON.stringify(fresh));
       location.reload();
@@ -877,8 +872,12 @@ I confirm the task scope is completed as required and proof is attached.`;
       copyToClipboard(buildApplicationMessage(state));
     });
 
-    $("copyCreatorProfileBtn").addEventListener("click", ()=>{
-      copyToClipboard(buildApplicationMessage(state));
+    // Logout clears both lodge + creator access on this device
+    $("logoutBtn").addEventListener("click", ()=>{
+      localStorage.removeItem(OK_KEY);
+      localStorage.removeItem(CREATOR_KEY);
+      localStorage.removeItem("AGEX_LODGE_ROLE");
+      window.location.href = "lodge.html";
     });
   }
 
@@ -893,3 +892,4 @@ I confirm the task scope is completed as required and proof is attached.`;
 
 </body>
 </html>
+
