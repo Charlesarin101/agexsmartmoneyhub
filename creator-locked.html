@@ -156,8 +156,8 @@ ul{ padding-left:18px; margin:0; }
   const CREATOR_KEY = "AGEX_CREATOR_OK";
 
   // Change this whenever you want to rotate creator access codes:
-  const CREATOR_UNLOCK_CODE = "ARIN-CREATOR-KEY-001";
-
+  const SAVED = localStorage.getItem("AGEX_CREATOR_KEY");
+const CREATOR_UNLOCK_CODE = SAVED && SAVED.trim() ? SAVED.trim() : "ARIN-CREATOR-KEY-001";
   // If not verified, send back to gate.
   if (localStorage.getItem(OK_KEY) !== "1") {
     window.location.href = "lodge.html";
