@@ -4,20 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#0B3D2E" />
-  <title>AGEx Smart Money Hub — Stewardship-First Learning</title>
-  <meta name="description" content="AGEx Smart Money Hub is a stewardship-first financial learning platform. One-time $1 verification unlocks free academy access. Learn → Practice → Verify. Micro-task economy with skill levels and creator-posted tasks (Phase 2)." />
+  <title>AGEx Smart Money Hub — Enter the Steward’s Lodge</title>
+  <meta name="description" content="Pay $1 verification → Request access → Receive your key → Enter the Steward’s Lodge." />
   <meta name="robots" content="index,follow" />
-
-  <!-- Social preview -->
-  <meta property="og:title" content="AGEx Smart Money Hub — Stewardship-First Learning" />
-  <meta property="og:description" content="A disciplined path to financial clarity and verifiable skill growth. One-time $1 verification. Academy free after entry." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/agex-og.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <!-- Favicon placeholders -->
-  <link rel="icon" href="assets/favicon.png" />
-  <link rel="apple-touch-icon" href="assets/icon-180.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,29 +23,23 @@
       --card:#F7FAF9;
       --line:rgba(15,15,15,.10);
       --shadow: 0 18px 45px rgba(0,0,0,.12);
-      --radius: 18px;
-      --radius2: 26px;
-      --max: 1120px;
+      --r:18px;
+      --r2:26px;
+      --max:1120px;
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0}
     body{
       font-family:"Manrope",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--ink);
-      background:var(--bg);
+      background:
+        radial-gradient(1000px 600px at 15% 0%, rgba(244,180,26,.16), transparent 65%),
+        radial-gradient(900px 600px at 85% 10%, rgba(11,61,46,.10), transparent 62%),
+        var(--bg);
       line-height:1.55;
     }
     a{color:inherit;text-decoration:none}
     .container{max-width:var(--max);margin:0 auto;padding:0 18px}
-    .skip{
-      position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden;
-    }
-    .skip:focus{
-      left:18px;top:18px;width:auto;height:auto;background:#fff;padding:10px 12px;border-radius:12px;
-      box-shadow:var(--shadow);z-index:9999
-    }
-
-    /* Header */
     header{
       position:sticky;top:0;z-index:60;
       background:rgba(255,255,255,.88);
@@ -82,18 +65,10 @@
     }
     .mark svg{position:relative;z-index:1}
     .brand-title{display:flex;flex-direction:column;line-height:1.05}
-    .brand-title .top{font-weight:800;letter-spacing:.2px;font-size:15px}
+    .brand-title .top{font-weight:900;letter-spacing:.2px;font-size:15px}
     .brand-title .top .ex{color:var(--gold)}
-    .brand-title .sub{font-size:12px;color:var(--muted);font-weight:700;margin-top:4px}
+    .brand-title .sub{font-size:12px;color:var(--muted);font-weight:800;margin-top:4px}
 
-    nav ul{list-style:none;display:flex;gap:10px;margin:0;padding:0;align-items:center;flex-wrap:wrap}
-    nav a{
-      font-weight:800;font-size:12px;color:rgba(15,15,15,.78);
-      padding:10px 12px;border-radius:14px
-    }
-    nav a:hover{background:rgba(11,61,46,.06);color:var(--green)}
-
-    .nav-actions{display:flex;gap:10px;align-items:center}
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:10px;
       border-radius:999px;padding:12px 16px;font-weight:900;
@@ -111,46 +86,17 @@
     .btn.ghost:hover{background:rgba(11,61,46,.06)}
     .btn.dark{
       background:var(--green);color:#fff;
-      box-shadow:0 12px 26px rgba(11,61,46,.28)
+      box-shadow:0 12px 26px rgba(11,61,46,.22)
     }
     .btn.dark:hover{transform:translateY(-1px)}
-    .btn.white{
-      background:#fff;color:var(--green);border:1px solid rgba(255,255,255,.35)
-    }
-    .btn.outline{
-      background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff
-    }
     .btn.small{padding:10px 12px;font-size:12px}
 
-    .mobile-toggle{
-      display:none;border:1px solid var(--line);background:#fff;border-radius:16px;padding:10px 12px
-    }
-    .mobile-toggle svg{width:20px;height:20px}
-
-    .panel{
-      display:none;border-top:1px solid var(--line);
-      padding:12px 0 14px
-    }
-    .panel a{
-      display:block;padding:12px 12px;border-radius:14px;font-weight:900;
-      color:rgba(15,15,15,.75)
-    }
-    .panel a:hover{background:rgba(11,61,46,.06);color:var(--green)}
-    .panel .panel-actions{display:flex;gap:10px;flex-wrap:wrap;padding:8px 12px 0}
-
-    /* Layout + sections */
     main{overflow:hidden}
-    section{padding:36px 0}
-    .hero{
-      position:relative;padding:42px 0 26px;
-      background:
-        radial-gradient(1000px 600px at 15% 0%, rgba(244,180,26,.18), transparent 65%),
-        radial-gradient(900px 600px at 85% 10%, rgba(11,61,46,.12), transparent 62%),
-        linear-gradient(180deg, rgba(11,61,46,.04), transparent 40%);
+    .hero{padding:34px 0 22px}
+    .heroGrid{
+      display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:stretch
     }
-    .hero-grid{
-      display:grid;grid-template-columns:1.15fr .85fr;gap:22px;align-items:stretch
-    }
+    @media (max-width: 920px){.heroGrid{grid-template-columns:1fr}}
     .badge{
       display:inline-flex;align-items:center;gap:10px;
       background:rgba(11,61,46,.08);border:1px solid rgba(11,61,46,.12);
@@ -158,140 +104,65 @@
       width:fit-content
     }
     .badge .dot{width:10px;height:10px;border-radius:99px;background:var(--gold);box-shadow:0 0 0 4px rgba(244,180,26,.18)}
-    h1{margin:14px 0 10px;font-size:52px;letter-spacing:-.6px;line-height:1.06;color:var(--green)}
-    h1 .gold{color:var(--gold)}
-    .lead{font-size:18px;color:rgba(15,15,15,.72);max-width:60ch;margin:0 0 18px}
-    .fine{margin:10px 0 0;color:rgba(15,15,15,.56);font-size:13px;font-weight:700}
-    .fine strong{color:var(--green)}
+    h1{margin:14px 0 10px;font-size:46px;letter-spacing:-.7px;line-height:1.06;color:var(--green)}
+    @media (max-width: 520px){h1{font-size:38px}}
+    .lead{font-size:16px;color:rgba(15,15,15,.72);max-width:70ch;margin:0 0 14px;font-weight:750}
+    .miniNote{margin:10px 0 0;color:rgba(15,15,15,.58);font-size:13px;font-weight:750}
 
     .card{
-      background:var(--card);border:1px solid var(--line);border-radius:var(--radius2);
+      background:var(--card);border:1px solid var(--line);border-radius:var(--r2);
       padding:18px;box-shadow:0 12px 30px rgba(0,0,0,.06)
     }
-    .hero-card{
-      background:linear-gradient(180deg, rgba(11,61,46,.06), rgba(255,255,255,.92));
-      border:1px solid rgba(11,61,46,.12);border-radius:var(--radius2);padding:18px;
-      position:relative;overflow:hidden
+    .card.white{background:#fff}
+    .steps{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px
     }
-    .hero-card:before{
-      content:"";position:absolute;inset:-30%;
-      background:radial-gradient(circle at 70% 20%, rgba(244,180,26,.22), transparent 55%);
-      transform:rotate(-10deg)
-    }
-    .hero-card > *{position:relative;z-index:1}
-    .hero-card h3{margin:0 0 6px;font-size:18px;color:var(--green);letter-spacing:-.2px}
-    .hero-card p{margin:0 0 12px;color:rgba(15,15,15,.7);font-weight:700;font-size:13px}
-
-    .price{
-      display:flex;align-items:baseline;justify-content:space-between;gap:12px;
-      margin-top:10px;padding:12px 14px;border-radius:18px;
-      background:rgba(244,180,26,.14);border:1px solid rgba(244,180,26,.28)
-    }
-    .price .tag{font-weight:900;color:#1b1607}
-    .price .amt{font-weight:900;color:var(--green);font-size:18px}
-
-    .kpi{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-    .kpi .box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px}
-    .kpi .num{font-weight:900;color:var(--green);font-size:18px;letter-spacing:-.2px}
-    .kpi .txt{font-weight:800;font-size:12px;color:rgba(15,15,15,.62);margin-top:6px}
-
-    .section-head{
-      display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;
-      margin-bottom:16px
-    }
-    .section-head h2{margin:0;font-size:28px;letter-spacing:-.3px;color:var(--green)}
-    .section-head p{margin:0;color:rgba(15,15,15,.65);font-weight:700;max-width:76ch}
-
-    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    .tile{
-      background:#fff;border:1px solid var(--line);border-radius:var(--radius2);
-      padding:16px;box-shadow:0 10px 24px rgba(0,0,0,.05)
-    }
-    .icon{
-      width:44px;height:44px;border-radius:16px;display:grid;place-items:center;
-      background:rgba(11,61,46,.08);border:1px solid rgba(11,61,46,.12);
-      color:var(--green);margin-bottom:12px
-    }
-    .tile h4{margin:0 0 6px;font-size:16px;color:var(--ink);letter-spacing:-.2px}
-    .tile p{margin:0;font-size:13px;font-weight:700;color:rgba(15,15,15,.64)}
-
-    .steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+    @media (max-width: 920px){.steps{grid-template-columns:1fr}}
     .step{
-      border-radius:var(--radius2);background:linear-gradient(180deg, rgba(11,61,46,.06), #fff);
-      border:1px solid rgba(11,61,46,.12);padding:16px;position:relative;overflow:hidden
+      border-radius:18px;background:#fff;border:1px solid var(--line);padding:14px
     }
-    .step:after{
-      content:"";position:absolute;inset:-40%;
-      background:radial-gradient(circle at 30% 30%, rgba(244,180,26,.16), transparent 55%);
-      transform:rotate(10deg)
-    }
-    .step > *{position:relative;z-index:1}
     .step .n{
-      font-weight:900;color:var(--gold);letter-spacing:-.2px;font-size:12px;
-      background:rgba(244,180,26,.18);border:1px solid rgba(244,180,26,.3);
-      padding:8px 10px;border-radius:999px;display:inline-flex;gap:10px;margin-bottom:10px;width:fit-content
-    }
-    .step h4{margin:0 0 6px;font-size:16px;color:var(--green);letter-spacing:-.2px}
-    .step p{margin:0;font-size:13px;font-weight:700;color:rgba(15,15,15,.66)}
-
-    /* Lists */
-    .academy{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;align-items:start}
-    .list{background:#fff;border:1px solid var(--line);border-radius:var(--radius2);overflow:hidden}
-    .row{display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);align-items:flex-start}
-    .row:last-child{border-bottom:none}
-    .row .mini{
-      width:40px;height:40px;border-radius:14px;display:grid;place-items:center;
-      background:rgba(11,61,46,.08);border:1px solid rgba(11,61,46,.12);color:var(--green);
-      flex:0 0 auto;font-weight:900
-    }
-    .row h5{margin:0;font-size:14px;letter-spacing:-.2px}
-    .row .meta{margin-top:4px;font-size:12px;font-weight:800;color:rgba(15,15,15,.62)}
-    .bullets{margin:10px 0 0;padding-left:16px}
-    .bullets li{font-size:12px;font-weight:750;color:rgba(15,15,15,.62);margin:6px 0}
-
-    .aside{position:sticky;top:88px}
-
-    /* Task economy */
-    .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .pill{
-      display:inline-flex;align-items:center;gap:10px;
-      padding:9px 12px;border-radius:999px;
+      display:inline-flex;gap:10px;align-items:center;
+      font-weight:900;font-size:12px;color:var(--green);
       background:rgba(11,61,46,.08);border:1px solid rgba(11,61,46,.12);
-      font-weight:900;color:var(--green);font-size:12px
+      padding:8px 10px;border-radius:999px;margin-bottom:10px;width:fit-content
     }
-    .pill .dot{width:10px;height:10px;border-radius:99px;background:var(--gold)}
-    .table-wrap{overflow:auto;border-radius:18px;border:1px solid var(--line);background:#fff}
-    table{border-collapse:collapse;width:100%;min-width:760px}
-    th,td{padding:12px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-    th{font-size:12px;color:rgba(15,15,15,.66);font-weight:900}
-    td{font-size:12px;color:rgba(15,15,15,.68);font-weight:750}
-    tr:last-child td{border-bottom:none}
+    .step h3{margin:0 0 6px;color:var(--ink);letter-spacing:-.2px;font-size:15px}
+    .step p{margin:0;color:rgba(15,15,15,.66);font-size:13px;font-weight:750}
 
-    /* CTA */
-    .cta{
+    .ctaRow{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+    .ctaBox{
       background:linear-gradient(135deg, var(--green), #06261c);
-      color:#fff;border-radius:34px;padding:22px;box-shadow:var(--shadow);
-      position:relative;overflow:hidden
+      color:#fff;border-radius:30px;padding:18px;border:1px solid rgba(255,255,255,.10);
+      box-shadow:var(--shadow);position:relative;overflow:hidden
     }
-    .cta:before{
+    .ctaBox:before{
       content:"";position:absolute;inset:-60%;
       background:radial-gradient(circle at 20% 20%, rgba(244,180,26,.35), transparent 55%);
       transform:rotate(12deg)
     }
-    .cta > *{position:relative;z-index:1}
-    .cta h3{margin:0 0 8px;letter-spacing:-.2px}
-    .cta p{margin:0 0 14px;color:rgba(255,255,255,.86);font-weight:750;font-size:13px;max-width:76ch}
-    .cta-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .ctaBox > *{position:relative;z-index:1}
+    .ctaBox h2{margin:0 0 8px;letter-spacing:-.2px}
+    .ctaBox p{margin:0 0 12px;color:rgba(255,255,255,.86);font-weight:750;font-size:13px;max-width:76ch}
+    .ctaBox .btn{border-color:rgba(255,255,255,.22)}
+    .btn.white{background:#fff;color:var(--green);border:1px solid rgba(255,255,255,.30)}
+    .btn.outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.30)}
+    .btn.outline:hover{background:rgba(255,255,255,.08)}
 
-    /* Footer */
+    .divider{height:1px;background:var(--line);margin:14px 0}
+    .faq{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+    @media (max-width: 920px){.faq{grid-template-columns:1fr}}
+    .q{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px}
+    .q b{color:var(--green)}
+    .q p{margin:8px 0 0;color:rgba(15,15,15,.66);font-size:13px;font-weight:750}
+
     footer{border-top:1px solid var(--line);padding:18px 0 26px;background:#fff}
     .foot{display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:space-between}
     .foot small{color:rgba(15,15,15,.6);font-weight:750}
-    .foot .links{display:flex;gap:12px;flex-wrap:wrap}
-    .foot .links a{font-weight:900;font-size:12px;color:rgba(15,15,15,.68)}
-    .foot .links a:hover{color:var(--green)}
+    .foot a{font-weight:900;font-size:12px;color:rgba(15,15,15,.68)}
+    .foot a:hover{color:var(--green)}
 
-    /* Modals */
+    /* Modal */
     .modal-backdrop{
       position:fixed;inset:0;background:rgba(15,15,15,.52);
       display:none;align-items:center;justify-content:center;padding:18px;z-index:99;
@@ -310,944 +181,163 @@
       border:none;background:rgba(11,61,46,.08);color:var(--green);
       border-radius:14px;padding:10px 12px;cursor:pointer;font-weight:900
     }
-    .modal-body{padding:0}
-    .modal iframe{width:100%;height:80vh;border:0}
+    .modal iframe{width:100%;height:80vh;border:0;background:#fff}
     .note{
       font-size:12px;font-weight:750;color:rgba(15,15,15,.62);
       padding:12px 16px 16px;border-top:1px solid var(--line);background:#fff
-    }
-
-    /* Tabs (no routing, single-file app) */
-    .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .tabbtn{
-      padding:10px 12px;border-radius:999px;border:1px solid var(--line);
-      background:#fff;font-weight:900;color:rgba(15,15,15,.72);cursor:pointer
-    }
-    .tabbtn.active{border-color:rgba(11,61,46,.25);color:var(--green);background:rgba(11,61,46,.06)}
-    .view{display:none}
-    .view.active{display:block}
-
-    /* Forms */
-    form{margin:0}
-    .field{display:grid;gap:6px;margin:10px 0}
-    label{font-weight:900;font-size:12px;color:rgba(15,15,15,.72)}
-    input,select,textarea{
-      width:100%;
-      padding:12px 12px;
-      border-radius:16px;
-      border:1px solid var(--line);
-      outline:none;
-      font-family:inherit;
-      font-weight:750;
-      background:#fff;
-    }
-    textarea{min-height:110px;resize:vertical}
-    .hint{font-size:12px;color:rgba(15,15,15,.58);font-weight:750;margin-top:4px}
-    .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .toast{
-      display:none;margin-top:10px;
-      padding:12px 12px;border-radius:16px;
-      background:rgba(11,61,46,.06);border:1px solid rgba(11,61,46,.12);
-      font-weight:850;color:rgba(15,15,15,.72);font-size:12px
-    }
-
-    /* Responsive */
-    @media (max-width: 920px){
-      .hero-grid{grid-template-columns:1fr}
-      .grid-3{grid-template-columns:1fr}
-      .steps{grid-template-columns:1fr}
-      .academy{grid-template-columns:1fr}
-      .aside{position:relative;top:0}
-      .two{grid-template-columns:1fr}
-      .row2{grid-template-columns:1fr}
-      h1{font-size:42px}
-    }
-    @media (max-width: 820px){
-      nav ul{display:none}
-      .mobile-toggle{display:inline-flex}
     }
   </style>
 </head>
 
 <body>
-<a class="skip" href="#main">Skip to content</a>
-
 <header>
   <div class="container">
     <div class="nav">
-      <a class="brand" href="#top" aria-label="AGEx Smart Money Hub">
+      <a class="brand" href="./" aria-label="AGEx Smart Money Hub">
         <div class="mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none">
+          <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
             <path d="M12 2.6l8 3.2v6.2c0 5.1-3.5 9.2-8 9.9-4.5-.7-8-4.8-8-9.9V5.8L12 2.6z" stroke="rgba(255,255,255,.92)" stroke-width="1.6"/>
             <path d="M8.3 12h6.9l-2.2-2.2 1.3-1.3 4.4 4.4-4.4 4.4-1.3-1.3 2.2-2.2H8.3V12z" fill="#F4B41A"/>
           </svg>
         </div>
         <div class="brand-title">
           <div class="top"><span>AG</span><span class="ex">Ex</span> <span style="color:var(--green)">Smart Money</span></div>
-          <div class="sub">Stewardship First • Learn → Practice → Verify</div>
+          <div class="sub">The only gateway to the Steward’s Lodge</div>
         </div>
       </a>
 
-      <nav aria-label="Primary navigation">
-        <ul>
-          <li><a href="#how">How it works</a></li>
-          <li><a href="#academy">Academy</a></li>
-          <li><a href="#earnings">Tasks & Earnings</a></li>
-          <li><a href="#creator">Task Creators</a></li>
-          <li><a href="#founder">Founder</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </nav>
-
-      <div class="nav-actions">
-        <button class="mobile-toggle" id="menuBtn" aria-label="Open menu">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M4 7h16M4 12h16M4 17h16" stroke="rgba(15,15,15,.82)" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
-
-        <!-- UPDATED: new Request Access form link -->
-        <a class="btn ghost" href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Request Access</a>
-
-        <a class="btn primary" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">Begin Verification & Request Access</a>
-      </div>
-    </div>
-    <div class="card">
-  <span class="badge">Steward’s Lodge Gateway</span>
-  <h2>Enter the Steward’s Path</h2>
-  <p class="small">
-    The Steward’s Lodge is not public. Access is earned through verification and approval.
-    Use this fixed sequence.
-  </p>
-
-  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-    <a class="btn btn-primary" href="YOUR_VERIFICATION_PAYMENT_LINK" target="_blank" rel="noopener">
-      1) Pay $1 Verification
-    </a>
-
-    <a class="btn btn-outline" href="YOUR_ACCESS_REQUEST_FORM_LINK" target="_blank" rel="noopener">
-      2) Request Access
-    </a>
-
-    <a class="btn btn-outline" href="lodge.html?v=2">
-      3) Lodge Gate (Enter Key)
-    </a>
-  </div>
-
-  <p class="small" style="margin-top:10px;">
-    After payment + access request, you’ll receive your Lodge key by WhatsApp.
-  </p>
-</div>
-
-    <div class="panel" id="menuPanel">
-      <a href="#how">How it works</a>
-      <a href="#academy">Academy</a>
-      <a href="#earnings">Tasks & Earnings</a>
-      <a href="#creator">Task Creators</a>
-      <a href="#founder">Founder</a>
-      <a href="#contact">Contact</a>
-      <div class="panel-actions">
-        <!-- UPDATED: new Request Access form link -->
-        <a class="btn ghost" href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Request Access</a>
-
-        <a class="btn primary" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">Pay $1 Verification</a>
-        <button class="btn dark" type="button" id="openFormBtn">Open Form Here</button>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+        <a class="btn ghost" id="ctaRequestTop" href="#" type="button">Request Access</a>
+        <a class="btn primary" id="ctaPayTop" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">Pay $1 Verification</a>
       </div>
     </div>
   </div>
 </header>
 
-<main id="main">
-
-  <!-- HERO -->
-  <section class="hero" id="top">
+<main>
+  <section class="hero">
     <div class="container">
-      <div class="hero-grid">
+      <div class="heroGrid">
         <div>
-          <div class="badge"><span class="dot"></span> Live in Beta • Nigeria-first • Zaria Launch</div>
-
-          <h1>
-            Build <span class="gold">Financial Order</span>.<br/>
-            Earn <span class="gold">Trust</span>.<br/>
-            Unlock <span class="gold">Opportunity</span>.
-          </h1>
-
+          <div class="badge"><span class="dot"></span> Stewardship-first • Proof-based • Manual approval</div>
+          <h1>Enter the Steward’s Lodge.</h1>
           <p class="lead">
-            AGEx Smart Money Hub is a stewardship-first learning platform designed to build disciplined money habits, practical skills,
-            and verifiable growth—before earning features scale.
-            <strong>Clarity over cleverness. Substance over scale.</strong>
+            Simple entry sequence. No stories, no confusion.
+            Pay <b>$1</b> once → Request access → Receive your key → Enter the Lodge.
           </p>
 
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin:18px 0 6px">
-            <a class="btn primary" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">
-              Begin Verification & Request Access
-
-            </a>
-
-            <!-- UPDATED -->
-            <a class="btn ghost" href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">
-              Request Access
-            </a>
-
-            <button class="btn dark" type="button" id="openFormBtn2">Fill Form On This Page</button>
+          <div class="ctaRow">
+            <a class="btn primary" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">1) Pay $1 Verification</a>
+            <button class="btn dark" type="button" id="openFormBtn">2) Request Access</button>
+            <a class="btn ghost" href="lodge.html?v=2">3) Lodge Gate</a>
           </div>
 
-          <p class="fine">
-            <strong>How access works:</strong> Pay the one-time $1 verification → Submit the access form → Manual approval within <strong>24 hours</strong>.
-            The Academy is <strong>free after entry</strong>.
+          <p class="miniNote">
+            After approval, you’ll receive your key via WhatsApp. The key is case-sensitive.
           </p>
 
-          <!-- PAYMENT + ACCESS FUNNEL (hardening) -->
-          <div style="margin-top:16px">
-            <div style="border:1px solid rgba(15,15,15,.08);background:#fff;border-radius:22px;padding:16px;box-shadow:0 12px 30px rgba(0,0,0,.06)">
-              <h3 style="margin:0 0 8px;color:#0B3D2E;letter-spacing:-.2px">Entry Verification → Access Approval</h3>
-              <ol style="margin:0;padding-left:18px;color:rgba(15,15,15,.72);font-weight:750">
-                <li><b>Pay the $1 verification</b> (filters spam and confirms commitment).</li>
-                <li><b>Submit the Request Access form</b> using the <b>same email</b> used for payment.</li>
-                <li><b>Manual approval within 24 hours</b>. We protect quality and accountability.</li>
-              </ol>
-              <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
-                <a href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener" class="btn primary">Pay $1 Verification</a>
-
-                <!-- UPDATED -->
-                <a href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener" class="btn ghost">Request Access</a>
-
-                <button class="btn dark" type="button" id="openFormBtn3">Open Form Here</button>
-              </div>
-              <p class="hint" style="margin:10px 0 0">
-                Tip: Use the same email on Paystack + the form so we can verify quickly.
-              </p>
+          <div class="steps" aria-label="Entry steps">
+            <div class="step">
+              <div class="n">Step 1</div>
+              <h3>Pay the $1 verification</h3>
+              <p>Confirms commitment and blocks spam access.</p>
+            </div>
+            <div class="step">
+              <div class="n">Step 2</div>
+              <h3>Submit Request Access</h3>
+              <p>Use the same email you used for payment.</p>
+            </div>
+            <div class="step">
+              <div class="n">Step 3</div>
+              <h3>Receive key → Enter Lodge</h3>
+              <p>We verify and send your Lodge key manually.</p>
             </div>
           </div>
         </div>
 
-        <div class="hero-card">
-          <h3>Entry-Point Product: Smart Money Academy (Foundations)</h3>
-          <p>
-            A mini-course for disciplined financial stewardship. Learn, apply homework, submit proof, and unlock levels.
-            We start with 10 serious learners to protect quality.
+        <div class="card white">
+          <h2 style="margin:0;color:var(--green);letter-spacing:-.2px">Already paid & approved?</h2>
+          <p style="margin:10px 0 0;color:rgba(15,15,15,.66);font-weight:750;font-size:13px">
+            If you’ve received your key, go straight to the Lodge Gate and enter the key exactly as sent.
           </p>
 
-          <div class="price">
-            <div class="tag">One-time entry verification</div>
-            <div class="amt">$1</div>
-          </div>
+          <div class="divider"></div>
 
-          <div class="kpi" role="list">
-            <div class="box" role="listitem">
-              <div class="num">Learn</div>
-              <div class="txt">Modules + simple quizzes</div>
-            </div>
-            <div class="box" role="listitem">
-              <div class="num">Practice</div>
-              <div class="txt">Stewardship Actions (homework)</div>
-            </div>
-            <div class="box" role="listitem">
-              <div class="num">Verify</div>
-              <div class="txt">Proof-based progression</div>
-            </div>
-            <div class="box" role="listitem">
-              <div class="num">Earn</div>
-              <div class="txt">Micro-tasks (Phase 1)</div>
-            </div>
-          </div>
+          <a class="btn dark" href="lodge.html?v=2" style="width:100%;justify-content:center">Open Lodge Gate</a>
 
-          <p class="hint" style="margin-top:12px">
-            Important: AGEx is educational. We do not promise profits or income. Results depend on discipline and application.
+          <p class="miniNote" style="margin-top:12px">
+            If you paid but didn’t get a reply yet, submit the Request Access form again and add your payment proof.
           </p>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- WHAT AGEX IS -->
-  <section>
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>What AGEx Is (and what it is not)</h2>
-          <p>
-            AGEx is an education-first platform to build financial intelligence, practical skills, and a verified record of discipline.
-            It is not a “get rich quick” offer. The product is transformation.
-          </p>
-        </div>
-      </div>
+          <div class="divider"></div>
 
-      <div class="grid-3">
-        <div class="tile">
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M4 12l4 4L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <h4>Stewardship First</h4>
-          <p>Money is a tool for order, responsibility, and legacy—not a shortcut to identity.</p>
-        </div>
-        <div class="tile">
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4z" stroke="currentColor" stroke-width="2"/></svg>
-          </div>
-          <h4>Substance Over Scale</h4>
-          <p>We prioritize a deep experience for 10 serious learners over a noisy experience for 10,000.</p>
-        </div>
-        <div class="tile">
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M4 19h16M7 16V8M12 16V5M17 16v-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-          <h4>Skills → Value</h4>
-          <p>Skill Points create a credible record. Verified growth unlocks opportunities over time.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW IT WORKS -->
-  <section id="how">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>How AGEx Works</h2>
-          <p>Three steps. Simple, clear, and trust-preserving: Learn → Practice → Verify.</p>
-        </div>
-      </div>
-
-      <div class="steps">
-        <div class="step">
-          <div class="n">1 • Learn</div>
-          <h4>Enter the Academy</h4>
-          <p>Pay the one-time $1 verification, request access, then begin the Foundations mini-course.</p>
-        </div>
-        <div class="step">
-          <div class="n">2 • Practice</div>
-          <h4>Complete Stewardship Actions</h4>
-          <p>Every module includes homework that builds real discipline and real financial order.</p>
-        </div>
-        <div class="step">
-          <div class="n">3 • Verify</div>
-          <h4>Prove Growth</h4>
-          <p>Progress is confirmed through submissions and checks. Verified learners unlock new levels.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ACADEMY -->
-  <section id="academy">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>Smart Money Academy — Foundations (Mini-Course)</h2>
-          <p>
-            The entry-point course with one outcome: build a disciplined financial foundation and a verified record.
-            The Academy is free after the one-time verification.
-          </p>
-        </div>
-      </div>
-
-      <div class="academy">
-        <div class="list">
-          <div class="row">
-            <div class="mini">1</div>
-            <div>
-              <h5>Module 1 — The Steward’s Mindset (🛡️)</h5>
-              <div class="meta">Objective: Replace chaos with identity, clarity, and responsibility.</div>
-              <ul class="bullets">
-                <li>Money as a tool (not a trophy)</li>
-                <li>Needs vs wants vs vanity spending</li>
-                <li>Personal stewardship covenant</li>
-                <li><b>Stewardship Action:</b> Write your 5 Money Rules</li>
-              </ul>
+          <div class="faq">
+            <div class="q">
+              <b>How long?</b>
+              <p>Manual approval typically within <b>24 hours</b>.</p>
             </div>
-          </div>
-
-          <div class="row">
-            <div class="mini">2</div>
-            <div>
-              <h5>Module 2 — Budget to Builder (📐)</h5>
-              <div class="meta">Objective: Build a simple budget that works in real life.</div>
-              <ul class="bullets">
-                <li>Income mapping (stable + irregular)</li>
-                <li>Weekly budgeting (mobile-friendly)</li>
-                <li>Expense trimming without starvation</li>
-                <li><b>Stewardship Action:</b> Create a 7-day spending plan + tracking log</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="mini">3</div>
-            <div>
-              <h5>Module 3 — The Discipline Engine (⏱️)</h5>
-              <div class="meta">Objective: Build systems that keep you consistent when motivation fails.</div>
-              <ul class="bullets">
-                <li>Habits that compound (small wins)</li>
-                <li>Accountability loops and triggers</li>
-                <li>Saving rules and emergency discipline</li>
-                <li><b>Stewardship Action:</b> Start a 14-day discipline challenge (daily proof)</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="mini">4</div>
-            <div>
-              <h5>Module 4 — Skill as Currency (🧰)</h5>
-              <div class="meta">Objective: Choose and practice a skill that creates value.</div>
-              <ul class="bullets">
-                <li>Skill selection (demand + access)</li>
-                <li>Learning plan (30–60 minutes/day)</li>
-                <li>Portfolio proof: show your work</li>
-                <li><b>Stewardship Action:</b> Submit a simple proof project</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="mini">5</div>
-            <div>
-              <h5>Module 5 — Security & Legacy (🏛️)</h5>
-              <div class="meta">Objective: Protect progress, avoid traps, and plan your next 90 days.</div>
-              <ul class="bullets">
-                <li>Risk control: debt, scams, impulse</li>
-                <li>Investment readiness (no hype)</li>
-                <li>90-day plan: structure & milestones</li>
-                <li><b>Stewardship Action:</b> Write your 90-day plan + submit milestones</li>
-              </ul>
+            <div class="q">
+              <b>Need help?</b>
+              <p>Email: <b>arinonebusiness@gmail.com</b><br/>WhatsApp: <b>+234 813 680 5462</b></p>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="aside">
-          <div class="card">
-            <h3 style="margin:0 0 8px;color:var(--green);letter-spacing:-.2px">Launch Format (Phase 1)</h3>
-            <p style="margin:0;font-size:13px;font-weight:750;color:rgba(15,15,15,.66)">
-              We start lean: manual approval, guided learning pages, and proof-based progression.
-            </p>
-            <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px">
-              <a class="btn primary" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">Pay $1 Verification</a>
-
-              <!-- UPDATED -->
-              <a class="btn ghost" href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Request Access</a>
-
-              <button class="btn dark" type="button" id="openFormBtn4">Open Form Here</button>
-            </div>
-            <p class="hint" style="margin-top:10px">
-              After submission, we respond within 24 hours.
-            </p>
-          </div>
-
-          <div class="card" style="margin-top:14px">
-            <h3 style="margin:0 0 8px;color:var(--green);letter-spacing:-.2px">A note on earnings</h3>
-            <p style="margin:0;font-size:13px;font-weight:750;color:rgba(15,15,15,.66)">
-              Early earnings are intentionally micro. We build discipline and proof first. Money follows mastery.
-            </p>
-          </div>
+      <div class="ctaBox" style="margin-top:16px">
+        <h2>Do this now (3 clicks):</h2>
+        <p>Pay → Request → Enter. That’s the entire funnel.</p>
+        <div class="ctaRow">
+          <a class="btn white" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">Pay $1 Verification</a>
+          <button class="btn outline" type="button" id="openFormBtn2">Request Access</button>
+          <a class="btn outline" href="lodge.html?v=2">Lodge Gate</a>
         </div>
       </div>
+
     </div>
   </section>
-
-  <!-- TASKS & EARNINGS -->
-  <section id="earnings">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>How Tasks & Earnings Work (Reality Mode)</h2>
-          <p>
-            AGEx runs a learning-first micro-task economy. Early learners earn slowly by design.
-            The minimum reward per task is <b>$0.01</b>. Levels unlock higher opportunity.
-          </p>
-        </div>
-      </div>
-
-      <div class="two">
-        <div class="tile">
-          <div class="pill"><span class="dot"></span> Minimum unit: <b>$0.01</b> per task</div>
-          <p style="margin-top:12px;font-size:13px;font-weight:750;color:rgba(15,15,15,.66)">
-            We are Nigeria-first. We stay realistic. Early-stage tasks are small and daily, focused on discipline, proof, and consistency.
-            Learners who show up daily can build a verified record, grow in skill, and unlock higher levels over time.
-          </p>
-          <ul class="bullets">
-            <li><b>Level 1:</b> Apprentice — learning + consistency tasks (micro rewards)</li>
-            <li><b>Level 2:</b> Builder — simple support tasks (small increases)</li>
-            <li><b>Level 3:</b> Contributor — real value tasks (meaningful rewards)</li>
-            <li><b>Level 4+:</b> Trusted Operator — creator tasks & partnerships (Phase 2)</li>
-          </ul>
-        </div>
-
-        <div class="tile">
-          <div class="pill"><span class="dot"></span> Trust-first principle</div>
-          <p style="margin-top:12px;font-size:13px;font-weight:750;color:rgba(15,15,15,.66)">
-            AGEx does not sell fake growth. We do not offer “buy followers” jobs. Tasks must be legitimate, skill-based, and verifiable.
-            This protects your reputation and the platform’s integrity.
-          </p>
-          <ul class="bullets">
-            <li>Tasks require clear deliverables + proof</li>
-            <li>Low-level tasks are capped daily to prevent abuse</li>
-            <li>Skill Points record progress and unlock levels</li>
-            <li>Withdrawals and advanced earning features activate in later phases</li>
-          </ul>
-        </div>
-      </div>
-
-      <div style="margin-top:14px" class="tile">
-        <h4 style="margin:0 0 10px">Examples of compliant “growth” tasks (not fake followers)</h4>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Goal</th>
-                <th>Allowed Task Type</th>
-                <th>How Proof Works</th>
-                <th>Suggested Phase</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Grow a Facebook page</td>
-                <td>Invite outreach (real invites), meaningful engagement, content creation</td>
-                <td>Screenshots, links, daily report template</td>
-                <td>Phase 2+</td>
-              </tr>
-              <tr>
-                <td>Get leads</td>
-                <td>Lead research / data collection (approved sources)</td>
-                <td>Google Sheet + validation sample</td>
-                <td>Phase 2+</td>
-              </tr>
-              <tr>
-                <td>Better content</td>
-                <td>Carousel design, scripts, captions, thumbnails</td>
-                <td>Delivered files/links</td>
-                <td>Phase 1–2</td>
-              </tr>
-              <tr>
-                <td>More awareness</td>
-                <td>Community posting plan + execution (no spam)</td>
-                <td>Posted links + schedule</td>
-                <td>Phase 2</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="hint" style="margin-top:10px">
-          If a task could get a page penalized, it is not allowed on AGEx.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- TASK CREATOR PAGE (single-file "page" via tabs) -->
-  <section id="creator">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>Task Creators (Phase 2 Feature — Designed Now)</h2>
-          <p>
-            This section shows exactly how creator task posting will work when we activate the marketplace.
-            For now, it is a blueprint and preview—so the system is clear and credible.
-          </p>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="pill"><span class="dot"></span> Creator pricing is <b>guided</b>: creator chooses, system protects minimums</div>
-
-        <div class="tabs" aria-label="Creator tabs">
-          <button class="tabbtn active" data-tab="creatorForm">Creator Task Input (Preview)</button>
-          <button class="tabbtn" data-tab="creatorGuide">Task Creator Guide</button>
-          <button class="tabbtn" data-tab="rateRules">Pricing Rules</button>
-        </div>
-
-        <!-- View: Form -->
-        <div class="view active" id="creatorForm" style="margin-top:14px">
-          <div class="row2">
-            <div>
-              <div class="field">
-                <label for="ctitle">Task Title</label>
-                <input id="ctitle" placeholder="e.g., Design 3 Facebook carousels for AGEx" />
-              </div>
-
-              <div class="field">
-                <label for="ccat">Category</label>
-                <select id="ccat">
-                  <option value="learning">Learning / Discipline (Level 1)</option>
-                  <option value="support">Support / Admin (Level 1–2)</option>
-                  <option value="content">Content (Level 2–3)</option>
-                  <option value="research">Research (Level 2–3)</option>
-                  <option value="ads">Ads / Campaign Setup (Level 3+) </option>
-                  <option value="advanced">Advanced / Partner Task (Level 4+) </option>
-                </select>
-                <div class="hint">Category determines recommended reward range and minimum rules.</div>
-              </div>
-
-              <div class="field">
-                <label for="cdesc">Description</label>
-                <textarea id="cdesc" placeholder="Describe what you want done, clearly."></textarea>
-              </div>
-
-              <div class="field">
-                <label for="cproof">Proof Required</label>
-                <select id="cproof">
-                  <option value="screenshot">Screenshot Proof</option>
-                  <option value="link">Link Proof</option>
-                  <option value="file">File Upload / Document Link</option>
-                  <option value="report">Daily Report Template</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <div class="field">
-                <label for="cmodel">Pricing Model</label>
-                <select id="cmodel">
-                  <option value="fixed">Fixed price (recommended)</option>
-                  <option value="unit">Per-unit × quantity</option>
-                  <option value="package">Package (Bronze/Silver/Gold)</option>
-                </select>
-              </div>
-
-              <div class="row2">
-                <div class="field">
-                  <label for="creward">Reward (USD)</label>
-                  <input id="creward" type="number" min="0.01" step="0.01" value="0.01" />
-                  <div class="hint">Minimum allowed is $0.01 in Phase 1 micro-task economy.</div>
-                </div>
-                <div class="field">
-                  <label for="cqty">Quantity (if per-unit)</label>
-                  <input id="cqty" type="number" min="1" step="1" value="1" />
-                </div>
-              </div>
-
-              <div class="tile" style="margin-top:10px">
-                <h4 style="margin:0 0 6px">System Guidance (auto)</h4>
-                <div id="guidance" style="font-size:12px;font-weight:800;color:rgba(15,15,15,.68)">
-                  Select a category to see suggested pricing range and worker level fit.
-                </div>
-                <div class="toast" id="toast">Preview only: task posting is activated in Phase 2.</div>
-
-                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-                  <button class="btn dark small" type="button" id="previewBtn">Preview Task</button>
-                  <button class="btn ghost small" type="button" id="resetBtn">Reset</button>
-                </div>
-              </div>
-
-              <div class="tile" style="margin-top:12px">
-                <h4 style="margin:0 0 6px">Important Restrictions</h4>
-                <ul class="bullets" style="margin-top:8px">
-                  <li>No fake growth tasks (e.g., “buy followers”, “bot likes”).</li>
-                  <li>Tasks must be legitimate, verifiable, and safe for platforms.</li>
-                  <li>AGEx may reject or remove tasks that violate integrity.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- View: Guide -->
-        <div class="view" id="creatorGuide" style="margin-top:14px">
-          <div class="tile">
-            <h4 style="margin:0 0 10px">Task Creator Guide (Copy-Paste Ready)</h4>
-            <p style="margin:0;font-size:13px;font-weight:750;color:rgba(15,15,15,.66)">
-              AGEx is trust-first. To post a task, you must write it like a contract: clear deliverables, proof required, and a realistic reward.
-            </p>
-            <ul class="bullets">
-              <li><b>1) Title:</b> Clear and specific (what will be delivered?)</li>
-              <li><b>2) Description:</b> Step-by-step requirements (avoid vague instructions)</li>
-              <li><b>3) Deliverables:</b> What counts as “done”?</li>
-              <li><b>4) Proof:</b> Screenshot / links / document / report</li>
-              <li><b>5) Reward:</b> Choose within the system guidance range</li>
-              <li><b>6) Deadline:</b> Realistic completion time</li>
-            </ul>
-            <p class="hint" style="margin-top:10px">
-              In Phase 1, tasks are small and learning-aligned. In Phase 2, verified creators unlock larger tasks.
-            </p>
-          </div>
-
-          <div class="tile" style="margin-top:12px">
-            <h4 style="margin:0 0 10px">Example (Allowed)</h4>
-            <p class="hint" style="margin:0 0 8px">Title: “Write 10 caption options for AGEx Smart Money Hub”</p>
-            <ul class="bullets">
-              <li>Deliverable: 10 captions + 10 hashtag sets</li>
-              <li>Proof: Paste in Google Doc link</li>
-              <li>Reward: $0.05 (Level 2 task)</li>
-              <li>Deadline: 24 hours</li>
-            </ul>
-          </div>
-
-          <div class="tile" style="margin-top:12px">
-            <h4 style="margin:0 0 10px">Example (Not Allowed)</h4>
-            <p class="hint" style="margin:0 0 8px">“Get me 100 followers for my Facebook page”</p>
-            <ul class="bullets">
-              <li>Reason: encourages inauthentic engagement; risks penalties; damages credibility.</li>
-              <li>Allowed alternative: “Create 7-day content plan + outreach invites + engagement report.”</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- View: Pricing Rules -->
-        <div class="view" id="rateRules" style="margin-top:14px">
-          <div class="tile">
-            <h4 style="margin:0 0 10px">Pricing Rules (Phase 1 → Phase 2)</h4>
-            <ul class="bullets">
-              <li><b>Minimum reward:</b> $0.01 per task (Phase 1 micro economy).</li>
-              <li><b>Daily cap (Level 1):</b> 1 micro-task per day (prevents farming).</li>
-              <li><b>System guidance:</b> Category sets recommended range and eligible worker level.</li>
-              <li><b>Creator chooses within bounds:</b> creators can increase reward, not reduce below minimum.</li>
-              <li><b>Trust escalates pay:</b> higher levels unlock higher-value tasks and bigger rewards.</li>
-            </ul>
-          </div>
-
-          <div class="tile" style="margin-top:12px">
-            <h4 style="margin:0 0 10px">Recommended Micro Ranges (Nigeria-Realistic)</h4>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Level</th>
-                    <th>Task Type</th>
-                    <th>Reward Range (USD)</th>
-                    <th>Purpose</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Level 1</td>
-                    <td>Learning check-ins, short reflections, lesson answers</td>
-                    <td>$0.01</td>
-                    <td>Discipline + proof</td>
-                  </tr>
-                  <tr>
-                    <td>Level 2</td>
-                    <td>Simple support tasks (captions, research notes)</td>
-                    <td>$0.02–$0.05</td>
-                    <td>Skill formation</td>
-                  </tr>
-                  <tr>
-                    <td>Level 3</td>
-                    <td>Real value tasks (content packs, admin batches)</td>
-                    <td>$0.10–$0.50</td>
-                    <td>Contribution</td>
-                  </tr>
-                  <tr>
-                    <td>Level 4+</td>
-                    <td>Creator marketplace tasks (partners)</td>
-                    <td>Varies</td>
-                    <td>Opportunity</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <p class="hint" style="margin-top:10px">
-              Phase 1 focuses on discipline. Phase 2 introduces creator posting and larger work.
-            </p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- SKILL POINTS -->
-  <section id="points">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>Skill Points → Value (Whitepaper Draft V1)</h2>
-          <p>Skill Points are a learning + verification ledger. Not hype points—proof points.</p>
-        </div>
-      </div>
-
-      <div class="two">
-        <div class="tile">
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M7 7h10M7 12h10M7 17h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-          <h4>What It Is</h4>
-          <p><b>Skill Points</b> record completed modules, quizzes, and verified submissions. They represent discipline and competence over time.</p>
-        </div>
-
-        <div class="tile">
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-          <h4>How You Earn</h4>
-          <ul class="bullets" style="margin-top:10px">
-            <li>Complete a module + quiz</li>
-            <li>Submit Stewardship Action proof</li>
-            <li>Submit a verified proof project</li>
-            <li>Maintain discipline streaks</li>
-            <li>Complete micro-tasks (Phase 1)</li>
-          </ul>
-        </div>
-
-        <div class="tile">
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M20 7l-8 8-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <h4>The Bridge to Value</h4>
-          <p><b>Pathway A (Direct):</b> Points unlock premium tools, templates, and 1-on-1 advisory time.</p>
-          <p style="margin-top:10px"><b>Pathway B (Partnership):</b> Points become a trusted skills résumé for local partners.</p>
-        </div>
-
-        <div class="tile">
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M4 12l4 4L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <h4>Future Vision</h4>
-          <p>Long-term: verified contributions may connect to wider earning features without sacrificing safety or stewardship.</p>
-          <p class="hint" style="margin-top:10px">For now: simple, manual, credible.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOUNDER -->
-  <section id="founder">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>Founder’s Note</h2>
-          <p>A covenant of purpose—not commerce.</p>
-        </div>
-      </div>
-
-      <div class="tile" style="background:linear-gradient(135deg, rgba(11,61,46,.08), rgba(255,255,255,.92));border:1px solid rgba(11,61,46,.14)">
-        <h4 style="margin:0 0 10px;color:var(--green)">From Charles Arin</h4>
-        <p style="margin:0;font-size:13px;font-weight:750;color:rgba(15,15,15,.72)">
-          AGEx was born from a call to build order where chaos had become normal.
-          I learned that financial freedom is not a lottery; it is the fruit of discipline, stewardship, and skill.
-          This platform exists to help you build your financial architecture—step by step—through learning, practical action, and verifiable progress.
-          AGEx is a practical extension of the stewardship principles expressed in <i>The Billionaire’s Mindset Guide</i> and <i>The Steward’s Charter</i>.
-        </p>
-        <p style="margin:12px 0 0;font-weight:900;color:var(--green)">— Charles Arin</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section>
-    <div class="container">
-      <div class="cta">
-        <h3>Start Your First Lesson</h3>
-        <p>
-          Pay the one-time $1 verification, submit the access request, and enter the academy.
-          We approve manually to protect quality and accountability.
-        </p>
-        <div class="cta-actions">
-          <a class="btn white" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">Begin Verification & Request Pay</a>
-
-          <!-- UPDATED -->
-          <a class="btn outline" href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Request Access</a>
-
-          <button class="btn outline" type="button" id="openFormBtn5">Open Form Here</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>Contact</h2>
-          <p>Support, partnership inquiries, and onboarding help.</p>
-        </div>
-      </div>
-
-      <div class="grid-3">
-        <div class="tile">
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-          <h4>Email</h4>
-          <p><a href="mailto:arinonebusiness@gmail.com"><b>arinonebusiness@gmail.com</b></a></p>
-        </div>
-
-        <div class="tile">
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M6.5 3.5l3.5 3.5-2 2c1.7 3 4 5.3 7 7l2-2 3.5 3.5-2 2c-.8.8-2 .9-3 .4-6.2-3-11-7.8-14-14-.5-1-.4-2.2.4-3l2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <h4>WhatsApp</h4>
-          <p><a href="https://wa.me/2348136805462" target="_blank" rel="noopener"><b>+234 813 680 5462</b></a></p>
-        </div>
-
-        <div class="tile">
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-4.6 7-11a7 7 0 1 0-14 0c0 6.4 7 11 7 11z" stroke="currentColor" stroke-width="2"/><path d="M12 10.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" fill="currentColor"/></svg>
-          </div>
-          <h4>Location</h4>
-          <p><b>Zaria, Kaduna State, Nigeria</b></p>
-        </div>
-      </div>
-
-      <div class="tile" style="margin-top:14px">
-        <h4 style="margin:0 0 8px">Social</h4>
-        <p style="margin:0;font-size:13px;font-weight:750;color:rgba(15,15,15,.68)">
-          Facebook: <b>Arinsglobalexchange.com</b> • Instagram: <b>aringlobalconnectagex</b> • YouTube: <b>@arinsglobalmediahouse247</b>
-        </p>
-      </div>
-    </div>
-  </section>
-
 </main>
 
 <footer>
   <div class="container">
     <div class="foot">
-      <small>© <span id="year"></span> AGEx Smart Money Hub. By Arin’s Global Exchange — Empowering Your Life’s Major Matters.</small>
-      <div class="links">
-        <a href="#academy">Academy</a>
-        <a href="#earnings">Tasks & Earnings</a>
-        <a href="#creator">Task Creators</a>
-
-        <!-- UPDATED -->
-        <a href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Request Access</a>
-
-        <a href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">Begin Verification & Request Access</a>
+      <small>© <span id="year"></span> AGEx Smart Money Hub — Stewardship first.</small>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <a href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">Pay $1</a>
+        <a href="#" id="footerFormLink">Request Access</a>
+        <a href="lodge.html?v=2">Lodge Gate</a>
       </div>
     </div>
   </div>
-</foofooter<!-- Form Modal -->
+</footer>
+
+<!-- Modal (Form Embed) -->
 <div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-label="Request access form">
   <div class="modal" role="document">
     <div class="modal-head">
-      <strong>Request Access to AGEx</strong>
+      <strong>Request Access to the Steward’s Lodge</strong>
       <button class="close" id="closeModal" type="button">Close</button>
     </div>
-    <div class="modal-body">
-      <!-- IMPORTANT:
-           Replace the src below with the EMBED URL from your NEW form.
-           Do NOT use forms.gle inside iframe. -->
-      <iframe
-        <iframe
-  src="https://docs.google.com/forms/d/e/1FAIpQLSduxe6b0sBcIpkTpdHPMq3XLLpeALFuczriZWczeuM5YDtkEg/viewform?embedded=true"
-  title="AGEx Request Access Form"
->Loading…</iframe>
-      >Loading…</iframe>
-    </div>
+
+    <!-- IMPORTANT:
+      Do NOT use forms.gle in iframe.
+      Use the Google Forms "embedded=true" URL.
+    -->
+    <iframe
+      src="https://docs.google.com/forms/d/e/1FAIpQLSduxe6b0sBcIpkTpdHPMq3XLLpeALFuczriZWczeuM5YDtkEg/viewform?embedded=true"
+      title="AGEx Request Access Form"
+      loading="lazy"
+    >Loading…</iframe>
+
     <div class="note">
-      If the form looks too tall on your phone, scroll inside the form area. Or open it directly:
-      <!-- UPDATED -->
-      <a href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener"><b>Open Form in New Tab</b></a>.
+      If the form does not load inside your phone, open it directly:
+      <a href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener"><b>Open Form in New Tab</b></a>
     </div>
   </div>
 </div>
 
 <script>
-  // Year
   document.getElementById("year").textContent = new Date().getFullYear();
-
-  // Mobile menu
-  const menuBtn = document.getElementById("menuBtn");
-  const menuPanel = document.getElementById("menuPanel");
-  menuBtn?.addEventListener("click", () => {
-    const isOpen = menuPanel.style.display === "block";
-    menuPanel.style.display = isOpen ? "none" : "block";
-    menuBtn.setAttribute("aria-label", isOpen ? "Open menu" : "Close menu");
-  });
-  menuPanel?.querySelectorAll("a").forEach(a => {
-    a.addEventListener("click", () => { menuPanel.style.display = "none"; });
-  });
 
   // Modal controls
   const modal = document.getElementById("modal");
@@ -1262,78 +352,20 @@
     document.body.style.overflow = "auto";
   }
 
-  ["openFormBtn","openFormBtn2","openFormBtn3","openFormBtn4","openFormBtn5"].forEach(id => {
+  ["openFormBtn","openFormBtn2"].forEach(id => {
     document.getElementById(id)?.addEventListener("click", openFormModal);
   });
+
+  // Also make the top/footer "Request Access" behave as modal
+  document.getElementById("ctaRequestTop")?.addEventListener("click", (e)=>{ e.preventDefault(); openFormModal(); });
+  document.getElementById("footerFormLink")?.addEventListener("click", (e)=>{ e.preventDefault(); openFormModal(); });
 
   closeModal?.addEventListener("click", closeFormModal);
   modal?.addEventListener("click", (e) => { if (e.target === modal) closeFormModal(); });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && modal.style.display === "flex") closeFormModal();
   });
-
-  // Tabs
-  document.querySelectorAll(".tabbtn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".tabbtn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      const tab = btn.getAttribute("data-tab");
-
-      document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
-      document.getElementById(tab)?.classList.add("active");
-    });
-  });
-
-  // Creator guidance logic (preview)
-  const cat = document.getElementById("ccat");
-  const reward = document.getElementById("creward");
-  const qty = document.getElementById("cqty");
-  const guidance = document.getElementById("guidance");
-  const toast = document.getElementById("toast");
-
-  const ranges = {
-    learning: { min: 0.01, max: 0.01, level: "Level 1", text: "Learning/discipline micro-task. Minimum and standard reward is $0.01. One per day cap (Level 1)." },
-    support:  { min: 0.01, max: 0.05, level: "Level 1–2", text: "Support/admin tasks. Recommended $0.01–$0.05 depending on deliverable." },
-    content:  { min: 0.02, max: 0.10, level: "Level 2–3", text: "Content tasks (captions, simple designs, scripts). Recommended $0.02–$0.10." },
-    research: { min: 0.02, max: 0.10, level: "Level 2–3", text: "Research tasks. Recommended $0.02–$0.10 with clear proof required." },
-    ads:      { min: 0.10, max: 0.50, level: "Level 3+", text: "Ads/campaign setup tasks. Recommended $0.10–$0.50+ (Phase 2+ only)." },
-    advanced: { min: 0.10, max: 1.00, level: "Level 4+", text: "Advanced partner tasks. Pricing varies (Phase 2+ only)." }
-  };
-
-  function updateGuidance(){
-    const key = cat?.value || "learning";
-    const r = ranges[key];
-    if (!r) return;
-
-    reward.min = r.min.toFixed(2);
-    if (parseFloat(reward.value || "0") < r.min) reward.value = r.min.toFixed(2);
-
-    guidance.innerHTML = `
-      <b>Eligible:</b> ${r.level}<br/>
-      <b>Recommended:</b> $${r.min.toFixed(2)} – $${r.max.toFixed(2)}<br/>
-      <span style="color:rgba(15,15,15,.66)">${r.text}</span>
-    `;
-  }
-
-  cat?.addEventListener("change", updateGuidance);
-  reward?.addEventListener("input", updateGuidance);
-  updateGuidance();
-
-  document.getElementById("previewBtn")?.addEventListener("click", () => {
-    toast.style.display = "block";
-    setTimeout(() => toast.style.display = "none", 3500);
-  });
-
-  document.getElementById("resetBtn")?.addEventListener("click", () => {
-    document.getElementById("ctitle").value = "";
-    document.getElementById("cdesc").value = "";
-    document.getElementById("cproof").value = "screenshot";
-    document.getElementById("cmodel").value = "fixed";
-    cat.value = "learning";
-    reward.value = "0.01";
-    qty.value = "1";
-    updateGuidance();
-  });
 </script>
 </body>
 </html>
+
