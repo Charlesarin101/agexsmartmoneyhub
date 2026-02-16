@@ -377,37 +377,13 @@ footer{
     });
   }
 
-  function renderDay(state, dayIndex){
-    const d = curriculum[dayIndex];
-    const day = state.days[dayIndex];
-
-    $("todayTitle").textContent = `Day ${dayIndex+1}`;
-    $("dayObjective").value = d.objective;
-
-    if(!day.actionPlan) day.actionPlan = d.action;
-    if(!day.proof) day.proof = d.proof;
-
-    $("dayActionPlan").value = day.actionPlan;
-    $("dayProof").value = day.proof;
-    $("dayReflection").value = day.reflection || "";
-    $("dayDone").checked = !!day.done;
-
-    const completed = completedCount(state);
-    if(completed === 21){
-      $("progressPill").textContent = "21 / 21 completed — FOUNDATION COMPLETE ✅";
-    }else{
-      $("progressPill").textContent = `${completed} / 21 completed`;
-      <div class="row" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px">
-  <button class="btn primary" id="goApprenticeBtn" type="button" style="display:none">
-    Proceed to Level 1 — Apprentice →
-  </button>
-  <span class="muted" id="levelHint" style="display:none">
-    Foundation completed. You are cleared to enter Apprentice.
-  </span>
-</div>
-
-<div class="error" id="validationMsg" style="display:none"></div>
-
+  // Show proceed button if all complete
+const goBtn = $("goApprenticeBtn");
+const levelHint = $("levelHint");
+if(goBtn && levelHint){
+  const allDone = completedCount(state) === 21;
+  goBtn.style.display = allDone ? "inline-flex" : "none";
+  levelHint.style.display = allDone ? "inline" : "none";
     }
   }
 
@@ -423,26 +399,103 @@ footer{
   }
 
   function bindDay(state){
-    const sel = $("daySelect");
+  const sel = $("daySelect");
+  if(!sel) return;
 
-    function persistDay(){
-      const idx = parseInt(sel.value, 10);
-      const day = state.days[idx];
-      day.actionPlan = $("dayActionPlan").value;
-      day.proof = $("dayProof").value;
-      day.reflection = $("dayReflection").value;
-      day.done = $("dayDone").checked;
-      saveState(state);
-      renderDay(state, idx);
+  const validationMsg = $("validationMsg");
+  const goBtn = $("goApprenticeBtn");
+  const levelHint = $("levelHint");
+
+  function showError(text){
+    if(!validationMsg) return;
+    validationMsg.textContent = text;
+    validationMsg.style.display = "block";
+  }
+  function clearError(){
+    if(!validationMsg) return;
+    validationMsg.style.display = "none";
+    validationMsg.textContent = "";
+  }
+
+  function canCompleteDay(){
+    const proof = ($("dayProof").value || "").trim();
+    const reflection = ($("dayReflection").value || "").trim();
+
+    // Minimum proof + reflection requirement (prevents click-through completion)
+    // Adjust numbers if you want stricter.
+    if(proof.length < 10) return { ok:false, msg:"Add your Daily Proof (at least a short sentence or link)."};
+    if(reflection.length < 20) return { ok:false, msg:"Write a short Reflection (2–4 lines)."};
+    return { ok:true, msg:"" };
+  }
+
+  function persistDay(dayIndex){
+    const day = state.days[dayIndex];
+
+    // If they try to mark as done, enforce validation
+    const wantsDone = $("dayDone").checked;
+
+    if(wantsDone){
+      const check = canCompleteDay();
+      if(!check.ok){
+        $("dayDone").checked = false;
+        showError(check.msg);
+        return;
+      }
     }
 
-    sel.addEventListener("change", () => {
-      renderDay(state, parseInt(sel.value, 10));
+    clearError();
+
+    day.actionPlan = $("dayActionPlan").value;
+    day.proof = $("dayProof").value;
+    day.reflection = $("dayReflection").value;
+    day.done = $("dayDone").checked;
+
+    saveState(state);
+
+    if($("progressPill")){
+      $("progressPill").textContent = `${completedCount(state)} / 21 completed`;
+    }
+
+    // If Day 21 done and all days done => show proceed button
+    const allDone = completedCount(state) === 21;
+    if(goBtn && levelHint){
+      if(allDone){
+        goBtn.style.display = "inline-flex";
+        levelHint.style.display = "inline";
+      }else{
+        goBtn.style.display = "none";
+        levelHint.style.display = "none";
+      }
+    }
+  }
+
+  sel.addEventListener("change", () => {
+    const idx = parseInt(sel.value, 10);
+    clearError();
+    renderDay(state, idx);
+  });
+
+  dailyFields.forEach(id => {
+    const el = $(id);
+    if(!el) return;
+
+    el.addEventListener("input", () => {
+      const idx = parseInt(sel.value, 10);
+      persistDay(idx);
     });
 
-    dailyFields.forEach(id => {
-      $(id).addEventListener("input", persistDay);
-      $(id).addEventListener("change", persistDay);
+    el.addEventListener("change", () => {
+      const idx = parseInt(sel.value, 10);
+      persistDay(idx);
+    });
+  });
+
+  // Proceed button action (you can change this URL to your real Level 1 page later)
+  if(goBtn){
+    goBtn.addEventListener("click", ()=>{
+      // Option A: go to apprentice page inside hub
+      window.location.href = "apprentice.html";
+      // Option B (if apprentice is elsewhere): window.location.href = "level-1.html";
     });
   }
 
