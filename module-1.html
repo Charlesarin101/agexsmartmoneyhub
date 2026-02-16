@@ -214,7 +214,17 @@ footer{
   <label style="display:flex;gap:10px;align-items:center">
     <input type="checkbox" id="dayDone" />
     <span><b>Mark Day as Completed</b> (daily commitment proof)</span>
-  </label>
+  </label> <div class="row" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px">
+  <button class="btn primary" id="goApprenticeBtn" type="button" style="display:none">
+    Proceed to Level 1 — Apprentice →
+  </button>
+  <span class="muted" id="levelHint" style="display:none">
+    Foundation completed. You are cleared to enter Apprentice.
+  </span>
+</div>
+
+<div class="error" id="validationMsg" style="display:none"></div>
+
 
   <!-- NEW: Proof Copy + Next Day -->
   <div class="actions" style="margin-top:12px">
@@ -387,6 +397,17 @@ footer{
       $("progressPill").textContent = "21 / 21 completed — FOUNDATION COMPLETE ✅";
     }else{
       $("progressPill").textContent = `${completed} / 21 completed`;
+      <div class="row" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px">
+  <button class="btn primary" id="goApprenticeBtn" type="button" style="display:none">
+    Proceed to Level 1 — Apprentice →
+  </button>
+  <span class="muted" id="levelHint" style="display:none">
+    Foundation completed. You are cleared to enter Apprentice.
+  </span>
+</div>
+
+<div class="error" id="validationMsg" style="display:none"></div>
+
     }
   }
 
