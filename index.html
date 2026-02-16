@@ -335,15 +335,14 @@
 <button class="btn gold" id="payVerifyBtn" type="button">Pay $1 Verification</button>
 
 <script>
-  document.getElementById("payVerifyBtn").addEventListener("click", () => {
-    const url = "https://paystack.shop/pay/2afhvl8-nf";
-
-    // Try opening externally first
-    const win = window.open(url, "_blank", "noopener,noreferrer");
-
-    // Fallback (some PWA modes block popups unless directly triggered)
-    if (!win) window.location.href = url;
-  });
+  <a
+  class="btn gold"
+  href="https://paystack.shop/pay/2afhvl8-nf"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Pay $1 Verification
+</a>
 </script>
 </body>
 </html>
