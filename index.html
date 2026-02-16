@@ -246,7 +246,14 @@
               <span class="num">1</span>
               <b>Pay $1 Verification</b>
             </div>
-            <a class="btn primary" href="https://paystack.shop/pay/2afhvl8-nf" id="payBtn2">Pay Now</a>
+            <a
+  class="btn gold"
+  href="https://paystack.shop/pay/2afhvl8-nf"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Pay $1 Verification
+</a>
           </div>
           <p>
             This is not tuition. It is a filter that separates builders from browsers.
@@ -332,7 +339,7 @@
       btn.addEventListener("click", (e)=>{
         if(VERIFICATION_PAY_LINK.includes("https://paystack.shop/pay/2afhvl8-nf")){
           e.preventDefault();
-          alert("https://paystack.shop/pay/2afhvl8-nf");
+          alert("");
         }
       });
     });
