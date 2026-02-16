@@ -177,7 +177,15 @@
 
       <div class="row">
         <!-- Replace with your real payment link (the $1 verification page) -->
-        <a class="btn primary" href="https://paystack.shop/pay/2afhvl8-nf" id="payBtn">Pay $1 Verification</a>
+        <a
+  class="btn gold"
+  href="https://paystack.shop/pay/2afhvl8-nf"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Pay $1 Verification
+</a>
+
         <a class="btn ghost" href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Request Access</a>
       </div>
     </div>
@@ -324,27 +332,18 @@
   </footer>
 </main>
 
-<script>
-  // ✅ Replace this with your real $1 verification payment link (Paystack/Stripe/etc.)
-  const VERIFICATION_PAY_LINK = "https://paystack.shop/pay/2afhvl8-nf";
+<button class="btn gold" id="payVerifyBtn" type="button">Pay $1 Verification</button>
 
-  function wirePayButtons(){
-    const a = document.getElementById("payBtn");
-    const b = document.getElementById("payBtn2");
-    [a,b].forEach(btn=>{
-      if(!btn) return;
-      btn.href = VERIFICATION_PAY_LINK;
-      btn.target = "_blank";
-      btn.rel = "noopener";
-      btn.addEventListener("click", (e)=>{
-        if(VERIFICATION_PAY_LINK.includes("https://paystack.shop/pay/2afhvl8-nf")){
-          e.preventDefault();
-          alert("");
-        }
-      });
-    });
-  }
-  wirePayButtons();
+<script>
+  document.getElementById("payVerifyBtn").addEventListener("click", () => {
+    const url = "https://paystack.shop/pay/2afhvl8-nf";
+
+    // Try opening externally first
+    const win = window.open(url, "_blank", "noopener,noreferrer");
+
+    // Fallback (some PWA modes block popups unless directly triggered)
+    if (!win) window.location.href = url;
+  });
 </script>
 </body>
 </html>
