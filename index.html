@@ -177,7 +177,7 @@
 
       <div class="row">
         <!-- Replace with your real payment link (the $1 verification page) -->
-        <a class="btn primary" href="#" id="payBtn">Pay $1 Verification</a>
+        <a class="btn primary" href="https://paystack.shop/pay/2afhvl8-nf" id="payBtn">Pay $1 Verification</a>
         <a class="btn ghost" href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Request Access</a>
       </div>
     </div>
@@ -246,7 +246,7 @@
               <span class="num">1</span>
               <b>Pay $1 Verification</b>
             </div>
-            <a class="btn primary" href="#" id="payBtn2">Pay Now</a>
+            <a class="btn primary" href="https://paystack.shop/pay/2afhvl8-nf" id="payBtn2">Pay Now</a>
           </div>
           <p>
             This is not tuition. It is a filter that separates builders from browsers.
@@ -319,7 +319,7 @@
 
 <script>
   // ✅ Replace this with your real $1 verification payment link (Paystack/Stripe/etc.)
-  const VERIFICATION_PAY_LINK = "PASTE_YOUR_$1_PAYMENT_LINK_HERE";
+  const VERIFICATION_PAY_LINK = "https://paystack.shop/pay/2afhvl8-nf";
 
   function wirePayButtons(){
     const a = document.getElementById("payBtn");
@@ -330,9 +330,9 @@
       btn.target = "_blank";
       btn.rel = "noopener";
       btn.addEventListener("click", (e)=>{
-        if(VERIFICATION_PAY_LINK.includes("PASTE_YOUR")){
+        if(VERIFICATION_PAY_LINK.includes("https://paystack.shop/pay/2afhvl8-nf")){
           e.preventDefault();
-          alert("Admin: Paste your real $1 verification payment link in VERIFICATION_PAY_LINK.");
+          alert("Admin: https://paystack.shop/pay/2afhvl8-nf");
         }
       });
     });
