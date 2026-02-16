@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#0B3D2E" />
-  <title>AGEx Smart Money Hub — Enter the Steward’s Lodge</title>
-  <meta name="description" content="Pay $1 verification → Request access → Receive your key → Enter the Steward’s Lodge." />
+  <title>AGEx Smart Money Hub — Discipline, Proof, Production</title>
+  <meta name="description" content="AGEx Smart Money Hub: a discipline-first financial pathway. Learn → Practice → Verify. $1 verification is a seriousness filter, not a fee." />
   <meta name="robots" content="index,follow" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,30 +19,29 @@
       --gold:#F4B41A;
       --ink:#0F0F0F;
       --muted:#5F6B66;
-      --bg:#FFFFFF;
-      --card:#F7FAF9;
+      --bg:#F7FAF9;
+      --card:#FFFFFF;
       --line:rgba(15,15,15,.10);
-      --shadow: 0 18px 45px rgba(0,0,0,.12);
-      --r:18px;
-      --r2:26px;
-      --max:1120px;
+      --shadow:0 18px 45px rgba(0,0,0,.10);
+      --radius:22px;
+      --max:1100px;
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0}
     body{
-      font-family:"Manrope",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      font-family:"Manrope",system-ui,-apple-system,Segoe UI,Roboto,Arial;
       color:var(--ink);
       background:
-        radial-gradient(1000px 600px at 15% 0%, rgba(244,180,26,.16), transparent 65%),
-        radial-gradient(900px 600px at 85% 10%, rgba(11,61,46,.10), transparent 62%),
+        radial-gradient(1000px 620px at 15% 0%, rgba(244,180,26,.14), transparent 62%),
+        radial-gradient(900px 600px at 85% 10%, rgba(11,61,46,.12), transparent 60%),
         var(--bg);
       line-height:1.55;
     }
     a{color:inherit;text-decoration:none}
-    .container{max-width:var(--max);margin:0 auto;padding:0 18px}
+    .wrap{max-width:var(--max);margin:0 auto;padding:18px}
     header{
-      position:sticky;top:0;z-index:60;
-      background:rgba(255,255,255,.88);
+      position:sticky;top:0;z-index:50;
+      background:rgba(247,250,249,.92);
       backdrop-filter:saturate(180%) blur(10px);
       border-bottom:1px solid var(--line);
     }
@@ -55,19 +54,19 @@
       width:44px;height:44px;border-radius:14px;
       display:grid;place-items:center;
       background:linear-gradient(135deg,var(--green),var(--green2));
-      box-shadow:0 10px 26px rgba(11,61,46,.28);
-      position:relative;overflow:hidden
+      box-shadow:0 10px 26px rgba(11,61,46,.26);
+      position:relative;overflow:hidden;
+      flex:0 0 auto;
     }
     .mark:before{
       content:"";position:absolute;inset:-40%;
       background:radial-gradient(circle at 30% 30%, rgba(244,180,26,.55), transparent 55%);
-      transform:rotate(10deg)
+      transform:rotate(10deg);
     }
     .mark svg{position:relative;z-index:1}
-    .brand-title{display:flex;flex-direction:column;line-height:1.05}
-    .brand-title .top{font-weight:900;letter-spacing:.2px;font-size:15px}
-    .brand-title .top .ex{color:var(--gold)}
-    .brand-title .sub{font-size:12px;color:var(--muted);font-weight:800;margin-top:4px}
+    .brand .t{line-height:1.05}
+    .brand .t b{letter-spacing:.2px}
+    .brand .t small{display:block;color:rgba(15,15,15,.6);font-weight:800;margin-top:4px}
 
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:10px;
@@ -75,297 +74,266 @@
       border:1px solid transparent;cursor:pointer;transition:.15s ease;
       user-select:none;white-space:nowrap
     }
-    .btn.primary{
-      background:var(--gold);color:#1b1607;
-      box-shadow:0 12px 26px rgba(244,180,26,.35)
-    }
+    .btn.primary{background:var(--gold);color:#1b1607;box-shadow:0 12px 26px rgba(244,180,26,.30)}
     .btn.primary:hover{transform:translateY(-1px)}
-    .btn.ghost{
-      background:transparent;border-color:rgba(11,61,46,.25);color:var(--green)
-    }
-    .btn.ghost:hover{background:rgba(11,61,46,.06)}
-    .btn.dark{
-      background:var(--green);color:#fff;
-      box-shadow:0 12px 26px rgba(11,61,46,.22)
-    }
+    .btn.dark{background:var(--green);color:#fff;box-shadow:0 12px 26px rgba(11,61,46,.22)}
     .btn.dark:hover{transform:translateY(-1px)}
-    .btn.small{padding:10px 12px;font-size:12px}
+    .btn.ghost{background:transparent;border-color:rgba(11,61,46,.25);color:var(--green)}
+    .btn.ghost:hover{background:rgba(11,61,46,.06)}
 
-    main{overflow:hidden}
-    .hero{padding:34px 0 22px}
-    .heroGrid{
-      display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:stretch
-    }
-    @media (max-width: 920px){.heroGrid{grid-template-columns:1fr}}
-    .badge{
-      display:inline-flex;align-items:center;gap:10px;
-      background:rgba(11,61,46,.08);border:1px solid rgba(11,61,46,.12);
-      padding:10px 14px;border-radius:999px;font-weight:900;color:var(--green);font-size:12px;
-      width:fit-content
-    }
-    .badge .dot{width:10px;height:10px;border-radius:99px;background:var(--gold);box-shadow:0 0 0 4px rgba(244,180,26,.18)}
-    h1{margin:14px 0 10px;font-size:46px;letter-spacing:-.7px;line-height:1.06;color:var(--green)}
-    @media (max-width: 520px){h1{font-size:38px}}
-    .lead{font-size:16px;color:rgba(15,15,15,.72);max-width:70ch;margin:0 0 14px;font-weight:750}
-    .miniNote{margin:10px 0 0;color:rgba(15,15,15,.58);font-size:13px;font-weight:750}
+    .hero{padding:26px 0 10px}
+    .grid{display:grid;gap:14px}
+    @media(min-width:980px){ .grid.two{grid-template-columns:1.1fr .9fr} }
 
     .card{
-      background:var(--card);border:1px solid var(--line);border-radius:var(--r2);
-      padding:18px;box-shadow:0 12px 30px rgba(0,0,0,.06)
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:18px;
     }
-    .card.white{background:#fff}
-    .steps{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px
-    }
-    @media (max-width: 920px){.steps{grid-template-columns:1fr}}
-    .step{
-      border-radius:18px;background:#fff;border:1px solid var(--line);padding:14px
-    }
-    .step .n{
-      display:inline-flex;gap:10px;align-items:center;
-      font-weight:900;font-size:12px;color:var(--green);
-      background:rgba(11,61,46,.08);border:1px solid rgba(11,61,46,.12);
-      padding:8px 10px;border-radius:999px;margin-bottom:10px;width:fit-content
-    }
-    .step h3{margin:0 0 6px;color:var(--ink);letter-spacing:-.2px;font-size:15px}
-    .step p{margin:0;color:rgba(15,15,15,.66);font-size:13px;font-weight:750}
 
-    .ctaRow{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
-    .ctaBox{
-      background:linear-gradient(135deg, var(--green), #06261c);
-      color:#fff;border-radius:30px;padding:18px;border:1px solid rgba(255,255,255,.10);
-      box-shadow:var(--shadow);position:relative;overflow:hidden
+    .pill{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:9px 12px;border-radius:999px;
+      background:rgba(11,61,46,.08);
+      border:1px solid rgba(11,61,46,.12);
+      font-weight:900;color:var(--green);font-size:12px;
+      width:fit-content;
     }
-    .ctaBox:before{
-      content:"";position:absolute;inset:-60%;
-      background:radial-gradient(circle at 20% 20%, rgba(244,180,26,.35), transparent 55%);
-      transform:rotate(12deg)
-    }
-    .ctaBox > *{position:relative;z-index:1}
-    .ctaBox h2{margin:0 0 8px;letter-spacing:-.2px}
-    .ctaBox p{margin:0 0 12px;color:rgba(255,255,255,.86);font-weight:750;font-size:13px;max-width:76ch}
-    .ctaBox .btn{border-color:rgba(255,255,255,.22)}
-    .btn.white{background:#fff;color:var(--green);border:1px solid rgba(255,255,255,.30)}
-    .btn.outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.30)}
-    .btn.outline:hover{background:rgba(255,255,255,.08)}
-
+    .pill .dot{width:10px;height:10px;border-radius:99px;background:var(--gold);box-shadow:0 0 0 4px rgba(244,180,26,.18)}
+    h1{margin:12px 0 0;color:var(--green);font-size:36px;line-height:1.08;letter-spacing:-.4px}
+    .lead{margin:10px 0 0;color:rgba(15,15,15,.72);font-weight:700}
+    .muted{color:rgba(15,15,15,.62);font-weight:750;font-size:13px}
     .divider{height:1px;background:var(--line);margin:14px 0}
-    .faq{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-    @media (max-width: 920px){.faq{grid-template-columns:1fr}}
-    .q{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px}
-    .q b{color:var(--green)}
-    .q p{margin:8px 0 0;color:rgba(15,15,15,.66);font-size:13px;font-weight:750}
 
-    footer{border-top:1px solid var(--line);padding:18px 0 26px;background:#fff}
-    .foot{display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:space-between}
-    .foot small{color:rgba(15,15,15,.6);font-weight:750}
-    .foot a{font-weight:900;font-size:12px;color:rgba(15,15,15,.68)}
-    .foot a:hover{color:var(--green)}
+    .benefits{
+      display:grid;gap:10px;margin-top:12px;
+    }
+    @media(min-width:760px){ .benefits{grid-template-columns:repeat(2,minmax(0,1fr));} }
+    .b{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      background:linear-gradient(180deg, rgba(11,61,46,.035), rgba(244,180,26,.03));
+    }
+    .b b{color:var(--green)}
+    .b p{margin:6px 0 0;color:rgba(15,15,15,.66);font-weight:700;font-size:13px;line-height:1.35}
 
-    /* Modal */
-    .modal-backdrop{
-      position:fixed;inset:0;background:rgba(15,15,15,.52);
-      display:none;align-items:center;justify-content:center;padding:18px;z-index:99;
+    .steps{display:grid;gap:10px;margin-top:12px}
+    .step{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:12px;
+      background:#fff;
     }
-    .modal{
-      width:min(920px, 100%);
-      background:#fff;border-radius:26px;border:1px solid rgba(255,255,255,.2);
-      box-shadow:var(--shadow);overflow:hidden
+    .stepTop{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .num{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:30px;height:30px;border-radius:999px;
+      background:rgba(244,180,26,.16);
+      border:1px solid rgba(244,180,26,.40);
+      color:var(--green);
+      font-weight:950;
+      flex:0 0 auto;
     }
-    .modal-head{
-      display:flex;justify-content:space-between;align-items:center;
-      padding:14px 16px;border-bottom:1px solid var(--line)
+    .stepTitle{display:flex;align-items:center;gap:10px}
+    .stepTitle b{color:var(--green)}
+    .step p{margin:8px 0 0;color:rgba(15,15,15,.66);font-weight:700;font-size:13px;line-height:1.4}
+    .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+
+    .warn{
+      border:1px solid rgba(11,61,46,.18);
+      background:rgba(11,61,46,.05);
+      border-radius:18px;
+      padding:12px;
+      color:rgba(15,15,15,.70);
+      font-weight:800;
+      font-size:13px;
     }
-    .modal-head strong{color:var(--green);letter-spacing:-.2px}
-    .close{
-      border:none;background:rgba(11,61,46,.08);color:var(--green);
-      border-radius:14px;padding:10px 12px;cursor:pointer;font-weight:900
-    }
-    .modal iframe{width:100%;height:80vh;border:0;background:#fff}
-    .note{
-      font-size:12px;font-weight:750;color:rgba(15,15,15,.62);
-      padding:12px 16px 16px;border-top:1px solid var(--line);background:#fff
-    }
+    .fine{font-size:12px;color:rgba(15,15,15,.55);font-weight:750;margin-top:8px}
+
+    footer{padding:18px 0 26px}
+    footer small{color:rgba(15,15,15,.6);font-weight:750}
   </style>
 </head>
 
 <body>
 <header>
-  <div class="container">
+  <div class="wrap">
     <div class="nav">
-      <a class="brand" href="./" aria-label="AGEx Smart Money Hub">
+      <a class="brand" href="#" onclick="history.back();return false;" aria-label="Back">
         <div class="mark" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
             <path d="M12 2.6l8 3.2v6.2c0 5.1-3.5 9.2-8 9.9-4.5-.7-8-4.8-8-9.9V5.8L12 2.6z" stroke="rgba(255,255,255,.92)" stroke-width="1.6"/>
             <path d="M8.3 12h6.9l-2.2-2.2 1.3-1.3 4.4 4.4-4.4 4.4-1.3-1.3 2.2-2.2H8.3V12z" fill="#F4B41A"/>
           </svg>
         </div>
-        <div class="brand-title">
-          <div class="top"><span>AG</span><span class="ex">Ex</span> <span style="color:var(--green)">Smart Money</span></div>
-          <div class="sub">The only gateway to the Steward’s Lodge</div>
+        <div class="t">
+          <b>AGEx Smart Money Hub</b>
+          <small>Finance • Discipline • Proof • Production</small>
         </div>
       </a>
 
-      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
-        <a class="btn ghost" id="ctaRequestTop" href="#" type="button">Request Access</a>
-        <a class="btn primary" id="ctaPayTop" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">Pay $1 Verification</a>
+      <div class="row">
+        <!-- Replace with your real payment link (the $1 verification page) -->
+        <a class="btn primary" href="#" id="payBtn">Pay $1 Verification</a>
+        <a class="btn ghost" href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Request Access</a>
       </div>
     </div>
   </div>
 </header>
 
-<main>
-  <section class="hero">
-    <div class="container">
-      <div class="heroGrid">
-        <div>
-          <div class="badge"><span class="dot"></span> Stewardship-first • Proof-based • Manual approval</div>
-          <h1>Enter the Steward’s Lodge.</h1>
-          <p class="lead">
-            Simple entry sequence. No stories, no confusion.
-            Pay <b>$1</b> once → Request access → Receive your key → Enter the Lodge.
-          </p>
+<main class="wrap">
+  <section class="hero grid two">
+    <div class="card">
+      <div class="pill"><span class="dot"></span> $1 is not a fee — it is a filter.</div>
 
-          <div class="ctaRow">
-            <a class="btn primary" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">1) Pay $1 Verification</a>
-            <button class="btn dark" type="button" id="openFormBtn">2) Request Access</button>
-            <a class="btn ghost" href="lodge.html?v=2">3) Lodge Gate</a>
-          </div>
+      <h1>Build money order with discipline — not noise.</h1>
+      <p class="lead">
+        Smart Money Hub is a structured pathway for people who want financial clarity and practice.
+        You do not buy motivation here. You build systems and submit proof.
+      </p>
 
-          <p class="miniNote">
-            After approval, you’ll receive your key via WhatsApp. The key is case-sensitive.
-          </p>
-
-          <div class="steps" aria-label="Entry steps">
-            <div class="step">
-              <div class="n">Step 1</div>
-              <h3>Pay the $1 verification</h3>
-              <p>Confirms commitment and blocks spam access.</p>
-            </div>
-            <div class="step">
-              <div class="n">Step 2</div>
-              <h3>Submit Request Access</h3>
-              <p>Use the same email you used for payment.</p>
-            </div>
-            <div class="step">
-              <div class="n">Step 3</div>
-              <h3>Receive key → Enter Lodge</h3>
-              <p>We verify and send your Lodge key manually.</p>
-            </div>
-          </div>
+      <div class="benefits">
+        <div class="b">
+          <b>Clarity & Rules</b>
+          <p>Stop confusion. Install simple money rules you can obey in real life.</p>
         </div>
-
-        <div class="card white">
-          <h2 style="margin:0;color:var(--green);letter-spacing:-.2px">Already paid & approved?</h2>
-          <p style="margin:10px 0 0;color:rgba(15,15,15,.66);font-weight:750;font-size:13px">
-            If you’ve received your key, go straight to the Lodge Gate and enter the key exactly as sent.
-          </p>
-
-          <div class="divider"></div>
-
-          <a class="btn dark" href="lodge.html?v=2" style="width:100%;justify-content:center">Open Lodge Gate</a>
-
-          <p class="miniNote" style="margin-top:12px">
-            If you paid but didn’t get a reply yet, submit the Request Access form again and add your payment proof.
-          </p>
-
-          <div class="divider"></div>
-
-          <div class="faq">
-            <div class="q">
-              <b>How long?</b>
-              <p>Manual approval typically within <b>24 hours</b>.</p>
-            </div>
-            <div class="q">
-              <b>Need help?</b>
-              <p>Email: <b>arinonebusiness@gmail.com</b><br/>WhatsApp: <b>+234 813 680 5462</b></p>
-            </div>
-          </div>
+        <div class="b">
+          <b>Daily Structure</b>
+          <p>Small daily actions that compound into measurable change.</p>
+        </div>
+        <div class="b">
+          <b>Proof-Based Progress</b>
+          <p>No storytelling. Proof submissions build accountability.</p>
+        </div>
+        <div class="b">
+          <b>Production Mindset</b>
+          <p>Discipline first — then income proof and responsible execution.</p>
         </div>
       </div>
 
-      <div class="ctaBox" style="margin-top:16px">
-        <h2>Do this now (3 clicks):</h2>
-        <p>Pay → Request → Enter. That’s the entire funnel.</p>
-        <div class="ctaRow">
-          <a class="btn white" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">Pay $1 Verification</a>
-          <button class="btn outline" type="button" id="openFormBtn2">Request Access</button>
-          <a class="btn outline" href="lodge.html?v=2">Lodge Gate</a>
-        </div>
+      <div class="divider"></div>
+
+      <div class="warn">
+        The verification is a seriousness gate.
+        It protects the Academy from observers and keeps the Lodge for builders.
+        <br><br>
+        You are not “losing money”. You are proving intent.
       </div>
 
+      <div class="fine">
+        Note: Access is approved manually after verification + request form. You receive your Lodge key by message.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0;color:var(--green)">Entry Protocol (3 Steps)</h2>
+      <p class="muted" style="margin-top:6px">
+        If you want to begin the financial journey, follow the staircase exactly:
+      </p>
+
+      <div class="steps" aria-label="Entry protocol steps">
+
+        <div class="step">
+          <div class="stepTop">
+            <div class="stepTitle">
+              <span class="num">1</span>
+              <b>Pay $1 Verification</b>
+            </div>
+            <a class="btn primary" href="#" id="payBtn2">Pay Now</a>
+          </div>
+          <p>
+            This is not tuition. It is a filter that separates builders from browsers.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="stepTop">
+            <div class="stepTitle">
+              <span class="num">2</span>
+              <b>Request Access (Form)</b>
+            </div>
+            <a class="btn ghost" href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Open Form</a>
+          </div>
+          <p>
+            Submit your name, WhatsApp, and verification reference. Approval is manual.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="stepTop">
+            <div class="stepTitle">
+              <span class="num">3</span>
+              <b>Enter the Steward Lodge</b>
+            </div>
+            <a class="btn dark" href="lodge.html?v=2">Enter Lodge</a>
+          </div>
+          <p>
+            You will need your <b>Lodge Key</b> (case-sensitive) issued after approval.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="divider"></div>
+
+      <p class="muted">
+        Inside the Lodge you start with <b>Foundation (21 Days)</b>, then you unlock:
+        <b>Apprentice → Builder → Contributor</b>.
+        At <b>Level 3</b>, you become eligible for <b>Income Stack Lab</b> (₦5,000 commitment filter).
+      </p>
+
+      <div class="row">
+        <a class="btn ghost" href="dashboard.html">Preview: Learner Dashboard</a>
+        <a class="btn ghost" href="isl.html" onclick="alert('ISL unlocks at Level 3 (Contributor) after verification + proof.'); return false;">Income Stack Lab (Level 3)</a>
+      </div>
+
+      <p class="fine">
+        If you’re only exploring AGEx, you can still use other domains in the app without paying anything.
+        Payment is only for those enrolling into the financial pathway.
+      </p>
     </div>
   </section>
+
+  <section class="card" style="margin-top:14px">
+    <h2 style="margin:0 0 8px;color:var(--green)">What you stand to gain</h2>
+    <p class="muted" style="margin:0">
+      You gain a working system:
+      <b>budget clarity</b>, <b>spending control</b>, <b>discipline rituals</b>, <b>proof accountability</b>,
+      and a pathway that can later support production and income evidence — without hype.
+    </p>
+  </section>
+
+  <footer>
+    <small>AGEx Smart Money Hub — Built for structure over shortcuts.</small>
+  </footer>
 </main>
 
-<footer>
-  <div class="container">
-    <div class="foot">
-      <small>© <span id="year"></span> AGEx Smart Money Hub — Stewardship first.</small>
-      <div style="display:flex;gap:12px;flex-wrap:wrap">
-        <a href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener">Pay $1</a>
-        <a href="#" id="footerFormLink">Request Access</a>
-        <a href="lodge.html?v=2">Lodge Gate</a>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<!-- Modal (Form Embed) -->
-<div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-label="Request access form">
-  <div class="modal" role="document">
-    <div class="modal-head">
-      <strong>Request Access to the Steward’s Lodge</strong>
-      <button class="close" id="closeModal" type="button">Close</button>
-    </div>
-
-    <!-- IMPORTANT:
-      Do NOT use forms.gle in iframe.
-      Use the Google Forms "embedded=true" URL.
-    -->
-    <iframe
-      src="https://docs.google.com/forms/d/e/1FAIpQLSduxe6b0sBcIpkTpdHPMq3XLLpeALFuczriZWczeuM5YDtkEg/viewform?embedded=true"
-      title="AGEx Request Access Form"
-      loading="lazy"
-    >Loading…</iframe>
-
-    <div class="note">
-      If the form does not load inside your phone, open it directly:
-      <a href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener"><b>Open Form in New Tab</b></a>
-    </div>
-  </div>
-</div>
-
 <script>
-  document.getElementById("year").textContent = new Date().getFullYear();
+  // ✅ Replace this with your real $1 verification payment link (Paystack/Stripe/etc.)
+  const VERIFICATION_PAY_LINK = "PASTE_YOUR_$1_PAYMENT_LINK_HERE";
 
-  // Modal controls
-  const modal = document.getElementById("modal");
-  const closeModal = document.getElementById("closeModal");
-
-  function openFormModal(){
-    modal.style.display = "flex";
-    document.body.style.overflow = "hidden";
+  function wirePayButtons(){
+    const a = document.getElementById("payBtn");
+    const b = document.getElementById("payBtn2");
+    [a,b].forEach(btn=>{
+      if(!btn) return;
+      btn.href = VERIFICATION_PAY_LINK;
+      btn.target = "_blank";
+      btn.rel = "noopener";
+      btn.addEventListener("click", (e)=>{
+        if(VERIFICATION_PAY_LINK.includes("PASTE_YOUR")){
+          e.preventDefault();
+          alert("Admin: Paste your real $1 verification payment link in VERIFICATION_PAY_LINK.");
+        }
+      });
+    });
   }
-  function closeFormModal(){
-    modal.style.display = "none";
-    document.body.style.overflow = "auto";
-  }
-
-  ["openFormBtn","openFormBtn2"].forEach(id => {
-    document.getElementById(id)?.addEventListener("click", openFormModal);
-  });
-
-  // Also make the top/footer "Request Access" behave as modal
-  document.getElementById("ctaRequestTop")?.addEventListener("click", (e)=>{ e.preventDefault(); openFormModal(); });
-  document.getElementById("footerFormLink")?.addEventListener("click", (e)=>{ e.preventDefault(); openFormModal(); });
-
-  closeModal?.addEventListener("click", closeFormModal);
-  modal?.addEventListener("click", (e) => { if (e.target === modal) closeFormModal(); });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.style.display === "flex") closeFormModal();
-  });
+  wirePayButtons();
 </script>
 </body>
 </html>
+
 
