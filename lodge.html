@@ -1,391 +1,416 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#0B3D2E" />
-  <title>The Steward’s Lodge | AGEx Smart Money Hub</title>
-  <meta name="description" content="The Steward’s Lodge gateway for verified stewards of AGEx Smart Money Hub. Stewardship First. Learn → Practice → Verify." />
-  <meta name="robots" content="noindex,nofollow" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
-
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="theme-color" content="#0B3D2E"/>
+  <title>Steward’s Lodge — AGEx Smart Money Hub</title>
+  <meta name="description" content="Enter the Steward’s Lodge. Orientation → Academy (single flow) → Levels → ISL unlock."/>
   <style>
     :root{
       --green:#0B3D2E;
-      --green2:#083326;
+      --green2:#072A20;
       --gold:#F4B41A;
-      --ink:#0F0F0F;
-      --muted:#5F6B66;
-      --bg:#FFFFFF;
-      --card:#F7FAF9;
-      --line:rgba(15,15,15,.10);
-      --shadow: 0 18px 45px rgba(0,0,0,.12);
-      --radius2: 26px;
-      --max: 1120px;
+      --gold2:#E1A416;
+      --bg:#062018;
+      --card:#0D2E24;
+      --card2:#0A261E;
+      --ink:#ECF4F1;
+      --muted:rgba(236,244,241,.78);
+      --line:rgba(244,180,26,.20);
+      --shadow:0 18px 45px rgba(0,0,0,.35);
+      --radius:22px;
+      --max:1050px;
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0}
     body{
-      font-family:"Manrope",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
       color:var(--ink);
       background:
-        radial-gradient(1000px 600px at 15% 0%, rgba(244,180,26,.12), transparent 65%),
-        radial-gradient(900px 600px at 85% 10%, rgba(11,61,46,.10), transparent 62%),
-        var(--bg);
-      line-height:1.55;
+        radial-gradient(900px 560px at 20% 0%, rgba(244,180,26,.18), transparent 60%),
+        radial-gradient(900px 560px at 85% 10%, rgba(11,61,46,.30), transparent 62%),
+        linear-gradient(180deg, #04150F, var(--bg));
+      min-height:100vh;
     }
     a{color:inherit;text-decoration:none}
-    .container{max-width:var(--max);margin:0 auto;padding:0 18px}
+    .wrap{max-width:var(--max);margin:0 auto;padding:18px}
     header{
-      position:sticky;top:0;z-index:60;
-      background:rgba(255,255,255,.88);
-      backdrop-filter:saturate(180%) blur(10px);
-      border-bottom:1px solid var(--line);
+      position:sticky;top:0;z-index:30;
+      background:rgba(4,21,15,.78);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid rgba(244,180,26,.18);
     }
-    .nav{
+    .top{
       display:flex;align-items:center;justify-content:space-between;gap:12px;
       padding:14px 0;
     }
     .brand{display:flex;align-items:center;gap:12px}
     .mark{
       width:44px;height:44px;border-radius:14px;
-      display:grid;place-items:center;
       background:linear-gradient(135deg,var(--green),var(--green2));
-      box-shadow:0 10px 26px rgba(11,61,46,.28);
-      position:relative;overflow:hidden
+      display:grid;place-items:center;
+      box-shadow:0 14px 30px rgba(0,0,0,.35);
+      border:1px solid rgba(244,180,26,.25);
+      position:relative;overflow:hidden;
+      flex:0 0 auto;
     }
     .mark:before{
-      content:"";position:absolute;inset:-40%;
-      background:radial-gradient(circle at 30% 30%, rgba(244,180,26,.55), transparent 55%);
-      transform:rotate(10deg)
+      content:"";position:absolute;inset:-45%;
+      background:radial-gradient(circle at 30% 30%, rgba(244,180,26,.55), transparent 56%);
+      transform:rotate(10deg);
     }
     .mark svg{position:relative;z-index:1}
-    .brand-title{display:flex;flex-direction:column;line-height:1.05}
-    .brand-title .top{font-weight:800;letter-spacing:.2px;font-size:15px}
-    .brand-title .top .ex{color:var(--gold)}
-    .brand-title .sub{font-size:12px;color:var(--muted);font-weight:800;margin-top:4px}
+    .t b{letter-spacing:.3px}
+    .t small{display:block;margin-top:4px;color:var(--muted);font-weight:800}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 12px;border-radius:999px;
+      border:1px solid rgba(244,180,26,.25);
+      background:rgba(244,180,26,.08);
+      color:var(--muted);
+      font-weight:850;
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .pill .dot{width:10px;height:10px;border-radius:99px;background:var(--gold);box-shadow:0 0 0 4px rgba(244,180,26,.16)}
+
+    .grid{display:grid;gap:14px}
+    @media(min-width:980px){.grid.two{grid-template-columns:1.05fr .95fr}}
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(244,180,26,.18);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:18px;
+    }
+    h1,h2{margin:0 0 10px}
+    h1{font-size:26px;color:#F6FBF9;letter-spacing:-.2px}
+    h2{font-size:18px;color:#F6FBF9}
+    .muted{color:var(--muted);font-weight:750;font-size:13px;line-height:1.45}
+    label{display:block;font-weight:900;font-size:12px;margin-top:10px;color:#F6FBF9}
+    input{
+      width:100%;padding:12px 12px;border-radius:16px;
+      border:1px solid rgba(244,180,26,.22);
+      background:rgba(5,26,19,.55);
+      color:var(--ink);
+      margin-top:6px;
+      outline:none;
+    }
+    input:focus{border-color:rgba(244,180,26,.55);box-shadow:0 0 0 4px rgba(244,180,26,.10)}
+    .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
 
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:10px;
-      border-radius:999px;padding:12px 16px;font-weight:900;
-      border:1px solid transparent;cursor:pointer;transition:.15s ease;
-      user-select:none;white-space:nowrap
-    }
-    .btn.primary{
-      background:var(--gold);color:#1b1607;
-      box-shadow:0 12px 26px rgba(244,180,26,.35)
-    }
-    .btn.primary:hover{transform:translateY(-1px)}
-    .btn.ghost{
-      background:transparent;border-color:rgba(11,61,46,.25);color:var(--green)
-    }
-    .btn.ghost:hover{background:rgba(11,61,46,.06)}
-    .btn.dark{
-      background:var(--green);color:#fff;
-      box-shadow:0 12px 26px rgba(11,61,46,.28)
-    }
-    .btn.dark:hover{transform:translateY(-1px)}
-
-    main{overflow:hidden}
-    .gate-wrap{
-      min-height:calc(100vh - 74px);
-      display:grid;
-      place-items:center;
-      padding:22px 0;
-    }
-    .gate{
-      width:min(600px, 100%);
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:32px;
-      box-shadow:var(--shadow);
-      padding:18px;
-      position:relative;
-      overflow:hidden;
-    }
-    .gate:before{
-      content:"";
-      position:absolute;inset:-40%;
-      background:radial-gradient(circle at 20% 20%, rgba(244,180,26,.18), transparent 55%);
-      transform:rotate(12deg);
-    }
-    .gate > *{position:relative;z-index:1}
-
-    .pill{
-      display:inline-flex;align-items:center;gap:10px;
-      padding:9px 12px;border-radius:999px;
-      background:rgba(11,61,46,.08);border:1px solid rgba(11,61,46,.12);
-      font-weight:900;color:var(--green);font-size:12px;
-      width:fit-content
-    }
-    .pill .dot{width:10px;height:10px;border-radius:99px;background:var(--gold);box-shadow:0 0 0 4px rgba(244,180,26,.18)}
-    h1{margin:12px 0 0;color:var(--green);font-size:34px;line-height:1.1;letter-spacing:-.3px}
-    .lead{margin-top:10px;color:rgba(15,15,15,.70);font-weight:700}
-    .muted{color:rgba(15,15,15,.62);font-weight:750;font-size:13px}
-    .divider{height:1px;background:var(--line);margin:14px 0}
-
-    label{display:block;font-weight:900;font-size:12px;color:rgba(15,15,15,.72);margin-top:12px}
-    input{
-      width:100%;
-      padding:14px 14px;
-      border-radius:18px;
-      border:1px solid var(--line);
-      outline:none;
-      font-family:inherit;
-      font-weight:750;
-      background:#fff;
-      margin-top:8px;
-    }
-    .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px}
-    .hint{color:rgba(15,15,15,.60);font-weight:750;font-size:12px;margin-top:10px}
-    .error{
-      display:none;
-      margin-top:10px;
-      padding:12px 12px;
-      border-radius:18px;
-      background:rgba(255,0,0,.06);
-      border:1px solid rgba(255,0,0,.14);
-      font-weight:850;
-      color:rgba(120,0,0,.85);
-      font-size:12px
-    }
-
-    /* ROLE PICKER */
-    .roleWrap{
-      margin-top:12px;
-      padding:12px;
-      border:1px solid var(--line);
-      border-radius:22px;
-      background:rgba(11,61,46,.03);
-    }
-    .roleTitle{
-      font-weight:900;
-      font-size:12px;
-      color:rgba(15,15,15,.72);
-      margin-bottom:8px;
-    }
-    .roleGrid{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:10px;
-    }
-    @media(min-width:520px){
-      .roleGrid{ grid-template-columns:1fr 1fr; }
-    }
-    .roleCard{
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:12px;
-      background:#fff;
+      border-radius:999px;padding:12px 16px;font-weight:950;
+      border:1px solid rgba(244,180,26,.22);
+      background:rgba(255,255,255,.06);
+      color:var(--ink);
       cursor:pointer;
-      transition:.12s ease;
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
+      transition:.14s ease;
+      user-select:none;
+      white-space:nowrap;
     }
-    .roleCard:hover{ transform:translateY(-1px); }
-    .radio{
-      width:18px;height:18px;border-radius:99px;
-      border:2px solid rgba(11,61,46,.35);
-      margin-top:2px;
-      display:grid;place-items:center;
+    .btn:hover{transform:translateY(-1px)}
+    .btn.gold{
+      background:linear-gradient(180deg, var(--gold), var(--gold2));
+      border-color:rgba(244,180,26,.65);
+      color:#1C1506;
+      box-shadow:0 14px 30px rgba(244,180,26,.22);
+    }
+    .btn.dark{
+      background:linear-gradient(180deg, rgba(11,61,46,.92), rgba(7,42,32,.92));
+      border-color:rgba(244,180,26,.22);
+    }
+    .btn.ghost{
+      background:transparent;
+      border-color:rgba(244,180,26,.18);
+      color:var(--muted);
+      font-weight:900;
+    }
+
+    .msg{
+      margin-top:10px;
+      font-size:13px;
+      color:var(--muted);
+      font-weight:800;
+    }
+    .ok{color:#CFF5E7}
+    .bad{color:#FFD1D9}
+    .divider{height:1px;background:rgba(244,180,26,.16);margin:14px 0}
+
+    .gateView{display:block}
+    .insideView{display:none}
+
+    .steps{display:grid;gap:10px;margin-top:10px}
+    .step{
+      border:1px solid rgba(244,180,26,.18);
+      background:rgba(5,26,19,.45);
+      border-radius:18px;
+      padding:12px;
+    }
+    .stepTop{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .num{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:30px;height:30px;border-radius:999px;
+      background:rgba(244,180,26,.16);
+      border:1px solid rgba(244,180,26,.45);
+      color:#F6FBF9;
+      font-weight:950;
       flex:0 0 auto;
     }
-    .radio .dot{
-      width:10px;height:10px;border-radius:99px;background:transparent;
+    .stepTitle{display:flex;align-items:center;gap:10px}
+    .stepTitle b{color:#F6FBF9}
+    .mini{
+      display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;
     }
-    .roleCard.active{
-      border-color:rgba(244,180,26,.65);
-      box-shadow:0 10px 26px rgba(244,180,26,.16);
+    .noteBox{
+      border:1px solid rgba(244,180,26,.16);
+      background:rgba(244,180,26,.06);
+      border-radius:18px;
+      padding:12px;
+      color:var(--muted);
+      font-weight:800;
+      font-size:13px;
     }
-    .roleCard.active .radio{ border-color:rgba(244,180,26,.75); }
-    .roleCard.active .radio .dot{ background:var(--gold); }
-    .roleName{ font-weight:900; color:var(--green); }
-    .roleDesc{ margin-top:4px; font-size:12px; color:rgba(15,15,15,.62); font-weight:750; }
 
-    footer{border-top:1px solid var(--line);padding:18px 0 26px;background:#fff}
-    .foot{display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:space-between}
-    .foot small{color:rgba(15,15,15,.6);font-weight:750}
-
-    @media (max-width: 920px){
-      h1{font-size:30px}
-    }
+    footer{padding:18px 0 24px}
+    footer small{color:rgba(236,244,241,.65);font-weight:750}
   </style>
 </head>
 
 <body>
 <header>
-  <div class="container">
-    <div class="nav">
-      <a class="brand" href="index.html" aria-label="Back to Gateway">
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
         <div class="mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
             <path d="M12 2.6l8 3.2v6.2c0 5.1-3.5 9.2-8 9.9-4.5-.7-8-4.8-8-9.9V5.8L12 2.6z" stroke="rgba(255,255,255,.92)" stroke-width="1.6"/>
             <path d="M8.3 12h6.9l-2.2-2.2 1.3-1.3 4.4 4.4-4.4 4.4-1.3-1.3 2.2-2.2H8.3V12z" fill="#F4B41A"/>
           </svg>
         </div>
-        <div class="brand-title">
-          <div class="top"><span>AG</span><span class="ex">Ex</span> <span style="color:var(--green)">Smart Money</span></div>
-          <div class="sub">The Steward’s Lodge • Gateway</div>
+        <div class="t">
+          <b>Steward’s Lodge</b>
+          <small>AGEx Smart Money Hub • Entry Gate</small>
         </div>
-      </a>
-
-      <div class="row">
-        <a class="btn ghost" href="index.html">Back to Gateway</a>
-        <a class="btn primary" href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Request Access</a>
       </div>
+
+      <div class="pill"><span class="dot"></span> Orientation → Academy → Levels</div>
     </div>
   </div>
 </header>
 
-<main>
-  <section class="gate-wrap">
-    <div class="container">
-      <div class="gate" role="region" aria-label="Lodge access gate">
-        <div class="pill"><span class="dot"></span> Access Status: <b>Locked</b></div>
+<main class="wrap grid two">
 
-        <h1>The Steward’s Lodge</h1>
-        <p class="lead">
-          This space is reserved for <b>verified stewards</b> only.<br/>
-          Enter your <b>Lodge Access Key</b> to continue.
-        </p>
+  <!-- LEFT: GATE / LOGIN -->
+  <section class="card">
+    <div class="gateView" id="gateView">
+      <h1>Enter the Lodge</h1>
+      <p class="muted">
+        This gate is for verified learners.
+        Enter your <b>Lodge Key</b> exactly as received (case-sensitive).
+      </p>
 
-        <div class="divider"></div>
+      <label for="keyInput">Lodge Key</label>
+      <input id="keyInput" placeholder="e.g., AGEX-AB12-CD34-7890" />
 
-        <p class="muted">
-          <b>How you receive the key:</b> Pay the $1 verification → submit the access request → manual approval within 24 hours →
-          we send your Lodge key.
-        </p>
+      <div class="row">
+        <button class="btn gold" id="enterBtn" type="button">Verify Key → Enter</button>
+        <button class="btn ghost" id="clearBtn" type="button">Clear</button>
+      </div>
 
-        <!-- ROLE PICKER -->
-        <div class="roleWrap" aria-label="Choose your lodge wing">
-          <div class="roleTitle">Choose your Lodge Wing</div>
-          <div class="roleGrid">
-            <div class="roleCard active" id="roleLearner" role="button" tabindex="0" aria-label="Learners Wing">
-              <div class="radio" aria-hidden="true"><div class="dot"></div></div>
-              <div>
-                <div class="roleName">Learners Wing</div>
-                <div class="roleDesc">Learn → Practice → Verify. Foundation + levels. Proof-based progression.</div>
-              </div>
-            </div>
+      <div class="msg" id="msg"></div>
 
-            <div class="roleCard" id="roleCreator" role="button" tabindex="0" aria-label="Creator Wing">
-              <div class="radio" aria-hidden="true"><div class="dot"></div></div>
-              <div>
-                <div class="roleName">Creator Wing</div>
-                <div class="roleDesc">The Builder’s Hall. Tasks, proof, rewards, trust points. Create jobs.</div>
-              </div>
-            </div>
-          </div>
-          <div class="hint" style="margin-top:10px">
-            Tip: If you’re new, start in <b>Learners Wing</b>. Creator Wing is for verified builders.
-          </div>
-        </div>
+      <div class="divider"></div>
 
-        <label for="accessInput">Lodge Access Key</label>
-        <input
-          type="password"
-          id="accessInput"
-          placeholder="Enter key (case-sensitive)"
-          autocomplete="off"
-          inputmode="text"
-        />
-
-        <div class="row">
-          <button class="btn primary" type="button" id="enterBtn">Enter the Lodge</button>
-          <a class="btn dark" href="index.html" type="button">Return to Gateway</a>
-        </div>
-
-        <div class="error" id="errorMsg">
-          Access key is invalid. If you have completed verification, contact support:
-          <b>arinonebusiness@gmail.com</b> • WhatsApp: <b>+234 813 680 5462</b>.
-        </div>
-
-        <p class="hint">
-          The key is <b>case-sensitive</b> (exactly as sent to you).
-        </p>
+      <div class="noteBox">
+        <b>New here?</b> Start from Smart Money Hub entry protocol:
+        Pay verification → request access → receive key → enter the Lodge.
       </div>
     </div>
+
+    <!-- INSIDE VIEW -->
+    <div class="insideView" id="insideView">
+      <h1>Welcome inside.</h1>
+      <p class="muted">
+        You are now in the Lodge environment.
+        The next step is simple: <b>enter the Academy</b> and start at Foundation.
+      </p>
+
+      <div class="divider"></div>
+
+      <h2>Orientation</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="stepTop">
+            <div class="stepTitle"><span class="num">1</span><b>Start the Academy (Single Flow)</b></div>
+            <a class="btn gold" href="academy.html">Enter Academy</a>
+          </div>
+          <p class="muted" style="margin:8px 0 0">
+            Begin with <b>Foundation</b>. You cannot skip days. Progress unlocks with time + proof.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="stepTop">
+            <div class="stepTitle"><span class="num">2</span><b>Unlock Apprentice</b></div>
+            <span class="pill" style="border-color:rgba(244,180,26,.18)">After Foundation</span>
+          </div>
+          <p class="muted" style="margin:8px 0 0">
+            Apprentice is where micro-tasks begin and your points/coins system becomes active.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="stepTop">
+            <div class="stepTitle"><span class="num">3</span><b>Eligibility for Income Stack Lab</b></div>
+            <span class="pill" style="border-color:rgba(244,180,26,.18)">At Level 3</span>
+          </div>
+          <p class="muted" style="margin:8px 0 0">
+            By Level 3, you become eligible for ISL entry protocol inside the academy flow.
+          </p>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h2>Creator Wing</h2>
+      <p class="muted" style="margin-top:6px">
+        The Creator Wing is for task creation and verified operators. For now, it is available
+        as a separate room (we can role-gate it with Supabase next).
+      </p>
+
+      <div class="mini">
+        <a class="btn dark" href="creator.html">Enter Creator Wing</a>
+        <button class="btn ghost" id="signOutBtn" type="button">Sign Out</button>
+      </div>
+
+      <div class="msg" id="insideMsg"></div>
+    </div>
   </section>
+
+  <!-- RIGHT: EXPLAIN / SUPPORT -->
+  <section class="card">
+    <h2>What this Lodge is</h2>
+    <p class="muted">
+      The Lodge is the protected entrance into the Academy.
+      The app is free to explore, but the financial journey is protected so builders can focus.
+    </p>
+
+    <div class="divider"></div>
+
+    <h2>Support</h2>
+    <p class="muted">
+      If your key fails, confirm you typed it exactly (capital letters, hyphens).
+      If still failing, request a fresh key.
+    </p>
+
+    <div class="mini">
+      <a class="btn ghost" href="mailto:arinonebusiness@gmail.com">Email Support</a>
+      <button class="btn ghost" type="button" onclick="alert('WhatsApp Support: +234 813 680 5462');">WhatsApp Support</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="noteBox">
+      <b>Security Note (Phase 1):</b> This key check can be local or manual.  
+      Phase 2: we tie Lodge access + roles to Supabase (no sharing keys publicly).
+    </div>
+
+    <footer>
+      <small>Steward’s Lodge • Built for discipline, proof, and progression.</small>
+    </footer>
+  </section>
+
 </main>
 
-<footer>
-  <div class="container">
-    <div class="foot">
-      <small>© <span id="year"></span> AGEx Smart Money Hub — A Stewardship Covenant, not a marketplace.</small>
-    </div>
-  </div>
-</footer>
-
 <script>
-  document.getElementById("year").textContent = new Date().getFullYear();
+  // ====== CONFIG ======
+  // Phase 1 (simple): accept keys from a local allow-list stored in localStorage.
+  // If you already have a different key system, replace verifyKey() logic only.
 
-  // SECURITY: For Phase 1, key is hard-coded. Change this variable manually for each cohort.
-  const SAVED = localStorage.getItem("AGEX_MASTER_KEY");
-const MASTER_KEY = SAVED && SAVED.trim() ? SAVED.trim() : "ARIN-LODGE-KEY-001";
+  const STORAGE_OK = "AGEX_LODGE_OK_V1";
+  const STORAGE_KEYS = "AGEX_ALLOWED_KEYS_V1"; // optional list on your device (admin)
 
-  // Choose where each wing goes
-  const ROUTES = {
-    learner: "dashboard.html",
-    creator: "creator-hall.html"
-  };
+  // Optional: seed one founder key on YOUR device only (edit to your key if you want)
+  // localStorage.setItem(STORAGE_KEYS, JSON.stringify(["AGEX-XXXX-YYYY-1234"]));
 
-  // Remember selected wing on this device
-  const ROLE_KEY = "AGEX_LODGE_ROLE";
-  const OK_KEY = "AGEX_LODGE_OK";
+  const gateView = document.getElementById("gateView");
+  const insideView = document.getElementById("insideView");
+  const msg = document.getElementById("msg");
+  const insideMsg = document.getElementById("insideMsg");
 
-  const input = document.getElementById("accessInput");
-  const err = document.getElementById("errorMsg");
-  const enterBtn = document.getElementById("enterBtn");
+  function loadAllowedKeys(){
+    try{ return JSON.parse(localStorage.getItem(STORAGE_KEYS) || "[]"); }
+    catch(e){ return []; }
+  }
 
-  const roleLearner = document.getElementById("roleLearner");
-  const roleCreator = document.getElementById("roleCreator");
+  function verifyKey(inputKey){
+    // If already “inside” on this device, keep them inside
+    if(localStorage.getItem(STORAGE_OK) === "1") return true;
 
-  let selectedRole = localStorage.getItem(ROLE_KEY) || "learner";
-
-  function setRole(role){
-    selectedRole = role;
-    localStorage.setItem(ROLE_KEY, role);
-
-    if(role === "learner"){
-      roleLearner.classList.add("active");
-      roleCreator.classList.remove("active");
-    }else{
-      roleCreator.classList.add("active");
-      roleLearner.classList.remove("active");
+    const allowed = loadAllowedKeys();
+    if(!allowed.length){
+      // If no list exists, we still allow entry if you want manual mode OFF.
+      // For strict mode, change this to: return false;
+      return false;
     }
+    return allowed.includes(inputKey);
   }
 
-  function attempt(){
-    const typed = (input.value || "").trim();
-    if (typed === MASTER_KEY){
-      err.style.display = "none";
-      localStorage.setItem(OK_KEY, "1");
-      const target = ROUTES[selectedRole] || ROUTES.learner;
-      window.location.href = target;
-    } else {
-      err.style.display = "block";
+  function enterInside(){
+    gateView.style.display = "none";
+    insideView.style.display = "block";
+    localStorage.setItem(STORAGE_OK, "1");
+  }
+
+  function signOut(){
+    localStorage.removeItem(STORAGE_OK);
+    insideView.style.display = "none";
+    gateView.style.display = "block";
+    msg.textContent = "Signed out.";
+    msg.className = "msg";
+  }
+
+  // Auto-enter if device already verified
+  if(localStorage.getItem(STORAGE_OK) === "1"){
+    enterInside();
+  }
+
+  document.getElementById("enterBtn").addEventListener("click", ()=>{
+    const key = (document.getElementById("keyInput").value || "").trim();
+    if(!key){
+      msg.textContent = "Enter your Lodge Key.";
+      msg.className = "msg bad";
+      return;
     }
-  }
 
-  // Click + keyboard access
-  roleLearner.addEventListener("click", ()=> setRole("learner"));
-  roleCreator.addEventListener("click", ()=> setRole("creator"));
-  roleLearner.addEventListener("keydown", (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); setRole("learner"); }});
-  roleCreator.addEventListener("keydown", (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); setRole("creator"); }});
+    const ok = verifyKey(key);
+    if(!ok){
+      msg.textContent = "Key not recognized on this device. If you are verified, request a key from the admin.";
+      msg.className = "msg bad";
+      return;
+    }
 
-  enterBtn.addEventListener("click", attempt);
-  input.addEventListener("keydown", (e)=>{ if (e.key === "Enter") attempt(); });
+    msg.textContent = "Verified. Entering…";
+    msg.className = "msg ok";
+    enterInside();
+  });
 
-  // If already unlocked on this device, go straight to the last chosen wing
-  setRole(selectedRole);
-  if (localStorage.getItem(OK_KEY) === "1"){
-    const target = ROUTES[selectedRole] || ROUTES.learner;
-    window.location.href = target;
-  }
+  document.getElementById("clearBtn").addEventListener("click", ()=>{
+    document.getElementById("keyInput").value = "";
+    msg.textContent = "";
+    msg.className = "msg";
+  });
+
+  document.getElementById("signOutBtn").addEventListener("click", ()=>{
+    signOut();
+    insideMsg.textContent = "";
+  });
 </script>
+
 </body>
 </html>
+
