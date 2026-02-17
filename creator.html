@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#0B3D2E" />
   <title>Creator Wing (Admin) | AGEx</title>
   <style>
-    :root{--g:#0B3D2E;--g2:#083326;--gold:#F4B41A;--bg:#F7FAF9;--card:#fff;--line:rgba(0,0,0,.10);--ink:#111;--muted:#667;}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#0b3d2e 0%, #0b3d2e 240px, var(--bg) 240px);color:var(--ink);}
+    :root{--g:#0B3D2E;--g2:#083326;--gold:#F4B41A;--bg:#F7FAF9;--card:#fff;--line:rgba(0,0,0,.10);--ink:#111;--muted:#667;--bad:#a00;--ok:#0a6;}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#0b3d2e 0%, #0b3d2e 260px, var(--bg) 260px);color:var(--ink);}
     .wrap{max-width:1100px;margin:0 auto;padding:18px;}
     .top{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#fff;padding:14px 0;}
     .brand{display:flex;align-items:center;gap:10px}
@@ -18,11 +18,11 @@
     .btn.dark{background:#06261c;border-color:transparent}
     .grid{display:grid;gap:14px}
     @media(min-width:980px){.grid.two{grid-template-columns:1fr 1fr}}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 12px 30px rgba(0,0,0,.08)}
     h1,h2{margin:0 0 10px;color:var(--g)}
-    .muted{color:var(--muted);font-size:13px;line-height:1.45;font-weight:700}
-    label{display:block;font-weight:900;font-size:12px;margin:10px 0 6px}
-    input,textarea,select{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);font-family:inherit}
+    .muted{color:var(--muted);font-size:13px;line-height:1.45;font-weight:750}
+    label{display:block;font-weight:950;font-size:12px;margin:10px 0 6px}
+    input,textarea,select{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);font-family:inherit;font-size:15px}
     textarea{min-height:84px;resize:vertical}
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     .pill{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:950}
@@ -31,15 +31,14 @@
     th{color:var(--g);font-weight:950}
     .smallbtn{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:950;cursor:pointer}
     .smallbtn.gold{background:var(--gold);border-color:transparent}
-    .smallbtn.bad{background:#fff;border-color:rgba(200,0,0,.25);color:#a00}
-    .note{margin-top:10px;font-size:13px;font-weight:900}
-    .panelBad{padding:14px;border-radius:18px;border:1px solid rgba(200,0,0,.25);background:#fff}
-    .panelOk{padding:14px;border-radius:18px;border:1px solid rgba(11,61,46,.18);background:#fff}
-    .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-    .chip{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:950}
-    .chip.bad{border-color:rgba(200,0,0,.25);color:#a00}
-    .chip.ok{border-color:rgba(11,61,46,.25);color:var(--g)}
-    code{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+    .smallbtn.bad{background:#fff;border-color:rgba(200,0,0,.25);color:var(--bad)}
+    .note{margin-top:10px;font-size:13px;font-weight:850}
+    .panel{border-radius:18px;border:1px solid var(--line);background:#fff;padding:14px}
+    .statusline{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+    .chip{padding:8px 10px;border-radius:999px;border:1px solid var(--line);font-weight:950;background:#fff}
+    .chip.bad{border-color:rgba(200,0,0,.25);color:var(--bad);background:rgba(255,0,0,.06)}
+    .chip.ok{border-color:rgba(0,150,0,.25);color:var(--ok);background:rgba(0,150,0,.06)}
+    .hidden{display:none!important}
   </style>
 </head>
 <body>
@@ -53,48 +52,48 @@
         </div>
       </div>
       <div class="row">
-        <a class="btn" href="lodge.html">Back to Lodge</a>
-        <a class="btn" href="app.html">Back to App</a>
-        <button class="btn dark" id="signOutBtn" type="button">Sign out</button>
+        <!-- Your repo has index.html, not app.html -->
+        <a class="btn" href="index.html">Back to App</a>
+        <button class="btn dark" id="signOutBtn">Sign out</button>
       </div>
     </div>
 
-    <!-- STATUS: Always visible -->
+    <!-- STATUS -->
     <div class="card">
       <h2>Status</h2>
-      <div class="muted">If anything fails, this box tells you exactly why.</div>
-      <div class="chips">
+      <div class="muted" id="statusText">Checking session…</div>
+      <div class="statusline">
         <span class="chip" id="chipAuth">Auth: —</span>
         <span class="chip" id="chipRole">Role: —</span>
-        <span class="chip" id="chipKey">Supabase: —</span>
+        <span class="chip" id="chipDb">DB: —</span>
       </div>
-      <div class="note" id="statusMsg"></div>
+      <div class="note" id="statusNote"></div>
     </div>
 
     <!-- SIGN IN REQUIRED -->
-    <div id="needAuth" class="panelBad" style="display:none;margin-top:14px">
-      <h2 style="margin:0 0 8px;color:#a00">Sign in required</h2>
+    <div class="card hidden" id="signInCard" style="border-color:rgba(200,0,0,.25)">
+      <h2 style="color:#a00">Sign in required</h2>
       <div class="muted">You must sign in to use Creator Wing.</div>
       <div class="row" style="margin-top:12px">
-        <a class="btn gold" href="auth.html" style="text-decoration:none;color:#1a1406;border-color:transparent">Go to Sign in</a>
-        <a class="btn" href="lodge.html">Back to Lodge</a>
+        <a class="btn gold" href="auth.html" style="text-decoration:none">Go to Sign in</a>
+        <a class="btn" href="lodge.html" style="text-decoration:none;border-color:rgba(255,255,255,.22)">Back to Lodge</a>
       </div>
     </div>
 
     <!-- NOT ADMIN -->
-    <div id="blocked" class="panelBad" style="display:none;margin-top:14px">
-      <h2 style="margin:0 0 8px;color:#a00">Access blocked</h2>
-      <div class="muted">You are signed in, but your profile role is not <b>admin</b>.</div>
-      <div class="muted" style="margin-top:8px">Fix: In Supabase → Table Editor → <b>profiles</b> → set your row <b>role</b> to <b>admin</b>.</div>
+    <div class="card hidden" id="blockedCard" style="border-color:rgba(200,0,0,.25)">
+      <h2 style="color:#a00">Access blocked</h2>
+      <div class="muted">Your account is signed in, but your <b>profiles.role</b> is not <b>admin</b>.</div>
+      <div class="note" style="color:#a00">Fix: in Supabase → Table Editor → <b>profiles</b> → set your row <b>role = admin</b>.</div>
     </div>
 
-    <!-- MAIN APP -->
-    <div id="main" style="display:none;margin-top:14px">
+    <!-- MAIN -->
+    <div id="main" class="hidden">
 
-      <div class="grid two">
+      <div class="grid two" style="margin-top:14px">
         <div class="card">
           <h2>Create Task</h2>
-          <div class="muted">These tasks will appear inside Apprentice Micro-Tasks (for learners). Creator Wing works now because it’s for admins.</div>
+          <div class="muted">These tasks show inside Apprentice Micro-Tasks.</div>
 
           <label>Title</label>
           <input id="t_title" placeholder="e.g. Outreach: Invite 10 people to AGEx" />
@@ -123,7 +122,7 @@
               <input id="t_proof_required" type="checkbox" checked style="width:auto" />
               Proof required
             </label>
-            <button class="btn gold" id="createTaskBtn" type="button" style="color:#1a1406">Create Task</button>
+            <button class="btn gold" id="createTaskBtn">Create Task</button>
           </div>
 
           <div class="note" id="taskMsg"></div>
@@ -131,10 +130,10 @@
 
         <div class="card">
           <h2>Access Requests (Approve Apprentice)</h2>
-          <div class="muted">Rule B: Foundation complete + skill points threshold + manual approval.</div>
+          <div class="muted">Manual approvals for apprentice access.</div>
           <div class="row" style="margin:10px 0">
             <span class="pill" id="reqCount">—</span>
-            <button class="smallbtn" id="refreshReqBtn" type="button">Refresh</button>
+            <button class="smallbtn" id="refreshReqBtn">Refresh</button>
           </div>
 
           <div style="overflow:auto">
@@ -159,7 +158,7 @@
           <h2>Tasks</h2>
           <div class="row" style="margin:10px 0">
             <span class="pill" id="taskCount">—</span>
-            <button class="smallbtn" id="refreshTasksBtn" type="button">Refresh</button>
+            <button class="smallbtn" id="refreshTasksBtn">Refresh</button>
           </div>
           <div style="overflow:auto">
             <table>
@@ -179,7 +178,7 @@
 
         <div class="card">
           <h2>Submissions</h2>
-          <div class="muted">Approve/reject proofs. (Automatic awarding can be added next.)</div>
+          <div class="muted">Approve/reject proofs. (Auto-award can be added next.)</div>
 
           <div class="row" style="margin:10px 0">
             <select id="subFilter" style="flex:1;min-width:220px">
@@ -187,7 +186,7 @@
               <option value="approved">approved</option>
               <option value="rejected">rejected</option>
             </select>
-            <button class="smallbtn" id="refreshSubsBtn" type="button">Refresh</button>
+            <button class="smallbtn" id="refreshSubsBtn">Refresh</button>
           </div>
 
           <div style="overflow:auto">
@@ -207,35 +206,33 @@
         </div>
       </div>
 
+      <div class="card" style="margin-top:14px">
+        <h2>How to operate Creator Wing (simple workflow)</h2>
+        <div class="muted">
+          1) Learner signs up → 2) Learner requests access → 3) You approve in “Access Requests” → 4) You create tasks → 5) Learners submit proof → 6) You approve/reject submissions.
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <!-- Supabase SDK then your shared client -->
+  <!-- Load Supabase first, then config, then app logic -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js"></script>
 
   <script>
     const $ = (id) => document.getElementById(id);
 
-    function chip(id, text, kind){
-      const el = $(id);
+    function setChip(el, text, kind){
       el.textContent = text;
-      el.className = "chip " + (kind || "");
+      el.classList.remove("bad","ok");
+      if(kind) el.classList.add(kind);
     }
 
-    function setStatus(text, ok){
-      $("statusMsg").textContent = text || "";
-      chip("chipKey", ok ? "Supabase: OK" : "Supabase: Error", ok ? "ok" : "bad");
-    }
-
-    async function requireSession(){
-      try{
-        const { data, error } = await window.supabaseClient.auth.getSession();
-        if (error) return { session:null, error };
-        return { session: data?.session || null, error:null };
-      }catch(e){
-        return { session:null, error: { message:"Supabase client not initialized (check supabase.js)" } };
-      }
+    async function getSession(){
+      const { data, error } = window.supabaseClient.auth.getSession();
+      if(error) return { session:null, error };
+      return { session: data?.session || null, error:null };
     }
 
     async function getRole(userId){
@@ -244,32 +241,40 @@
         .select("role")
         .eq("id", userId)
         .maybeSingle();
-      if (error) return { role:null, error };
+      if(error) return { role:null, error };
       return { role: data?.role || null, error:null };
     }
 
-    // --- Access Requests ---
+    async function pingDb(){
+      // lightweight: check tasks table read (will also reveal RLS problems)
+      const { error } = await window.supabaseClient
+        .from("tasks")
+        .select("id")
+        .limit(1);
+      return { ok: !error, error };
+    }
+
     async function loadRequests(){
       const { data, error } = await window.supabaseClient
         .from("access_requests")
         .select("id,user_id,requested_stage,user_skill_points,status,created_at")
         .order("created_at", { ascending:false })
-        .limit(25);
+        .limit(50);
 
       $("reqBody").innerHTML = "";
-      if(error){ $("reqCount").textContent = "Error loading"; return; }
+      if(error){ $("reqCount").textContent = "Error: " + error.message; return; }
       $("reqCount").textContent = `${data.length} requests`;
 
       data.forEach(r=>{
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td><code style="font-size:12px">${r.user_id}</code></td>
-          <td><b>${r.user_skill_points}</b></td>
-          <td>${r.requested_stage}</td>
+          <td><b>${r.user_skill_points ?? 0}</b></td>
+          <td>${r.requested_stage ?? "—"}</td>
           <td><b>${r.status}</b></td>
-          <td class="row" style="gap:8px">
-            <button class="smallbtn gold" data-act="approve" data-id="${r.id}" data-uid="${r.user_id}" type="button">Approve</button>
-            <button class="smallbtn bad" data-act="reject" data-id="${r.id}" type="button">Reject</button>
+          <td>
+            <button class="smallbtn gold" data-act="approve" data-id="${r.id}" data-uid="${r.user_id}">Approve</button>
+            <button class="smallbtn bad" data-act="reject" data-id="${r.id}">Reject</button>
           </td>
         `;
         $("reqBody").appendChild(tr);
@@ -296,12 +301,12 @@
         .from("access_requests")
         .update({ status:"rejected", reviewed_at:new Date().toISOString() })
         .eq("id", reqId);
+
       await loadRequests();
       alert("Rejected.");
     }
 
-    // --- Tasks ---
-    async function createTask(user){
+    async function createTask(userId){
       const title = $("t_title").value.trim();
       const category = $("t_category").value;
       const reward = parseInt($("t_reward").value || "0", 10);
@@ -310,15 +315,13 @@
 
       if(!title || !instructions){
         $("taskMsg").textContent = "Fill title + instructions.";
-        $("taskMsg").style.color = "#a00";
         return;
       }
 
       $("taskMsg").textContent = "Creating…";
-      $("taskMsg").style.color = "#111";
 
       const { error } = await window.supabaseClient.from("tasks").insert([{
-        created_by: user.id,
+        created_by: userId,
         title,
         category,
         reward_skill_points: reward,
@@ -329,12 +332,10 @@
 
       if(error){
         $("taskMsg").textContent = "Error: " + error.message;
-        $("taskMsg").style.color = "#a00";
         return;
       }
 
       $("taskMsg").textContent = "✅ Task created.";
-      $("taskMsg").style.color = "#0B3D2E";
       $("t_title").value = "";
       $("t_instructions").value = "";
       await loadTasks();
@@ -345,10 +346,10 @@
         .from("tasks")
         .select("id,title,category,reward_skill_points,status,created_at")
         .order("created_at",{ascending:false})
-        .limit(25);
+        .limit(50);
 
       $("tasksBody").innerHTML = "";
-      if(error){ $("taskCount").textContent = "Error loading"; return; }
+      if(error){ $("taskCount").textContent = "Error: " + error.message; return; }
       $("taskCount").textContent = `${data.length} tasks`;
 
       data.forEach(t=>{
@@ -358,10 +359,10 @@
           <td>${t.category}</td>
           <td>${t.reward_skill_points}</td>
           <td><b>${t.status}</b></td>
-          <td class="row" style="gap:8px">
-            <button class="smallbtn" data-task="${t.id}" data-set="paused" type="button">Pause</button>
-            <button class="smallbtn gold" data-task="${t.id}" data-set="open" type="button">Open</button>
-            <button class="smallbtn bad" data-task="${t.id}" data-del="1" type="button">Delete</button>
+          <td>
+            <button class="smallbtn" data-task="${t.id}" data-set="paused">Pause</button>
+            <button class="smallbtn gold" data-task="${t.id}" data-set="open">Open</button>
+            <button class="smallbtn bad" data-task="${t.id}" data-del="1">Delete</button>
           </td>
         `;
         $("tasksBody").appendChild(tr);
@@ -378,7 +379,6 @@
       await loadTasks();
     }
 
-    // --- Submissions ---
     async function loadSubs(){
       const status = $("subFilter").value;
       const { data, error } = await window.supabaseClient
@@ -386,26 +386,25 @@
         .select("id,task_id,user_id,status,proof_text,proof_link,created_at")
         .eq("status", status)
         .order("created_at",{ascending:false})
-        .limit(25);
+        .limit(50);
 
       $("subsBody").innerHTML = "";
       if(error){ return; }
 
       data.forEach(s=>{
-        const proofParts = [];
-        if (s.proof_link) proofParts.push(`<a href="${s.proof_link}" target="_blank" rel="noopener">link</a>`);
-        if (s.proof_text) proofParts.push(`<div style="max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.proof_text}</div>`);
-        const proof = proofParts.join("") || "—";
+        const proof =
+          (s.proof_link ? `<a href="${s.proof_link}" target="_blank" rel="noopener">link</a>` : "") +
+          (s.proof_text ? `<div style="max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.proof_text}</div>` : "");
 
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td><code>${s.task_id}</code></td>
           <td><code style="font-size:12px">${s.user_id}</code></td>
           <td><b>${s.status}</b></td>
-          <td>${proof}</td>
-          <td class="row" style="gap:8px">
-            <button class="smallbtn gold" data-sub="${s.id}" data-sact="approved" type="button">Approve</button>
-            <button class="smallbtn bad" data-sub="${s.id}" data-sact="rejected" type="button">Reject</button>
+          <td>${proof || "—"}</td>
+          <td>
+            <button class="smallbtn gold" data-sub="${s.id}" data-sact="approved">Approve</button>
+            <button class="smallbtn bad" data-sub="${s.id}" data-sact="rejected">Reject</button>
           </td>
         `;
         $("subsBody").appendChild(tr);
@@ -413,95 +412,82 @@
     }
 
     async function setSubStatus(id, status){
-      await window.supabaseClient
-        .from("task_submissions")
+      await window.supabaseClient.from("task_submissions")
         .update({ status, reviewed_at:new Date().toISOString() })
         .eq("id", id);
       await loadSubs();
     }
 
-    // --- Init ---
     async function init(){
-      // Confirm client exists
-      if (!window.supabaseClient){
-        chip("chipAuth","Auth: Error","bad");
-        chip("chipRole","Role: —","");
-        setStatus("Supabase client missing. Make sure supabase.js is in the same folder and loaded after supabase-js CDN.", false);
-        return;
-      }
-      setStatus("Supabase loaded.", true);
-
-      const { session, error } = await requireSession();
-      if (error){
-        chip("chipAuth","Auth: Error","bad");
-        $("needAuth").style.display = "block";
-        $("statusMsg").textContent = "Auth error: " + (error.message || "unknown");
+      // If supabase.js not loaded / misconfigured
+      if(!window.supabaseClient){
+        $("statusText").textContent = "Supabase client missing. Check supabase.js is in the repo and loads correctly.";
+        setChip($("chipAuth"), "Auth: error", "bad");
+        setChip($("chipDb"), "DB: error", "bad");
         return;
       }
 
-      if (!session){
-        chip("chipAuth","Auth: Missing","bad");
-        chip("chipRole","Role: —","");
-        $("needAuth").style.display = "block";
-        $("statusMsg").textContent = "Auth failed: Auth session missing. Tap “Go to Sign in”.";
+      // Session
+      const { session } = await getSession();
+      if(!session){
+        $("statusText").textContent = "Auth session missing. Please sign in.";
+        setChip($("chipAuth"), "Auth: failed", "bad");
+        setChip($("chipRole"), "Role: —");
+        $("signInCard").classList.remove("hidden");
         return;
       }
 
-      chip("chipAuth","Auth: OK","ok");
+      setChip($("chipAuth"), "Auth: ok", "ok");
 
-      const user = session.user;
-      const roleRes = await getRole(user.id);
-      const role = roleRes.role;
-
-      if (roleRes.error){
-        chip("chipRole","Role: Error","bad");
-        $("blocked").style.display = "block";
-        $("statusMsg").textContent = "Could not load role from profiles. Check table + RLS policies.";
+      // Role
+      const { role, error: roleErr } = await getRole(session.user.id);
+      if(roleErr){
+        $("statusText").textContent = "Signed in, but role check failed: " + roleErr.message;
+        setChip($("chipRole"), "Role: error", "bad");
         return;
       }
 
-      chip("chipRole", "Role: " + (role || "none"), role === "admin" ? "ok" : "bad");
+      setChip($("chipRole"), "Role: " + (role || "none"), role === "admin" ? "ok" : "bad");
 
-      if (role !== "admin"){
-        $("blocked").style.display = "block";
-        $("statusMsg").textContent = "Signed in, but not admin. Set profiles.role = admin for your user.";
+      if(role !== "admin"){
+        $("statusText").textContent = "Signed in, but not admin.";
+        $("blockedCard").classList.remove("hidden");
         return;
       }
 
-      // Admin OK → show main
-      $("main").style.display = "block";
-      $("statusMsg").textContent = "Admin verified. Creator Wing ready.";
+      // DB
+      const db = await pingDb();
+      setChip($("chipDb"), db.ok ? "DB: ok" : "DB: error", db.ok ? "ok" : "bad");
+      $("statusText").textContent = "Ready. You can create tasks, approve access, and review proofs.";
 
-      // Buttons
-      $("createTaskBtn").addEventListener("click", () => createTask(user));
+      // Show main UI
+      $("main").classList.remove("hidden");
+
+      // Wire up buttons
+      $("createTaskBtn").addEventListener("click", ()=>createTask(session.user.id));
       $("refreshReqBtn").addEventListener("click", loadRequests);
       $("refreshTasksBtn").addEventListener("click", loadTasks);
       $("refreshSubsBtn").addEventListener("click", loadSubs);
 
       document.body.addEventListener("click", async (e)=>{
         const a = e.target;
-        if(a?.dataset?.act === "approve"){
-          await approveRequest(a.dataset.id, a.dataset.uid);
-        }
-        if(a?.dataset?.act === "reject"){
-          await rejectRequest(a.dataset.id);
-        }
-        if(a?.dataset?.task && a?.dataset?.set){
-          await setTaskStatus(a.dataset.task, a.dataset.set);
-        }
+        if(a?.dataset?.act === "approve") await approveRequest(a.dataset.id, a.dataset.uid);
+        if(a?.dataset?.act === "reject") await rejectRequest(a.dataset.id);
+
+        if(a?.dataset?.task && a?.dataset?.set) await setTaskStatus(a.dataset.task, a.dataset.set);
         if(a?.dataset?.task && a?.dataset?.del){
           if(confirm("Delete task?")) await deleteTask(a.dataset.task);
         }
-        if(a?.dataset?.sub && a?.dataset?.sact){
-          await setSubStatus(a.dataset.sub, a.dataset.sact);
-        }
+
+        if(a?.dataset?.sub && a?.dataset?.sact) await setSubStatus(a.dataset.sub, a.dataset.sact);
       });
 
       $("signOutBtn").addEventListener("click", async ()=>{
         await window.supabaseClient.auth.signOut();
-        location.href = "app.html";
+        location.href = "index.html";
       });
 
+      // Initial loads
       await loadRequests();
       await loadTasks();
       await loadSubs();
@@ -511,5 +497,6 @@
   </script>
 </body>
 </html>
+
 
 
