@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0B3D2E" />
+  <title>Creator Wing (Admin) | AGEx</title>
+  <style>
+    :root{--g:#0B3D2E;--g2:#083326;--gold:#F4B41A;--bg:#F7FAF9;--card:#fff;--line:rgba(0,0,0,.10);--ink:#111;--muted:#667;}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#0b3d2e 0%, #0b3d2e 240px, var(--bg) 240px);color:var(--ink);}
+    .wrap{max-width:1100px;margin:0 auto;padding:18px;}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#fff;padding:14px 0;}
+    .brand{display:flex;align-items:center;gap:10px}
+    .mark{width:40px;height:40px;border-radius:14px;background:linear-gradient(135deg,var(--g),var(--g2));display:grid;place-items:center;box-shadow:0 10px 25px rgba(0,0,0,.25)}
+    .mark span{color:var(--gold);font-weight:900}
+    .btn{border-radius:999px;padding:10px 14px;border:1px solid rgba(255,255,255,.22);background:transparent;color:#fff;font-weight:900;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+    .btn.gold{background:var(--gold);border-color:transparent;color:#1a1406}
+    .btn.dark{background:#06261c;border-color:transparent}
+    .grid{display:grid;gap:14px}
+    @media(min-width:980px){.grid.two{grid-template-columns:1fr 1fr}}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}
+    h1,h2{margin:0 0 10px;color:var(--g)}
+    .muted{color:var(--muted);font-size:13px;line-height:1.45;font-weight:700}
+    label{display:block;font-weight:900;font-size:12px;margin:10px 0 6px}
+    input,textarea,select{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);font-family:inherit}
+    textarea{min-height:84px;resize:vertical}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .pill{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:900}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}
+    th{color:var(--g);font-weight:950}
+    .smallbtn{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:900;cursor:pointer}
+    .smallbtn.gold{background:var(--gold);border-color:transparent}
+    .smallbtn.bad{background:#fff;border-color:rgba(200,0,0,.25);color:#a00}
+    .note{margin-top:10px;font-size:13px;font-weight:800}
+    .blocked{padding:14px;border-radius:18px;border:1px solid rgba(200,0,0,.25);background:#fff}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="mark"><span>↳</span></div>
+        <div>
+          <div style="font-weight:950">Creator Wing (Admin)</div>
+          <div style="opacity:.85;font-weight:800;font-size:13px">Approve unlocks • Create micro-tasks • Review proofs</div>
+        </div>
+      </div>
+      <div class="row">
+        <a class="btn" href="app.html">Back to App</a>
+        <button class="btn dark" id="signOutBtn">Sign out</button>
+      </div>
+    </div>
+
+    <div id="blocked" class="blocked" style="display:none">
+      <h2 style="margin:0 0 8px;color:#a00">Access blocked</h2>
+      <div class="muted">You are not an admin on this project. Confirm your profile role = <b>admin</b>.</div>
+    </div>
+
+    <div id="main" style="display:none">
+
+      <div class="grid two">
+        <div class="card">
+          <h2>Create Task</h2>
+          <div class="muted">These tasks appear inside Apprentice Micro-Tasks.</div>
+
+          <label>Title</label>
+          <input id="t_title" placeholder="e.g. Outreach: Invite 10 people to AGEx" />
+
+          <div class="row">
+            <div style="flex:1;min-width:220px">
+              <label>Category</label>
+              <select id="t_category">
+                <option>Outreach</option>
+                <option>Content</option>
+                <option>Community</option>
+                <option>Admin</option>
+              </select>
+            </div>
+            <div style="flex:1;min-width:220px">
+              <label>Reward Skill Points</label>
+              <input id="t_reward" type="number" value="50" />
+            </div>
+          </div>
+
+          <label>Instructions</label>
+          <textarea id="t_instructions" placeholder="What must they do? What proof do they submit?"></textarea>
+
+          <div class="row" style="align-items:center;margin-top:10px">
+            <label style="display:flex;gap:10px;align-items:center;margin:0;font-weight:950">
+              <input id="t_proof_required" type="checkbox" checked style="width:auto" />
+              Proof required
+            </label>
+            <button class="btn gold" id="createTaskBtn">Create Task</button>
+          </div>
+
+          <div class="note" id="taskMsg"></div>
+        </div>
+
+        <div class="card">
+          <h2>Access Requests (Approve Apprentice)</h2>
+          <div class="muted">Rule B: Foundation complete + skill points threshold + manual approval.</div>
+          <div class="row" style="margin:10px 0">
+            <span class="pill" id="reqCount">—</span>
+            <button class="smallbtn" id="refreshReqBtn">Refresh</button>
+          </div>
+
+          <div style="overflow:auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>SP</th>
+                  <th>Stage</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="reqBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid two" style="margin-top:14px">
+        <div class="card">
+          <h2>Tasks</h2>
+          <div class="row" style="margin:10px 0">
+            <span class="pill" id="taskCount">—</span>
+            <button class="smallbtn" id="refreshTasksBtn">Refresh</button>
+          </div>
+          <div style="overflow:auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Cat</th>
+                  <th>SP</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="tasksBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Submissions</h2>
+          <div class="muted">Approve/reject proofs. (Awards can be added next.)</div>
+
+          <div class="row" style="margin:10px 0">
+            <select id="subFilter" style="flex:1;min-width:220px">
+              <option value="pending">pending</option>
+              <option value="approved">approved</option>
+              <option value="rejected">rejected</option>
+            </select>
+            <button class="smallbtn" id="refreshSubsBtn">Refresh</button>
+          </div>
+
+          <div style="overflow:auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>Task</th>
+                  <th>User</th>
+                  <th>Status</th>
+                  <th>Proof</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="subsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    async function requireAuth(){
+      const { data } = await supabaseClient.auth.getUser();
+      if(!data?.user){ location.href = "auth.html"; return null; }
+      return data.user;
+    }
+
+    async function isAdmin(user){
+      const { data, error } = await supabaseClient
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .maybeSingle();
+      if(error) return false;
+      return data?.role === "admin";
+    }
+
+    async function loadRequests(){
+      const { data, error } = await supabaseClient
+        .from("access_requests")
+        .select("id,user_id,requested_stage,user_skill_points,status,created_at")
+        .order("created_at", { ascending:false })
+        .limit(25);
+
+      $("reqBody").innerHTML = "";
+      if(error){ $("reqCount").textContent = "Error loading"; return; }
+      $("reqCount").textContent = `${data.length} requests`;
+
+      data.forEach(r=>{
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><code style="font-size:12px">${r.user_id}</code></td>
+          <td><b>${r.user_skill_points}</b></td>
+          <td>${r.requested_stage}</td>
+          <td><b>${r.status}</b></td>
+          <td>
+            <button class="smallbtn gold" data-act="approve" data-id="${r.id}" data-uid="${r.user_id}">Approve</button>
+            <button class="smallbtn bad" data-act="reject" data-id="${r.id}">Reject</button>
+          </td>
+        `;
+        $("reqBody").appendChild(tr);
+      });
+    }
+
+    async function approveRequest(reqId, userId){
+      // 1) mark request approved
+      await supabaseClient
+        .from("access_requests")
+        .update({ status:"approved", reviewed_at:new Date().toISOString() })
+        .eq("id", reqId);
+
+      // 2) flip profile flags to unlock Apprentice
+      await supabaseClient
+        .from("profiles")
+        .update({ apprentice_approved:true, stage:"apprentice" })
+        .eq("id", userId);
+
+      await loadRequests();
+      alert("Approved. Apprentice unlocked for user.");
+    }
+
+    async function rejectRequest(reqId){
+      await supabaseClient
+        .from("access_requests")
+        .update({ status:"rejected", reviewed_at:new Date().toISOString() })
+        .eq("id", reqId);
+      await loadRequests();
+      alert("Rejected.");
+    }
+
+    async function createTask(user){
+      const title = $("t_title").value.trim();
+      const category = $("t_category").value;
+      const reward = parseInt($("t_reward").value || "0", 10);
+      const instructions = $("t_instructions").value.trim();
+      const proof_required = $("t_proof_required").checked;
+
+      if(!title || !instructions){
+        $("taskMsg").textContent = "Fill title + instructions.";
+        return;
+      }
+
+      $("taskMsg").textContent = "Creating…";
+
+      const { error } = await supabaseClient.from("tasks").insert([{
+        created_by: user.id,
+        title, category, reward_skill_points: reward,
+        instructions, proof_required,
+        status: "open"
+      }]);
+
+      if(error){
+        $("taskMsg").textContent = "Error: " + error.message;
+        return;
+      }
+
+      $("taskMsg").textContent = "✅ Task created.";
+      $("t_title").value = "";
+      $("t_instructions").value = "";
+      await loadTasks();
+    }
+
+    async function loadTasks(){
+      const { data, error } = await supabaseClient
+        .from("tasks")
+        .select("id,title,category,reward_skill_points,status,created_at")
+        .order("created_at",{ascending:false})
+        .limit(25);
+
+      $("tasksBody").innerHTML = "";
+      if(error){ $("taskCount").textContent = "Error loading"; return; }
+      $("taskCount").textContent = `${data.length} tasks`;
+
+      data.forEach(t=>{
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><b>${t.title}</b></td>
+          <td>${t.category}</td>
+          <td>${t.reward_skill_points}</td>
+          <td><b>${t.status}</b></td>
+          <td>
+            <button class="smallbtn" data-task="${t.id}" data-set="paused">Pause</button>
+            <button class="smallbtn gold" data-task="${t.id}" data-set="open">Open</button>
+            <button class="smallbtn bad" data-task="${t.id}" data-del="1">Delete</button>
+          </td>
+        `;
+        $("tasksBody").appendChild(tr);
+      });
+    }
+
+    async function setTaskStatus(id, status){
+      await supabaseClient.from("tasks").update({ status }).eq("id", id);
+      await loadTasks();
+    }
+
+    async function deleteTask(id){
+      await supabaseClient.from("tasks").delete().eq("id", id);
+      await loadTasks();
+    }
+
+    async function loadSubs(){
+      const status = $("subFilter").value;
+      const { data, error } = await supabaseClient
+        .from("task_submissions")
+        .select("id,task_id,user_id,status,proof_text,proof_link,created_at")
+        .eq("status", status)
+        .order("created_at",{ascending:false})
+        .limit(25);
+
+      $("subsBody").innerHTML = "";
+      if(error){ return; }
+
+      data.forEach(s=>{
+        const proof = (s.proof_link ? `<a href="${s.proof_link}" target="_blank">link</a>` : "") +
+                      (s.proof_text ? `<div style="max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.proof_text}</div>` : "");
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><code>${s.task_id}</code></td>
+          <td><code style="font-size:12px">${s.user_id}</code></td>
+          <td><b>${s.status}</b></td>
+          <td>${proof || "—"}</td>
+          <td>
+            <button class="smallbtn gold" data-sub="${s.id}" data-sact="approved">Approve</button>
+            <button class="smallbtn bad" data-sub="${s.id}" data-sact="rejected">Reject</button>
+          </td>
+        `;
+        $("subsBody").appendChild(tr);
+      });
+    }
+
+    async function setSubStatus(id, status){
+      await supabaseClient.from("task_submissions")
+        .update({ status, reviewed_at:new Date().toISOString() })
+        .eq("id", id);
+      await loadSubs();
+    }
+
+    async function init(){
+      const user = await requireAuth();
+      if(!user) return;
+
+      const ok = await isAdmin(user);
+      if(!ok){
+        $("blocked").style.display = "block";
+        return;
+      }
+
+      $("main").style.display = "block";
+
+      $("createTaskBtn").addEventListener("click", ()=>createTask(user));
+      $("refreshReqBtn").addEventListener("click", loadRequests);
+      $("refreshTasksBtn").addEventListener("click", loadTasks);
+      $("refreshSubsBtn").addEventListener("click", loadSubs);
+
+      document.body.addEventListener("click", async (e)=>{
+        const a = e.target;
+        if(a?.dataset?.act === "approve"){
+          await approveRequest(a.dataset.id, a.dataset.uid);
+        }
+        if(a?.dataset?.act === "reject"){
+          await rejectRequest(a.dataset.id);
+        }
+        if(a?.dataset?.task && a?.dataset?.set){
+          await setTaskStatus(a.dataset.task, a.dataset.set);
+        }
+        if(a?.dataset?.task && a?.dataset?.del){
+          if(confirm("Delete task?")) await deleteTask(a.dataset.task);
+        }
+        if(a?.dataset?.sub && a?.dataset?.sact){
+          await setSubStatus(a.dataset.sub, a.dataset.sact);
+        }
+      });
+
+      $("signOutBtn").addEventListener("click", async ()=>{
+        await supabaseClient.auth.signOut();
+        location.href = "app.html";
+      });
+
+      await loadRequests();
+      await loadTasks();
+      await loadSubs();
+    }
+
+    init();
+  </script>
+</body>
+</html>
