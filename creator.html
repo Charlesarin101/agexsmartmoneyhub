@@ -5,64 +5,155 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#0B3D2E" />
   <title>Creator Wing (Admin) | AGEx</title>
+  <meta name="description" content="Creator Wing (Admin): approve unlocks, create micro-tasks, review submissions." />
+
   <style>
-    :root{--g:#0B3D2E;--g2:#083326;--gold:#F4B41A;--bg:#F7FAF9;--card:#fff;--line:rgba(0,0,0,.10);--ink:#111;--muted:#667;}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#0b3d2e 0%, #0b3d2e 240px, var(--bg) 240px);color:var(--ink);}
+    :root{
+      --g:#0B3D2E;--g2:#083326;--gold:#F4B41A;--bg:#F7FAF9;--card:#fff;--line:rgba(0,0,0,.10);
+      --ink:#111;--muted:#667;--danger:#a00;--ok:#0b6b43;
+      --shadow:0 18px 45px rgba(0,0,0,.14);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background:linear-gradient(180deg,#0b3d2e 0%, #0b3d2e 240px, var(--bg) 240px);
+      color:var(--ink);
+    }
+    a{color:inherit;text-decoration:none}
+
     .wrap{max-width:1100px;margin:0 auto;padding:18px;}
     .top{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#fff;padding:14px 0;}
-    .brand{display:flex;align-items:center;gap:10px}
-    .mark{width:40px;height:40px;border-radius:14px;background:linear-gradient(135deg,var(--g),var(--g2));display:grid;place-items:center;box-shadow:0 10px 25px rgba(0,0,0,.25)}
-    .mark span{color:var(--gold);font-weight:900}
-    .btn{border-radius:999px;padding:10px 14px;border:1px solid rgba(255,255,255,.22);background:transparent;color:#fff;font-weight:900;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+    .brand{display:flex;align-items:center;gap:10px;min-width:0}
+    .mark{
+      width:44px;height:44px;border-radius:14px;
+      background:linear-gradient(135deg,var(--g),var(--g2));
+      display:grid;place-items:center;box-shadow:0 10px 25px rgba(0,0,0,.25);
+      border:1px solid rgba(244,180,26,.22);
+    }
+    .mark span{color:var(--gold);font-weight:950;font-size:18px}
+    .title{min-width:0}
+    .title .h{font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .title .s{opacity:.85;font-weight:800;font-size:13px}
+
+    .btn{
+      border-radius:999px;padding:10px 14px;border:1px solid rgba(255,255,255,.22);
+      background:transparent;color:#fff;font-weight:900;cursor:pointer;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      transition:.15s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
     .btn.gold{background:var(--gold);border-color:transparent;color:#1a1406}
     .btn.dark{background:#06261c;border-color:transparent}
+    .btn.light{background:#ffffff;border-color:rgba(0,0,0,.10);color:#132}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
     .grid{display:grid;gap:14px}
     @media(min-width:980px){.grid.two{grid-template-columns:1fr 1fr}}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}
+
+    .card{
+      background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;
+      box-shadow:var(--shadow);
+    }
     h1,h2{margin:0 0 10px;color:var(--g)}
-    .muted{color:var(--muted);font-size:13px;line-height:1.45;font-weight:700}
+    .muted{color:var(--muted);font-size:13px;line-height:1.45;font-weight:700;margin:0}
     label{display:block;font-weight:900;font-size:12px;margin:10px 0 6px}
-    input,textarea,select{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);font-family:inherit}
+    input,textarea,select{
+      width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);font-family:inherit;font-size:14px;
+      background:#fff;
+    }
     textarea{min-height:84px;resize:vertical}
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-    .pill{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:900}
+
+    .pill{
+      padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;
+      font-weight:900;font-size:13px;color:#132;
+    }
+    .pill.ok{border-color:rgba(11,107,67,.22);background:rgba(11,107,67,.06);color:var(--ok)}
+    .pill.bad{border-color:rgba(160,0,0,.22);background:rgba(160,0,0,.06);color:var(--danger)}
+
     table{width:100%;border-collapse:collapse}
-    th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}
+    th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;vertical-align:top}
     th{color:var(--g);font-weight:950}
-    .smallbtn{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:900;cursor:pointer}
+    .smallbtn{
+      padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:900;cursor:pointer
+    }
     .smallbtn.gold{background:var(--gold);border-color:transparent}
     .smallbtn.bad{background:#fff;border-color:rgba(200,0,0,.25);color:#a00}
-    .note{margin-top:10px;font-size:13px;font-weight:800}
-    .blocked{padding:14px;border-radius:18px;border:1px solid rgba(200,0,0,.25);background:#fff}
+    .smallbtn:hover{transform:translateY(-1px)}
+    .note{margin-top:10px;font-size:13px;font-weight:900}
+    .blocked{
+      padding:14px;border-radius:18px;border:1px solid rgba(200,0,0,.25);background:#fff;box-shadow:var(--shadow)
+    }
+    .okbox{
+      padding:14px;border-radius:18px;border:1px solid rgba(11,107,67,.22);background:#fff;box-shadow:var(--shadow)
+    }
+    .hint{font-size:12px;font-weight:850;color:rgba(0,0,0,.55);margin-top:6px}
+    .divider{height:1px;background:rgba(0,0,0,.08);margin:10px 0}
+    code{background:rgba(0,0,0,.06);padding:2px 6px;border-radius:8px}
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="top">
       <div class="brand">
-        <div class="mark"><span>↳</span></div>
-        <div>
-          <div style="font-weight:950">Creator Wing (Admin)</div>
-          <div style="opacity:.85;font-weight:800;font-size:13px">Approve unlocks • Create micro-tasks • Review proofs</div>
+        <div class="mark" aria-hidden="true"><span>↳</span></div>
+        <div class="title">
+          <div class="h">Creator Wing (Admin)</div>
+          <div class="s">Approve unlocks • Create micro-tasks • Review proofs</div>
         </div>
       </div>
+
       <div class="row">
-        <a class="btn" href="app.html">Back to App</a>
-        <button class="btn dark" id="signOutBtn">Sign out</button>
+        <a class="btn" href="./app.html">Back to App</a>
+        <button class="btn dark" id="signOutBtn" type="button">Sign out</button>
       </div>
     </div>
 
-    <div id="blocked" class="blocked" style="display:none">
-      <h2 style="margin:0 0 8px;color:#a00">Access blocked</h2>
-      <div class="muted">You are not an admin on this project. Confirm your profile role = <b>admin</b>.</div>
+    <!-- DEBUG / STATUS -->
+    <div id="statusBox" class="okbox">
+      <h2 style="margin:0 0 8px">Status</h2>
+      <div class="row">
+        <span class="pill" id="statusPill">Checking…</span>
+        <span class="pill" id="authPill">Auth: —</span>
+        <span class="pill" id="rolePill">Role: —</span>
+      </div>
+      <div class="hint" id="statusHint">
+        If you see “Supabase not loaded”, confirm <code>supabase.js</code> exists in the same folder and creates <code>window.supabaseClient</code>.
+      </div>
     </div>
 
+    <div class="divider"></div>
+
+    <!-- BLOCKED -->
+    <div id="blocked" class="blocked" style="display:none">
+      <h2 style="margin:0 0 8px;color:var(--danger)">Access blocked</h2>
+      <p class="muted" style="margin:0">
+        You are signed in, but your profile role is not <b>admin</b>.
+        Set your row in <code>profiles</code> to <code>role = 'admin'</code>.
+      </p>
+      <div class="note" id="blockedNote"></div>
+    </div>
+
+    <!-- NOT SIGNED IN -->
+    <div id="needAuth" class="blocked" style="display:none">
+      <h2 style="margin:0 0 8px;color:var(--danger)">Sign in required</h2>
+      <p class="muted" style="margin:0">
+        You must sign in to use Creator Wing.
+      </p>
+      <div class="row" style="margin-top:10px">
+        <a class="btn gold" href="./auth.html">Go to Sign in</a>
+        <a class="btn light" href="./lodge.html">Back to Lodge</a>
+      </div>
+    </div>
+
+    <!-- MAIN -->
     <div id="main" style="display:none">
 
       <div class="grid two">
+        <!-- CREATE TASK -->
         <div class="card">
           <h2>Create Task</h2>
-          <div class="muted">These tasks appear inside Apprentice Micro-Tasks.</div>
+          <p class="muted">These tasks can appear inside Apprentice Micro-Tasks.</p>
 
           <label>Title</label>
           <input id="t_title" placeholder="e.g. Outreach: Invite 10 people to AGEx" />
@@ -79,7 +170,7 @@
             </div>
             <div style="flex:1;min-width:220px">
               <label>Reward Skill Points</label>
-              <input id="t_reward" type="number" value="50" />
+              <input id="t_reward" type="number" value="50" min="0" />
             </div>
           </div>
 
@@ -91,18 +182,22 @@
               <input id="t_proof_required" type="checkbox" checked style="width:auto" />
               Proof required
             </label>
-            <button class="btn gold" id="createTaskBtn">Create Task</button>
+            <button class="btn gold" id="createTaskBtn" type="button">Create Task</button>
+            <button class="btn light" id="resetTaskFormBtn" type="button">Clear</button>
           </div>
 
           <div class="note" id="taskMsg"></div>
+          <div class="hint">If task creation fails, confirm the <code>tasks</code> table exists and RLS policies allow admin inserts.</div>
         </div>
 
+        <!-- ACCESS REQUESTS -->
         <div class="card">
           <h2>Access Requests (Approve Apprentice)</h2>
-          <div class="muted">Rule B: Foundation complete + skill points threshold + manual approval.</div>
+          <p class="muted">Rule B: Foundation complete + skill points threshold + manual approval.</p>
+
           <div class="row" style="margin:10px 0">
             <span class="pill" id="reqCount">—</span>
-            <button class="smallbtn" id="refreshReqBtn">Refresh</button>
+            <button class="smallbtn" id="refreshReqBtn" type="button">Refresh</button>
           </div>
 
           <div style="overflow:auto">
@@ -123,12 +218,14 @@
       </div>
 
       <div class="grid two" style="margin-top:14px">
+        <!-- TASKS LIST -->
         <div class="card">
           <h2>Tasks</h2>
           <div class="row" style="margin:10px 0">
             <span class="pill" id="taskCount">—</span>
-            <button class="smallbtn" id="refreshTasksBtn">Refresh</button>
+            <button class="smallbtn" id="refreshTasksBtn" type="button">Refresh</button>
           </div>
+
           <div style="overflow:auto">
             <table>
               <thead>
@@ -145,9 +242,10 @@
           </div>
         </div>
 
+        <!-- SUBMISSIONS -->
         <div class="card">
           <h2>Submissions</h2>
-          <div class="muted">Approve/reject proofs. (Awards can be added next.)</div>
+          <p class="muted">Approve/reject proofs. (Awards can be added next.)</p>
 
           <div class="row" style="margin:10px 0">
             <select id="subFilter" style="flex:1;min-width:220px">
@@ -155,7 +253,7 @@
               <option value="approved">approved</option>
               <option value="rejected">rejected</option>
             </select>
-            <button class="smallbtn" id="refreshSubsBtn">Refresh</button>
+            <button class="smallbtn" id="refreshSubsBtn" type="button">Refresh</button>
           </div>
 
           <div style="overflow:auto">
@@ -175,30 +273,74 @@
         </div>
       </div>
 
+      <div class="divider"></div>
+
+      <div class="okbox">
+        <h2 style="margin:0 0 8px">How to operate Creator Wing</h2>
+        <p class="muted" style="margin:0">
+          <b>Creator Wing is only for Admin.</b> Apprentice users do not need it.
+          You can create tasks anytime (even before Apprentice unlocks). Tasks will simply wait until Apprentice is live.
+          Access approval is manual: when a user submits an unlock request, you approve it here.
+        </p>
+      </div>
+
     </div>
   </div>
 
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js"></script>
+  <script src="./supabase.js"></script>
+
   <script>
     const $ = (id) => document.getElementById(id);
 
+    function setPill(id, text, kind){
+      const el = $(id);
+      el.textContent = text;
+      el.className = "pill" + (kind ? (" " + kind) : "");
+    }
+
+    function show(elId){ $(elId).style.display = "block"; }
+    function hide(elId){ $(elId).style.display = "none"; }
+
+    function mustHaveSupabase(){
+      if(!window.supabaseClient){
+        setPill("statusPill", "Supabase not loaded", "bad");
+        $("statusHint").innerHTML =
+          "Fix: Ensure <code>supabase.js</code> exists in the SAME folder and contains <code>window.supabaseClient = supabase.createClient(...)</code>.";
+        show("needAuth");
+        return false;
+      }
+      return true;
+    }
+
     async function requireAuth(){
-      const { data } = await supabaseClient.auth.getUser();
-      if(!data?.user){ location.href = "auth.html"; return null; }
+      const { data, error } = await supabaseClient.auth.getUser();
+      if(error){
+        setPill("authPill", "Auth error", "bad");
+        throw error;
+      }
+      if(!data?.user){
+        setPill("authPill", "Not signed in", "bad");
+        show("needAuth");
+        return null;
+      }
+      setPill("authPill", "Signed in", "ok");
       return data.user;
     }
 
-    async function isAdmin(user){
+    async function getRole(user){
       const { data, error } = await supabaseClient
         .from("profiles")
         .select("role")
         .eq("id", user.id)
         .maybeSingle();
-      if(error) return false;
-      return data?.role === "admin";
+
+      if(error) throw error;
+      return data?.role || null;
     }
 
+    // ---------- DATA LOADERS ----------
     async function loadRequests(){
       const { data, error } = await supabaseClient
         .from("access_requests")
@@ -207,8 +349,11 @@
         .limit(25);
 
       $("reqBody").innerHTML = "";
-      if(error){ $("reqCount").textContent = "Error loading"; return; }
-      $("reqCount").textContent = `${data.length} requests`;
+      if(error){
+        setPill("reqCount","Error loading","bad");
+        return;
+      }
+      setPill("reqCount", `${data.length} requests`, data.length ? "" : "");
 
       data.forEach(r=>{
         const tr = document.createElement("tr");
@@ -227,13 +372,11 @@
     }
 
     async function approveRequest(reqId, userId){
-      // 1) mark request approved
       await supabaseClient
         .from("access_requests")
         .update({ status:"approved", reviewed_at:new Date().toISOString() })
         .eq("id", reqId);
 
-      // 2) flip profile flags to unlock Apprentice
       await supabaseClient
         .from("profiles")
         .update({ apprentice_approved:true, stage:"apprentice" })
@@ -248,6 +391,7 @@
         .from("access_requests")
         .update({ status:"rejected", reviewed_at:new Date().toISOString() })
         .eq("id", reqId);
+
       await loadRequests();
       alert("Rejected.");
     }
@@ -259,8 +403,14 @@
       const instructions = $("t_instructions").value.trim();
       const proof_required = $("t_proof_required").checked;
 
+      $("taskMsg").textContent = "";
+
       if(!title || !instructions){
         $("taskMsg").textContent = "Fill title + instructions.";
+        return;
+      }
+      if(Number.isNaN(reward) || reward < 0){
+        $("taskMsg").textContent = "Reward must be 0 or higher.";
         return;
       }
 
@@ -268,8 +418,11 @@
 
       const { error } = await supabaseClient.from("tasks").insert([{
         created_by: user.id,
-        title, category, reward_skill_points: reward,
-        instructions, proof_required,
+        title,
+        category,
+        reward_skill_points: reward,
+        instructions,
+        proof_required,
         status: "open"
       }]);
 
@@ -292,8 +445,11 @@
         .limit(25);
 
       $("tasksBody").innerHTML = "";
-      if(error){ $("taskCount").textContent = "Error loading"; return; }
-      $("taskCount").textContent = `${data.length} tasks`;
+      if(error){
+        setPill("taskCount","Error loading","bad");
+        return;
+      }
+      setPill("taskCount", `${data.length} tasks`, data.length ? "" : "");
 
       data.forEach(t=>{
         const tr = document.createElement("tr");
@@ -332,11 +488,14 @@
         .limit(25);
 
       $("subsBody").innerHTML = "";
-      if(error){ return; }
+      if(error){
+        return;
+      }
 
       data.forEach(s=>{
-        const proof = (s.proof_link ? `<a href="${s.proof_link}" target="_blank">link</a>` : "") +
-                      (s.proof_text ? `<div style="max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.proof_text}</div>` : "");
+        const proof =
+          (s.proof_link ? `<a href="${s.proof_link}" target="_blank" rel="noopener">link</a>` : "") +
+          (s.proof_text ? `<div style="max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(s.proof_text)}</div>` : "");
 
         const tr = document.createElement("tr");
         tr.innerHTML = `
@@ -360,22 +519,74 @@
       await loadSubs();
     }
 
-    async function init(){
-      const user = await requireAuth();
-      if(!user) return;
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
 
-      const ok = await isAdmin(user);
-      if(!ok){
-        $("blocked").style.display = "block";
+    // ---------- INIT ----------
+    async function init(){
+      hide("blocked");
+      hide("needAuth");
+      hide("main");
+
+      if(!mustHaveSupabase()) return;
+
+      setPill("statusPill","Supabase loaded","ok");
+
+      let user = null;
+      try{
+        user = await requireAuth();
+        if(!user) return;
+      }catch(e){
+        setPill("statusPill","Auth failed","bad");
+        $("statusHint").textContent = "Auth failed: " + (e?.message || e);
+        show("needAuth");
         return;
       }
 
-      $("main").style.display = "block";
+      // role check
+      try{
+        const role = await getRole(user);
+        setPill("rolePill", `Role: ${role || "none"}`, role === "admin" ? "ok" : "bad");
 
+        if(role !== "admin"){
+          show("blocked");
+          $("blockedNote").innerHTML =
+            `Your user id: <code>${user.id}</code><br>` +
+            `Fix: In Supabase SQL Editor run:<br>` +
+            `<code>update profiles set role='admin' where id='${user.id}';</code>`;
+          return;
+        }
+      }catch(e){
+        setPill("statusPill","Role check failed","bad");
+        $("statusHint").textContent = "Role check error: " + (e?.message || e);
+        return;
+      }
+
+      // Admin allowed
+      show("main");
+      setPill("statusPill","Admin access granted","ok");
+
+      // Bind UI actions
       $("createTaskBtn").addEventListener("click", ()=>createTask(user));
+      $("resetTaskFormBtn").addEventListener("click", ()=>{
+        $("t_title").value = "";
+        $("t_instructions").value = "";
+        $("t_reward").value = "50";
+        $("t_category").value = "Outreach";
+        $("t_proof_required").checked = true;
+        $("taskMsg").textContent = "";
+      });
+
       $("refreshReqBtn").addEventListener("click", loadRequests);
       $("refreshTasksBtn").addEventListener("click", loadTasks);
       $("refreshSubsBtn").addEventListener("click", loadSubs);
+      $("subFilter").addEventListener("change", loadSubs);
 
       document.body.addEventListener("click", async (e)=>{
         const a = e.target;
@@ -397,10 +608,11 @@
       });
 
       $("signOutBtn").addEventListener("click", async ()=>{
-        await supabaseClient.auth.signOut();
-        location.href = "app.html";
+        try{ await supabaseClient.auth.signOut(); }catch(_){}
+        location.href = "./app.html";
       });
 
+      // Initial loads
       await loadRequests();
       await loadTasks();
       await loadSubs();
@@ -410,3 +622,4 @@
   </script>
 </body>
 </html>
+
