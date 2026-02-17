@@ -3,101 +3,1208 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Smart Money Academy • AGEx</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#0B3D2E" />
+  <title>Academy — Foundation → Apprentice → Level 3 | AGEx Smart Money Hub</title>
+  <meta name="description" content="AGEx Academy: a single-flow pathway from Foundation (21 Days) to Apprentice and Level 3 eligibility for Income Stack Lab. Discipline, proof, production." />
+  <meta name="robots" content="index,follow" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --green:#0B3D2E;
+      --green2:#083326;
+      --gold:#F4B41A;
+      --ink:#101312;
+      --muted:#5e6a64;
+      --bg:#0b3d2e;          /* requested: branded green background */
+      --card:#ffffff;
+      --line:rgba(15,15,15,.12);
+      --shadow:0 18px 45px rgba(0,0,0,.18);
+      --radius:22px;
+      --max:1100px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:"Manrope",system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--ink);
+      background:
+        radial-gradient(1000px 700px at 12% 0%, rgba(244,180,26,.18), transparent 62%),
+        radial-gradient(900px 700px at 88% 10%, rgba(255,255,255,.10), transparent 60%),
+        var(--bg);
+      line-height:1.55;
+    }
+    a{color:inherit;text-decoration:none}
+
+    .wrap{max-width:var(--max);margin:0 auto;padding:16px}
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(11,61,46,.86);
+      backdrop-filter:saturate(170%) blur(10px);
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:12px 0;
+    }
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
+    .mark{
+      width:44px;height:44px;border-radius:14px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--green),var(--green2));
+      box-shadow:0 10px 26px rgba(0,0,0,.22);
+      position:relative;overflow:hidden;flex:0 0 auto;
+      border:1px solid rgba(244,180,26,.25);
+    }
+    .mark:before{
+      content:"";position:absolute;inset:-40%;
+      background:radial-gradient(circle at 30% 30%, rgba(244,180,26,.55), transparent 55%);
+      transform:rotate(10deg);
+    }
+    .mark svg{position:relative;z-index:1}
+    .t{line-height:1.05;min-width:0}
+    .t b{letter-spacing:.2px;color:#fff;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .t small{display:block;color:rgba(255,255,255,.72);font-weight:800;margin-top:4px}
+
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      border-radius:999px;padding:11px 14px;font-weight:900;
+      border:1px solid transparent;cursor:pointer;transition:.15s ease;
+      user-select:none;white-space:nowrap
+    }
+    .btn.gold{background:var(--gold);color:#1b1607;box-shadow:0 12px 26px rgba(244,180,26,.24)}
+    .btn.gold:hover{transform:translateY(-1px)}
+    .btn.dark{background:#0e2f25;color:#fff;border-color:rgba(255,255,255,.14)}
+    .btn.dark:hover{transform:translateY(-1px)}
+    .btn.ghost{background:transparent;border-color:rgba(244,180,26,.35);color:#fff}
+    .btn.ghost:hover{background:rgba(244,180,26,.12)}
+
+    .main{
+      padding:14px 0 20px;
+    }
+    .grid{display:grid;gap:14px}
+    @media(min-width:980px){ .grid.two{grid-template-columns:1.05fr .95fr} }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:16px;
+    }
+    .card.soft{
+      background:rgba(255,255,255,.94);
+    }
+
+    h1{margin:0;color:var(--green);font-size:26px;letter-spacing:-.2px}
+    h2{margin:0;color:var(--green);font-size:18px}
+    .muted{color:rgba(15,15,15,.62);font-weight:750;font-size:13px}
+    .small{font-size:12px;color:rgba(15,15,15,.60);font-weight:750}
+    .divider{height:1px;background:var(--line);margin:12px 0}
+
+    .pillRow{display:flex;gap:10px;flex-wrap:wrap}
+    .pill{
+      padding:10px 12px;border-radius:14px;border:1px solid var(--line);
+      background:#fff;font-weight:900;font-size:13px;
+    }
+    .pill b{color:var(--green)}
+    .tag{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:7px 10px;border-radius:999px;
+      background:rgba(11,61,46,.08);
+      border:1px solid rgba(11,61,46,.12);
+      color:var(--green);font-weight:950;font-size:12px;
+      width:fit-content;
+    }
+    .tag .dot{width:10px;height:10px;border-radius:99px;background:var(--gold);box-shadow:0 0 0 4px rgba(244,180,26,.18)}
+
+    .sectionHead{
+      display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    }
+    .lockedBadge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:7px 10px;border-radius:999px;
+      background:rgba(0,0,0,.06);
+      border:1px solid rgba(0,0,0,.08);
+      color:#222;font-weight:950;font-size:12px;
+    }
+    .lockedBadge.on{background:rgba(244,180,26,.14);border-color:rgba(244,180,26,.35)}
+    .okBadge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:7px 10px;border-radius:999px;
+      background:rgba(11,61,46,.10);
+      border:1px solid rgba(11,61,46,.18);
+      color:var(--green);font-weight:950;font-size:12px;
+    }
+
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .field{margin-top:10px}
+    label{display:block;font-weight:900;font-size:12px;margin-bottom:6px;color:#1c2521}
+    textarea, select, input{
+      width:100%;box-sizing:border-box;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      font-size:14px;
+      background:#fff;
+      font-family:inherit;
+    }
+    textarea{min-height:88px;resize:vertical}
+    .toast{
+      display:none;margin-top:10px;padding:10px 12px;border-radius:14px;
+      background:rgba(11,61,46,.08);
+      border:1px solid rgba(11,61,46,.14);
+      color:#123;font-weight:900;font-size:13px;
+    }
+
+    .checklist{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      background:#fff;
+    }
+    .checkrow{
+      display:flex;gap:10px;align-items:flex-start;
+      padding:9px 0;border-bottom:1px solid var(--line);
+    }
+    .checkrow:last-child{border-bottom:none}
+    .checkrow input{width:auto;margin-top:3px}
+    .checkrow b{color:var(--green)}
+    .checkrow .small{margin-top:2px}
+
+    .panel{
+      border:1px dashed rgba(11,61,46,.35);
+      border-radius:16px;
+      padding:12px;
+      background:linear-gradient(180deg, rgba(244,180,26,.08), rgba(11,61,46,.04));
+    }
+
+    .overlay{
+      position:fixed;inset:0;display:none;
+      background:rgba(3,10,8,.72);
+      align-items:center;justify-content:center;padding:18px;
+      z-index:80;
+    }
+    .overlayCard{
+      max-width:560px;width:100%;
+      background:#fff;border-radius:18px;
+      padding:16px;border:1px solid var(--line);
+      box-shadow:0 22px 60px rgba(0,0,0,.25);
+    }
+
+    footer{
+      padding:12px 0 24px;
+      color:rgba(255,255,255,.75);
+      font-weight:800;font-size:12px;
+      text-align:center;
+    }
+    .miniLink{color:rgba(255,255,255,.85);text-decoration:underline}
+  </style>
 </head>
+
 <body>
-  <header class="header">
-    <a class="brand" href="index.html">
-      <span class="brand-mark">AG<span class="brand-ex">Ex</span><span class="brand-arrow">→</span></span>
-      <span class="brand-sub">Smart Money Hub</span>
-    </a>
-    <nav class="nav">
-      <a class="active" href="academy.html">Academy</a>
-      <a href="skillpoints.html">Skill Points</a>
-      <a href="founder.html">Founder</a>
-      <a class="cta" href="request-access.html">Request Access</a>
-    </nav>
-  </header>
 
-  <main class="page">
-    <h1>Smart Money Academy</h1>
-    <p class="lead">Entry course for disciplined financial growth — built for real life in Nigeria.</p>
+<header>
+  <div class="wrap">
+    <div class="nav">
+      <a class="brand" href="lodge.html" aria-label="Back to Lodge">
+        <div class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+            <path d="M12 2.6l8 3.2v6.2c0 5.1-3.5 9.2-8 9.9-4.5-.7-8-4.8-8-9.9V5.8L12 2.6z" stroke="rgba(255,255,255,.92)" stroke-width="1.6"/>
+            <path d="M8.3 12h6.9l-2.2-2.2 1.3-1.3 4.4 4.4-4.4 4.4-1.3-1.3 2.2-2.2H8.3V12z" fill="#F4B41A"/>
+          </svg>
+        </div>
+        <div class="t">
+          <b>Academy (Single Flow)</b>
+          <small>Foundation → Apprentice → Level 3</small>
+        </div>
+      </a>
 
-    <div class="banner">
-      <div><strong>One-time entry:</strong> $1 verification</div>
-      <div><strong>After approval:</strong> Academy access is free</div>
-    </div>
-
-    <h2>Course: Smart Money Foundations — From Budget to Builder</h2>
-    <p><strong>Core Promise:</strong> Build a simple money system that controls spending, grows savings, and starts earning with skills—without confusion.</p>
-
-    <div class="cards">
-      <div class="card">
-        <h3>🛡️ Module 1 — Identity & Stewardship</h3>
-        <p><strong>Objective:</strong> Understand money as responsibility, not pressure.</p>
-        <ul class="list">
-          <li>Stewardship mindset: money as a tool</li>
-          <li>The “leak” problem: where money silently goes</li>
-          <li>Discipline rule: small actions, big results</li>
-        </ul>
-        <p><strong>Action:</strong> Track every naira for 3 days.</p>
-      </div>
-
-      <div class="card">
-        <h3>📒 Module 2 — Budget That Works</h3>
-        <p><strong>Objective:</strong> Build a budget you can actually follow.</p>
-        <ul class="list">
-          <li>Needs vs wants (real-life examples)</li>
-          <li>3-bucket plan: Survival / Growth / Future</li>
-          <li>Weekly money check-in</li>
-        </ul>
-        <p><strong>Action:</strong> Set your 3 buckets + weekly limits.</p>
-      </div>
-
-      <div class="card">
-        <h3>🧱 Module 3 — Savings & Emergency Shield</h3>
-        <p><strong>Objective:</strong> Save consistently and protect yourself from shocks.</p>
-        <ul class="list">
-          <li>Emergency fund goals (start small)</li>
-          <li>Simple automation methods</li>
-          <li>Avoiding “urgent spending” traps</li>
-        </ul>
-        <p><strong>Action:</strong> Save your first “unbreakable” amount.</p>
-      </div>
-
-      <div class="card">
-        <h3>🧰 Module 4 — Skills → Income</h3>
-        <p><strong>Objective:</strong> Choose one skill and begin a clear learning path.</p>
-        <ul class="list">
-          <li>High-demand skills you can start now</li>
-          <li>Practice system: 30 minutes daily</li>
-          <li>Proof of skill: small projects</li>
-        </ul>
-        <p><strong>Action:</strong> Pick 1 skill + complete your first mini project.</p>
-      </div>
-
-      <div class="card">
-        <h3>🏁 Module 5 — Verification & Growth Path</h3>
-        <p><strong>Objective:</strong> Unlock opportunities through proof.</p>
-        <ul class="list">
-          <li>Skill Points explained</li>
-          <li>Verification steps</li>
-          <li>Opportunity unlocks (tasks, partnerships)</li>
-        </ul>
-        <p><strong>Action:</strong> Submit your first proof for review.</p>
+      <div class="row">
+        <button class="btn ghost" id="resetAllBtn" type="button">Reset Progress</button>
+        <a class="btn gold" href="app.html">Back to App</a>
       </div>
     </div>
+  </div>
+</header>
 
-    <div class="actions">
-      <a class="btn primary" href="request-access.html">Request Access</a>
-      <a class="btn secondary" href="skillpoints.html">Read Skill Points → Value</a>
+<main class="wrap main grid two">
+
+  <!-- LEFT: FLOW ENGINE -->
+  <section class="card soft">
+    <div class="sectionHead">
+      <div>
+        <div class="tag"><span class="dot"></span> Discipline • Proof • Production</div>
+        <h1 style="margin-top:10px">AGEx Academy</h1>
+        <p class="muted" style="margin:8px 0 0">
+          One journey. One flow. You start with Foundation and unlock levels by time + proof + skill points.
+          You cannot rush tomorrow today.
+        </p>
+      </div>
+      <div class="okBadge" id="flowBadge">Status: Active</div>
     </div>
-  </main>
 
-  <footer class="footer">
-    <div>© <span id="y"></span> AGEx Smart Money Hub.</div>
-  </footer>
-  <script>document.getElementById("y").textContent=new Date().getFullYear();</script>
+    <div class="divider"></div>
+
+    <div class="pillRow">
+      <div class="pill">Stage: <b id="stageName">Foundation</b></div>
+      <div class="pill">Skill Points: <b id="spPill">0</b></div>
+      <div class="pill">A1 Coins: <b id="a1Pill">0</b> <span class="small">(A1 = $0.01)</span></div>
+      <div class="pill">Apprentice Earned: <b id="usdPill">$0.00</b></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- FOUNDATION -->
+    <div class="card" style="box-shadow:none">
+      <div class="sectionHead">
+        <h2>Foundation Class</h2>
+        <span class="okBadge" id="foundationBadge">21 Days</span>
+      </div>
+      <p class="muted" style="margin:8px 0 0">
+        Each day unlocks only when its day arrives. If you pause for days, you continue where you stopped.
+      </p>
+
+      <div class="row" style="margin-top:10px">
+        <div style="flex:1;min-width:220px">
+          <label for="daySelect">Choose Day</label>
+          <select id="daySelect"></select>
+        </div>
+        <div style="flex:1;min-width:220px">
+          <label>Day Lock Status</label>
+          <div class="pill" id="dayLockPill">—</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="dayTeaching">Teaching (Read)</label>
+        <textarea id="dayTeaching" readonly></textarea>
+      </div>
+
+      <div class="field">
+        <label for="dayAction">Your Action (Write what you will do today)</label>
+        <textarea id="dayAction" placeholder="Write your action for today..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="dayProof">Your Proof Note (What did you actually do?)</label>
+        <textarea id="dayProof" placeholder="Write proof note here... (this is saved)"></textarea>
+      </div>
+
+      <label style="display:flex;gap:10px;align-items:center;margin-top:8px">
+        <input type="checkbox" id="dayDone">
+        <span><b>Mark Day Completed</b> (adds Skill Points, locks the day)</span>
+      </label>
+
+      <div class="row" style="margin-top:12px">
+        <button class="btn gold" id="copyDayBtn" type="button">Copy Today’s Proof</button>
+        <button class="btn dark" id="completeDayBtn" type="button">Complete Day →</button>
+      </div>
+
+      <div class="toast" id="toastFoundation">Saved.</div>
+    </div>
+
+    <!-- APPRENTICE -->
+    <div class="card" style="box-shadow:none;margin-top:12px" id="apprenticeCard">
+      <div class="sectionHead">
+        <h2>Apprentice Level</h2>
+        <span class="lockedBadge on" id="apprenticeLockBadge">Locked</span>
+      </div>
+      <p class="muted" style="margin:8px 0 0">
+        Apprentice unlocks after Foundation completion + required skill points. This is where earning begins:
+        <b>$0.01/day</b> for verified consistency. <b>Minimum withdrawal: $1</b>.
+      </p>
+
+      <div class="panel" style="margin-top:10px">
+        <b style="color:var(--green)">Micro-Tasks (Preview)</b>
+        <p class="small" style="margin:6px 0 0">
+          This becomes active at Apprentice. Later, we’ll connect it to Creator’s Wing so tasks can be posted and claimed.
+          For now it is a placeholder to show what is coming.
+        </p>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="row">
+        <div style="flex:1;min-width:220px">
+          <label for="weekSelect">Choose Week</label>
+          <select id="weekSelect"></select>
+        </div>
+        <div style="flex:1;min-width:220px">
+          <label>Week Status</label>
+          <div class="pill" id="weekStatus">—</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="weekObjective">Objective</label>
+        <textarea id="weekObjective" readonly></textarea>
+      </div>
+
+      <div class="field">
+        <label for="weekPlan">Weekly Plan</label>
+        <textarea id="weekPlan"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="weekProof">Weekly Proof (what you submit)</label>
+        <textarea id="weekProof"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="weekReflection">Weekly Reflection</label>
+        <textarea id="weekReflection" placeholder="What worked? What failed? What will you adjust next week?"></textarea>
+      </div>
+
+      <label style="display:flex;gap:10px;align-items:center;margin-top:8px">
+        <input type="checkbox" id="weekDone">
+        <span><b>Mark Week as Completed</b></span>
+      </label>
+
+      <div class="divider"></div>
+
+      <h2 style="font-size:16px">Daily Checklist (repeat all week)</h2>
+      <p class="small" style="margin:6px 0 0">Complete all checks to earn 1 A1 coin ($0.01) for that day cycle.</p>
+
+      <div class="checklist" style="margin-top:10px">
+        <div class="checkrow">
+          <input type="checkbox" id="a_checkin">
+          <div>
+            <b>Daily Check-in (2 min)</b><br>
+            <span class="small">Set spending cap and one refusal target.</span>
+          </div>
+        </div>
+        <div class="checkrow">
+          <input type="checkbox" id="a_log">
+          <div>
+            <b>Expense Log</b><br>
+            <span class="small">Record every expense (even small ones).</span>
+          </div>
+        </div>
+        <div class="checkrow">
+          <input type="checkbox" id="a_total">
+          <div>
+            <b>Night Total</b><br>
+            <span class="small">Total today’s spending and note biggest category.</span>
+          </div>
+        </div>
+        <div class="checkrow">
+          <input type="checkbox" id="a_refuse">
+          <div>
+            <b>One Refusal</b><br>
+            <span class="small">Refuse one unnecessary spend (prove control).</span>
+          </div>
+        </div>
+        <div class="checkrow">
+          <input type="checkbox" id="a_proof">
+          <div>
+            <b>Micro-proof captured</b><br>
+            <span class="small">Screenshot or short note as proof.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="apprenticeDailyNote">Daily Proof Note</label>
+        <textarea id="apprenticeDailyNote" placeholder="Example: Total spent ₦3,200. Biggest category: transport. Refused: impulse airtime..."></textarea>
+      </div>
+
+      <div class="row">
+        <button class="btn gold" id="copyWeekBtn" type="button">Copy Weekly Proof</button>
+        <button class="btn gold" id="copyDailyBtn" type="button">Copy Daily Proof</button>
+        <button class="btn dark" id="nextWeekBtn" type="button">Mark Done → Next Week</button>
+        <button class="btn ghost" id="resetDailyBtn" type="button">Reset Daily Checklist</button>
+      </div>
+
+      <div class="toast" id="toastApprentice">Saved.</div>
+    </div>
+
+    <!-- LEVEL 3 -->
+    <div class="card" style="box-shadow:none;margin-top:12px" id="level3Card">
+      <div class="sectionHead">
+        <h2>Level 3 Eligibility</h2>
+        <span class="lockedBadge on" id="level3LockBadge">Locked</span>
+      </div>
+      <p class="muted" style="margin:8px 0 0">
+        By Level 3, you become eligible for Income Stack Lab. We will not mention payments here.
+        Eligibility is unlocked by proof and progress.
+      </p>
+
+      <div class="panel" style="margin-top:10px">
+        <b style="color:var(--green)">Income Stack Lab</b>
+        <p class="small" style="margin:6px 0 0">
+          When you qualify, the button becomes active and you can enter ISL.
+        </p>
+        <div class="row" style="margin-top:10px">
+          <a class="btn gold" id="islBtn" href="isl.html" onclick="return false;">Enter Income Stack Lab</a>
+          <span class="small" id="islHint">Locked until Level 3 eligibility.</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- RIGHT: STATUS / RULES -->
+  <aside class="card soft">
+    <div class="sectionHead">
+      <h2>Your Path Status</h2>
+      <span class="okBadge" id="todayBadge">Today: —</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="pillRow">
+      <div class="pill">Foundation: <b id="foundationProgress">0/21</b></div>
+      <div class="pill">Apprentice: <b id="apprenticeProgress">0/13</b></div>
+      <div class="pill">Unlock SP Needed: <b id="spNeedPill">—</b></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="panel">
+      <b style="color:var(--green)">Rules (v1)</b>
+      <ul class="small" style="margin:8px 0 0;line-height:1.55">
+        <li><b>Foundation is time-locked:</b> one day unlock per calendar day.</li>
+        <li><b>Flexible pace:</b> pause anytime; continue where you stopped.</li>
+        <li><b>Skill Points:</b> earned daily; used for unlocking levels.</li>
+        <li><b>Apprentice earning:</b> 1 A1 coin ($0.01) per completed daily checklist cycle.</li>
+        <li><b>Minimum withdrawal:</b> $1 (shown as guidance; payouts handled later).</li>
+      </ul>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="panel">
+      <b style="color:var(--green)">Quick Actions</b>
+      <div class="row" style="margin-top:10px">
+        <a class="btn dark" href="lodge.html">Back to Lodge</a>
+        <a class="btn ghost" href="terms.html">Terms</a>
+        <a class="btn ghost" href="privacy.html">Privacy</a>
+      </div>
+      <p class="small" style="margin:10px 0 0">
+        Note: Creator’s Wing will be surfaced in <b>Lodge</b> later. Academy stays one flow.
+      </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <p class="small">
+      If something looks empty or not saving, tell me the exact section and I will fix it without changing your structure.
+    </p>
+  </aside>
+
+</main>
+
+<footer class="wrap">
+  AGEx Academy — proof-based progression. · <a class="miniLink" href="app.html">Return to App</a>
+</footer>
+
+<!-- RESET CONFIRM OVERLAY -->
+<div class="overlay" id="resetOverlay">
+  <div class="overlayCard">
+    <h2 style="margin:0;color:var(--green)">Reset all Academy progress?</h2>
+    <p class="muted" style="margin:8px 0 0">
+      This clears Foundation + Apprentice + skill points + A1 coins on this device only.
+    </p>
+    <div class="row" style="margin-top:12px">
+      <button class="btn gold" id="confirmResetBtn" type="button">Yes, Reset</button>
+      <button class="btn dark" id="cancelResetBtn" type="button">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  /***************
+   * STORAGE KEYS
+   ***************/
+  const KEY = "agex_academy_v1_singleflow";
+
+  /***************
+   * CONFIG (v1 defaults)
+   ***************/
+  const FOUNDATION_DAYS = 21;
+  const SP_PER_FOUNDATION_DAY = 100;         // 100 SP per completed day
+  const SP_TO_UNLOCK_APPRENTICE = FOUNDATION_DAYS * SP_PER_FOUNDATION_DAY; // 2100
+  const SP_TO_UNLOCK_LEVEL3 = 10000;         // can be adjusted later
+  const SP_PER_APPRENTICE_WEEK_DONE = 250;   // bonus SP for completing a week
+  const SP_PER_APPRENTICE_DAY_CYCLE = 25;    // bonus SP for completing daily checklist cycle
+
+  const SP_PER_A1 = 1000; // 1000 skill points = 1 A1 coin (preview conversion)
+
+  /***************
+   * APPRENTICE PROGRAM (13 weeks)
+   ***************/
+  const weeks = [
+    { title:"Week 1 — The Apprentice Covenant", objective:"Establish your non-negotiable discipline loop.", plan:"Set a daily spending cap. Log every expense. Total at night. Do one refusal daily.", proof:"Submit: weekly totals + biggest categories + 3 refusals + reflection." },
+    { title:"Week 2 — The One-Page Budget", objective:"Build a simple budget you can obey.", plan:"Write a one-page budget: needs, wants cap, savings, support, buffer. Use it daily.", proof:"Submit: one-page budget + 7-day log totals." },
+    { title:"Week 3 — Categories & Caps", objective:"Stop leaks by setting category caps.", plan:"Choose 3 categories and set weekly caps. Track daily and adjust.", proof:"Submit: caps + totals + what you corrected." },
+    { title:"Week 4 — Saving Before Spending", objective:"Install a saving rule.", plan:"Pick a weekly saving amount (even small). Save first, then spend.", proof:"Submit: saving rule + proof + totals." },
+    { title:"Week 5 — The Refusal System", objective:"Build the habit of saying no.", plan:"Write refusal scripts for 3 triggers. Practice daily.", proof:"Submit: scripts + evidence of 5 refusals." },
+    { title:"Week 6 — Cashflow Awareness", objective:"Know what comes in vs what goes out.", plan:"Track income and expenses. Identify the cashflow gap.", proof:"Submit: cashflow snapshot + one correction." },
+    { title:"Week 7 — Weekly Review Ritual", objective:"Build your review ritual.", plan:"Create a 15-min weekly review template. Perform it twice.", proof:"Submit: template + 2 reviews completed." },
+    { title:"Week 8 — Cutting One Major Leak", objective:"Make one visible reduction.", plan:"Identify biggest leak and reduce it by 30–50%.", proof:"Submit: before/after totals + what you changed." },
+    { title:"Week 9 — Buffer & Emergency Order", objective:"Stability through buffers.", plan:"Create a buffer rule. Practice restraint.", proof:"Submit: buffer rule + proof + reflection." },
+    { title:"Week 10 — Discipline Under Stress", objective:"Maintain rules under pressure.", plan:"Choose stress trigger. Write response plan. Execute once.", proof:"Submit: trigger + plan + outcome." },
+    { title:"Week 11 — Spending Alignment", objective:"Spend in alignment with identity.", plan:"Before any spend ask: “Does this serve my system?” Record yes/no.", proof:"Submit: 10 decisions record + totals." },
+    { title:"Week 12 — System Optimization", objective:"Strengthen what already works.", plan:"Review last weeks. Tighten 2 rules, remove 1 habit.", proof:"Submit: optimization notes + corrected rules." },
+    { title:"Week 13 — Apprentice Confirmation", objective:"Produce a complete proof bundle.", plan:"Compile: budget, caps, saving rule, review, logs, refusals.", proof:"Submit: Apprentice Proof Bundle + reflection." }
+  ];
+
+  /***************
+   * FOUNDATION TEACHINGS (lightweight)
+   * You can replace texts later without changing the engine.
+   ***************/
+  const foundationTeachings = [
+    { title:"Day 1 — Identity Before Income", text:`CHAPTER I\nIdentity Before Income\n\nMost people pursue wealth as an external event.\nStewards understand it as an internal condition.\n\nBefore money enters your account, it answers a deeper question:\nWho are you prepared to become?\n\nThis is not philosophy.\nIt is pattern recognition.\n\nThose who sustain wealth resolved identity before opportunity arrived.` },
+    { title:"Day 2 — Vision Beyond Immediate Gain", text:`Vision is discipline applied forward.\n\nShort-term thinking is expensive.\nStewards think in decades, not weeks.\nVision simplifies decisions and strengthens refusal.` },
+    { title:"Day 3 — Discipline as Power", text:`Discipline is control.\nMoney responds to order.\nRoutine builds what intensity cannot sustain.\nExpansion amplifies whatever already exists.` }
+  ];
+  function getFoundationText(day){
+    if(day <= foundationTeachings.length) return foundationTeachings[day-1].text;
+    // lightweight filler (keeps system usable without bulky content)
+    return `Day ${day} — Foundation Practice\n\nToday you will practice one small discipline loop:\n- Set a spending cap\n- Log expenses\n- Total at night\n- Make one refusal\n\nWrite your action. Capture proof. Build order.`;
+  }
+
+  /***************
+   * HELPERS
+   ***************/
+  function $(id){ return document.getElementById(id); }
+  function todayISO(){
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const dd = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${dd}`;
+  }
+
+  /***************
+   * STATE
+   ***************/
+  function defaultState(){
+    return {
+      createdAt: todayISO(),
+      skillPoints: 0,
+      a1Coins: 0,
+      apprenticeUsdCents: 0,      // $0.01 = 1 cent
+      foundation: {
+        startedAt: null,          // ISO date when Day 1 started
+        days: Array.from({length: FOUNDATION_DAYS}, ()=>({
+          action:"", proof:"", done:false, completedAt:null
+        }))
+      },
+      apprentice: {
+        unlocked:false,
+        weeks: weeks.map(()=>({ plan:"", proof:"", reflection:"", done:false })),
+        daily: { checks:{}, note:"", lastCreditDate:null }
+      }
+    };
+  }
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(KEY);
+      if(!raw) return defaultState();
+      const data = JSON.parse(raw);
+      // minimal validation
+      if(!data.foundation || !Array.isArray(data.foundation.days)) return defaultState();
+      if(data.foundation.days.length !== FOUNDATION_DAYS) return defaultState();
+      if(!data.apprentice || !Array.isArray(data.apprentice.weeks) || data.apprentice.weeks.length !== 13) return defaultState();
+      if(typeof data.skillPoints !== "number") data.skillPoints = 0;
+      if(typeof data.a1Coins !== "number") data.a1Coins = 0;
+      if(typeof data.apprenticeUsdCents !== "number") data.apprenticeUsdCents = 0;
+      if(!data.apprentice.daily) data.apprentice.daily = { checks:{}, note:"", lastCreditDate:null };
+      return data;
+    }catch(e){
+      return defaultState();
+    }
+  }
+
+  function saveState(){
+    localStorage.setItem(KEY, JSON.stringify(state));
+  }
+
+  function toast(id){
+    const t = $(id);
+    if(!t) return;
+    t.style.display="block";
+    setTimeout(()=>t.style.display="none", 1600);
+  }
+
+  /***************
+   * FOUNDATION LOCK LOGIC
+   * - If foundation.startedAt is null, user hasn't begun
+   * - Day N is unlockable if:
+   *    startedAt exists AND
+   *    today >= startedAt + (N-1 days)
+   ***************/
+  function addDaysISO(iso, add){
+    const [y,m,d] = iso.split("-").map(Number);
+    const dt = new Date(y, m-1, d);
+    dt.setDate(dt.getDate() + add);
+    const yy = dt.getFullYear();
+    const mm = String(dt.getMonth()+1).padStart(2,'0');
+    const dd = String(dt.getDate()).padStart(2,'0');
+    return `${yy}-${mm}-${dd}`;
+  }
+
+  function isDayUnlocked(dayIndex){
+    // dayIndex: 0..20
+    if(!state.foundation.startedAt) return dayIndex === 0; // Day 1 available to start
+    const unlockDate = addDaysISO(state.foundation.startedAt, dayIndex);
+    return todayISO() >= unlockDate;
+  }
+
+  function firstLockedDayIndex(){
+    for(let i=0;i<FOUNDATION_DAYS;i++){
+      const d = state.foundation.days[i];
+      if(!d.done) return i;
+    }
+    return FOUNDATION_DAYS-1;
+  }
+
+  function foundationCompletedCount(){
+    return state.foundation.days.filter(d => d && d.done).length;
+  }
+
+  function isFoundationComplete(){
+    return foundationCompletedCount() === FOUNDATION_DAYS;
+  }
+
+  /***************
+   * APPRENTICE UNLOCK + LEVEL 3 ELIGIBILITY
+   ***************/
+  function isApprenticeUnlocked(){
+    return isFoundationComplete() && state.skillPoints >= SP_TO_UNLOCK_APPRENTICE;
+  }
+  function apprenticeWeeksCompleted(){
+    return state.apprentice.weeks.filter(w => w && w.done).length;
+  }
+  function isLevel3Eligible(){
+    // v1: Foundation complete + Apprentice complete (13/13) + SP threshold
+    return isFoundationComplete() && apprenticeWeeksCompleted() === 13 && state.skillPoints >= SP_TO_UNLOCK_LEVEL3;
+  }
+
+  /***************
+   * UI INIT: SELECTS
+   ***************/
+  function initDaySelect(){
+    const sel = $("daySelect");
+    sel.innerHTML = "";
+    for(let i=1;i<=FOUNDATION_DAYS;i++){
+      const opt = document.createElement("option");
+      opt.value = String(i-1);
+      opt.textContent = `Day ${i} / ${FOUNDATION_DAYS}`;
+      sel.appendChild(opt);
+    }
+  }
+  function initWeekSelect(){
+    const sel = $("weekSelect");
+    sel.innerHTML = "";
+    weeks.forEach((w,i)=>{
+      const opt = document.createElement("option");
+      opt.value = String(i);
+      opt.textContent = w.title;
+      sel.appendChild(opt);
+    });
+  }
+
+  /***************
+   * UI RENDER
+   ***************/
+  function renderTopPills(){
+    $("spPill").textContent = String(state.skillPoints);
+    $("a1Pill").textContent = String(state.a1Coins);
+    $("usdPill").textContent = `$${(state.apprenticeUsdCents/100).toFixed(2)}`;
+
+    $("foundationProgress").textContent = `${foundationCompletedCount()}/${FOUNDATION_DAYS}`;
+    $("apprenticeProgress").textContent = `${apprenticeWeeksCompleted()}/13`;
+    $("spNeedPill").textContent = `${SP_TO_UNLOCK_APPRENTICE} SP (Apprentice) · ${SP_TO_UNLOCK_LEVEL3} SP (Level 3)`;
+
+    $("todayBadge").textContent = `Today: ${todayISO()}`;
+
+    // Stage Name
+    if(!isFoundationComplete()){
+      $("stageName").textContent = "Foundation";
+    }else if(!isApprenticeUnlocked()){
+      $("stageName").textContent = "Awaiting Apprentice Unlock";
+    }else if(!isLevel3Eligible()){
+      $("stageName").textContent = "Apprentice";
+    }else{
+      $("stageName").textContent = "Level 3 Eligible";
+    }
+  }
+
+  function renderFoundation(dayIndex){
+    const d = state.foundation.days[dayIndex];
+    const unlocked = isDayUnlocked(dayIndex);
+
+    // if day1 selected & startedAt not set, keep lock pill ready
+    if(!state.foundation.startedAt && dayIndex === 0){
+      $("dayLockPill").textContent = "Ready to start (Day 1)";
+    }else{
+      $("dayLockPill").textContent = unlocked ? "Unlocked ✅" : "Locked ⛔ (wait for next day)";
+    }
+
+    $("dayTeaching").value = getFoundationText(dayIndex+1);
+    $("dayAction").value = d.action || "";
+    $("dayProof").value = d.proof || "";
+    $("dayDone").checked = !!d.done;
+
+    // Disable editing if locked
+    const disabled = !unlocked || d.done;
+    $("dayAction").disabled = disabled;
+    $("dayProof").disabled = disabled;
+    $("dayDone").disabled = disabled;
+    $("completeDayBtn").disabled = disabled;
+    $("copyDayBtn").disabled = !d.done && !d.proof && !d.action;
+
+    // Badge
+    if(isFoundationComplete()){
+      $("foundationBadge").textContent = "Completed ✅";
+    }else{
+      $("foundationBadge").textContent = "21 Days";
+    }
+  }
+
+  function renderApprentice(weekIndex){
+    const unlocked = isApprenticeUnlocked();
+    state.apprentice.unlocked = unlocked;
+
+    $("apprenticeLockBadge").textContent = unlocked ? "Unlocked ✅" : "Locked";
+    $("apprenticeLockBadge").className = unlocked ? "okBadge" : "lockedBadge on";
+
+    // show/hide apprentice area
+    $("apprenticeCard").style.opacity = unlocked ? "1" : ".62";
+    ["weekSelect","weekPlan","weekProof","weekReflection","weekDone",
+     "a_checkin","a_log","a_total","a_refuse","a_proof","apprenticeDailyNote",
+     "copyWeekBtn","copyDailyBtn","nextWeekBtn","resetDailyBtn"
+    ].forEach(id=>{
+      const el = $(id);
+      if(el) el.disabled = !unlocked;
+    });
+
+    // week render
+    const w = weeks[weekIndex];
+    const ws = state.apprentice.weeks[weekIndex];
+
+    $("weekObjective").value = w.objective;
+
+    if(!ws.plan) ws.plan = w.plan;
+    if(!ws.proof) ws.proof = w.proof;
+
+    $("weekPlan").value = ws.plan;
+    $("weekProof").value = ws.proof;
+    $("weekReflection").value = ws.reflection || "";
+    $("weekDone").checked = !!ws.done;
+
+    $("weekStatus").textContent = ws.done ? "Completed ✅" : "In Progress";
+
+    // daily checklist
+    const checks = state.apprentice.daily.checks || {};
+    ["a_checkin","a_log","a_total","a_refuse","a_proof"].forEach(id=>{
+      $(id).checked = !!checks[id];
+    });
+    $("apprenticeDailyNote").value = state.apprentice.daily.note || "";
+  }
+
+  function renderLevel3(){
+    const eligible = isLevel3Eligible();
+    $("level3LockBadge").textContent = eligible ? "Unlocked ✅" : "Locked";
+    $("level3LockBadge").className = eligible ? "okBadge" : "lockedBadge on";
+
+    const btn = $("islBtn");
+    const hint = $("islHint");
+    if(eligible){
+      btn.onclick = null;
+      btn.href = "isl.html";
+      hint.textContent = "Eligible ✅ You can enter ISL.";
+    }else{
+      btn.onclick = ()=>false;
+      btn.href = "isl.html";
+      hint.textContent = "Locked until Level 3 eligibility.";
+    }
+  }
+
+  /***************
+   * FOUNDATION BINDINGS
+   ***************/
+  function bindFoundation(){
+    const sel = $("daySelect");
+
+    function persistDay(){
+      const idx = parseInt(sel.value, 10);
+      const d = state.foundation.days[idx];
+
+      // Set startedAt when Day 1 first begins (first time user types or tries to complete)
+      if(!state.foundation.startedAt && idx === 0){
+        state.foundation.startedAt = todayISO();
+      }
+
+      d.action = $("dayAction").value;
+      d.proof = $("dayProof").value;
+      d.done = $("dayDone").checked;
+
+      saveState();
+      toast("toastFoundation");
+      renderTopPills();
+      renderFoundation(idx);
+      renderApprentice(parseInt($("weekSelect").value,10));
+      renderLevel3();
+    }
+
+    sel.addEventListener("change", ()=> {
+      const idx = parseInt(sel.value,10);
+      renderFoundation(idx);
+    });
+
+    ["dayAction","dayProof"].forEach(id=>{
+      $(id).addEventListener("input", persistDay);
+    });
+
+    $("dayDone").addEventListener("change", ()=>{
+      const idx = parseInt(sel.value,10);
+      const d = state.foundation.days[idx];
+
+      // Cannot mark done if locked
+      if(!isDayUnlocked(idx)){
+        $("dayDone").checked = false;
+        alert("This day is locked. Wait for the next day to unlock.");
+        return;
+      }
+
+      // Start Foundation if not started
+      if(!state.foundation.startedAt && idx === 0){
+        state.foundation.startedAt = todayISO();
+      }
+
+      // Mark done
+      if(!d.done){
+        d.done = true;
+        d.completedAt = todayISO();
+
+        // Skill points award (once)
+        state.skillPoints += SP_PER_FOUNDATION_DAY;
+      }else{
+        // if unchecked, remove SP (not recommended; but we protect integrity)
+        d.done = false;
+        d.completedAt = null;
+        state.skillPoints = Math.max(0, state.skillPoints - SP_PER_FOUNDATION_DAY);
+      }
+
+      saveState();
+      toast("toastFoundation");
+      renderTopPills();
+      renderFoundation(idx);
+      renderApprentice(parseInt($("weekSelect").value,10));
+      renderLevel3();
+    });
+
+    $("completeDayBtn").addEventListener("click", ()=>{
+      const idx = parseInt(sel.value,10);
+      const d = state.foundation.days[idx];
+
+      if(!isDayUnlocked(idx)){
+        alert("This day is locked. Wait for the next day to unlock.");
+        return;
+      }
+
+      if(!state.foundation.startedAt && idx === 0){
+        state.foundation.startedAt = todayISO();
+      }
+
+      if(!d.done){
+        d.done = true;
+        d.completedAt = todayISO();
+        state.skillPoints += SP_PER_FOUNDATION_DAY;
+      }
+
+      saveState();
+      toast("toastFoundation");
+
+      // move select to next day (even if locked, user will see lock)
+      const next = Math.min(idx + 1, FOUNDATION_DAYS - 1);
+      sel.value = String(next);
+
+      renderTopPills();
+      renderFoundation(next);
+      renderApprentice(parseInt($("weekSelect").value,10));
+      renderLevel3();
+    });
+
+    $("copyDayBtn").addEventListener("click", async ()=>{
+      const idx = parseInt(sel.value,10);
+      const d = state.foundation.days[idx];
+      const txt =
+`AGEx — Foundation Proof
+Day ${idx+1} / ${FOUNDATION_DAYS}
+
+Teaching:
+${getFoundationText(idx+1)}
+
+My Action:
+${(d.action || "—").trim()}
+
+My Proof:
+${(d.proof || "—").trim()}
+
+Completed: ${d.done ? "✅ Yes" : "❌ Not yet"}
+Date: ${todayISO()}
+`;
+      await copyToClipboard(txt);
+    });
+  }
+
+  /***************
+   * APPRENTICE BINDINGS
+   ***************/
+  function bindApprentice(){
+    const sel = $("weekSelect");
+
+    function persistWeek(){
+      const idx = parseInt(sel.value,10);
+      const ws = state.apprentice.weeks[idx];
+
+      ws.plan = $("weekPlan").value;
+      ws.proof = $("weekProof").value;
+      ws.reflection = $("weekReflection").value;
+      ws.done = $("weekDone").checked;
+
+      saveState();
+      toast("toastApprentice");
+      renderTopPills();
+      renderApprentice(idx);
+      renderLevel3();
+    }
+
+    sel.addEventListener("change", ()=> renderApprentice(parseInt(sel.value,10)));
+
+    ["weekPlan","weekProof","weekReflection"].forEach(id=>{
+      $(id).addEventListener("input", persistWeek);
+    });
+
+    $("weekDone").addEventListener("change", ()=>{
+      const unlocked = isApprenticeUnlocked();
+      if(!unlocked){
+        $("weekDone").checked = false;
+        alert("Apprentice is locked. Complete Foundation first.");
+        return;
+      }
+
+      const idx = parseInt(sel.value,10);
+      const ws = state.apprentice.weeks[idx];
+
+      const wasDone = !!ws.done;
+      ws.done = $("weekDone").checked;
+
+      // SP reward once per week completion
+      if(!wasDone && ws.done){
+        state.skillPoints += SP_PER_APPRENTICE_WEEK_DONE;
+      }
+      if(wasDone && !ws.done){
+        state.skillPoints = Math.max(0, state.skillPoints - SP_PER_APPRENTICE_WEEK_DONE);
+      }
+
+      saveState();
+      toast("toastApprentice");
+      renderTopPills();
+      renderApprentice(idx);
+      renderLevel3();
+    });
+
+    // daily checklist crediting: 1 A1 coin + $0.01 once per day (calendar day) when all checks are done
+    const checkIds = ["a_checkin","a_log","a_total","a_refuse","a_proof"];
+    checkIds.forEach(id=>{
+      $(id).addEventListener("change", ()=>{
+        if(!isApprenticeUnlocked()) return;
+
+        const checks = state.apprentice.daily.checks || {};
+        checks[id] = $(id).checked;
+        state.apprentice.daily.checks = checks;
+
+        const allDone = checkIds.every(cid => !!checks[cid]);
+
+        // Credit only once per calendar day
+        const today = todayISO();
+        const alreadyCreditedToday = state.apprentice.daily.lastCreditDate === today;
+
+        if(allDone && !alreadyCreditedToday){
+          state.apprentice.daily.lastCreditDate = today;
+
+          // award: 1 A1 coin & $0.01
+          state.a1Coins += 1;
+          state.apprenticeUsdCents += 1;
+
+          // bonus SP for the day cycle
+          state.skillPoints += SP_PER_APPRENTICE_DAY_CYCLE;
+
+          saveState();
+          renderTopPills();
+          renderLevel3();
+          toast("toastApprentice");
+        }else{
+          saveState();
+        }
+      });
+    });
+
+    $("apprenticeDailyNote").addEventListener("input", ()=>{
+      state.apprentice.daily.note = $("apprenticeDailyNote").value;
+      saveState();
+      toast("toastApprentice");
+    });
+
+    $("resetDailyBtn").addEventListener("click", ()=>{
+      if(!isApprenticeUnlocked()) return;
+      state.apprentice.daily.checks = {};
+      state.apprentice.daily.note = "";
+      // do not reset lastCreditDate (prevents multiple credits same day)
+      ["a_checkin","a_log","a_total","a_refuse","a_proof"].forEach(id=> $(id).checked=false);
+      $("apprenticeDailyNote").value = "";
+      saveState();
+      toast("toastApprentice");
+    });
+
+    $("copyDailyBtn").addEventListener("click", async ()=>{
+      if(!isApprenticeUnlocked()) return;
+      const idx = parseInt(sel.value,10);
+      const checks = state.apprentice.daily.checks || {};
+      const txt =
+`AGEx — Apprentice Daily Proof
+${weeks[idx].title}
+Date: ${todayISO()}
+
+Checklist:
+- Daily Check-in: ${checks.a_checkin ? "✅" : "❌"}
+- Expense Log: ${checks.a_log ? "✅" : "❌"}
+- Night Total: ${checks.a_total ? "✅" : "❌"}
+- One Refusal: ${checks.a_refuse ? "✅" : "❌"}
+- Micro-proof captured: ${checks.a_proof ? "✅" : "❌"}
+
+Daily Note:
+${(state.apprentice.daily.note || "—").trim()}
+`;
+      await copyToClipboard(txt);
+    });
+
+    $("copyWeekBtn").addEventListener("click", async ()=>{
+      if(!isApprenticeUnlocked()) return;
+      const idx = parseInt(sel.value,10);
+      const w = weeks[idx];
+      const ws = state.apprentice.weeks[idx];
+      const txt =
+`AGEx — Apprentice Weekly Proof
+${w.title}
+
+Objective:
+${w.objective}
+
+Weekly Plan:
+${(ws.plan || w.plan).trim()}
+
+Weekly Proof:
+${(ws.proof || w.proof).trim()}
+
+Reflection:
+${(ws.reflection || "—").trim()}
+
+Completed: ${ws.done ? "✅ Yes" : "❌ Not yet"}
+`;
+      await copyToClipboard(txt);
+    });
+
+    $("nextWeekBtn").addEventListener("click", ()=>{
+      if(!isApprenticeUnlocked()) return;
+      const idx = parseInt(sel.value,10);
+
+      // mark done
+      if(!$("weekDone").checked){
+        $("weekDone").checked = true;
+        // trigger change logic manually
+        const ws = state.apprentice.weeks[idx];
+        const wasDone = !!ws.done;
+        ws.done = true;
+        ws.plan = $("weekPlan").value;
+        ws.proof = $("weekProof").value;
+        ws.reflection = $("weekReflection").value;
+        if(!wasDone) state.skillPoints += SP_PER_APPRENTICE_WEEK_DONE;
+      }
+
+      saveState();
+      toast("toastApprentice");
+
+      const next = Math.min(idx + 1, 12);
+      sel.value = String(next);
+      renderTopPills();
+      renderApprentice(next);
+      renderLevel3();
+    });
+  }
+
+  /***************
+   * CLIPBOARD
+   ***************/
+  async function copyToClipboard(text){
+    try{
+      await navigator.clipboard.writeText(text);
+      alert("Copied. Paste into WhatsApp (or your submission channel).");
+    }catch(e){
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      alert("Copied. Paste into WhatsApp (or your submission channel).");
+    }
+  }
+
+  /***************
+   * RESET
+   ***************/
+  $("resetAllBtn").addEventListener("click", ()=> $("resetOverlay").style.display="flex");
+  $("cancelResetBtn").addEventListener("click", ()=> $("resetOverlay").style.display="none");
+  $("confirmResetBtn").addEventListener("click", ()=>{
+    localStorage.removeItem(KEY);
+    location.reload();
+  });
+
+  /***************
+   * INIT
+   ***************/
+  let state = loadState();
+
+  initDaySelect();
+  initWeekSelect();
+
+  // start selection at first incomplete day (or last)
+  const startDay = firstLockedDayIndex();
+  $("daySelect").value = String(startDay);
+
+  // week start at first incomplete
+  const firstIncompleteWeek = state.apprentice.weeks.findIndex(w => !w.done);
+  const startWeek = firstIncompleteWeek === -1 ? 12 : firstIncompleteWeek;
+  $("weekSelect").value = String(startWeek);
+
+  // initial render
+  renderTopPills();
+  renderFoundation(startDay);
+  renderApprentice(startWeek);
+  renderLevel3();
+
+  // bind
+  bindFoundation();
+  bindApprentice();
+
+  // Soft nudge: if Foundation not started, tell user Day 1 is ready
+  if(!state.foundation.startedAt){
+    $("flowBadge").textContent = "Status: Start Day 1";
+  }else{
+    $("flowBadge").textContent = "Status: Active";
+  }
+
+</script>
 </body>
 </html>
