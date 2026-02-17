@@ -135,6 +135,7 @@
       font-size:13px;
       color:var(--muted);
       font-weight:800;
+      word-break:break-word;
     }
     .ok{color:#CFF5E7}
     .bad{color:#FFD1D9}
@@ -204,7 +205,6 @@
 
 <main class="wrap grid two">
 
-  <!-- LEFT: GATE / LOGIN -->
   <section class="card">
     <div class="gateView" id="gateView">
       <h1>Enter the Lodge</h1>
@@ -231,7 +231,6 @@
       </div>
     </div>
 
-    <!-- INSIDE VIEW -->
     <div class="insideView" id="insideView">
       <h1>Welcome inside.</h1>
       <p class="muted">
@@ -291,7 +290,6 @@
     </div>
   </section>
 
-  <!-- RIGHT: EXPLAIN / SUPPORT -->
   <section class="card">
     <h2>What this Lodge is</h2>
     <p class="muted">
@@ -315,8 +313,8 @@
     <div class="divider"></div>
 
     <div class="noteBox">
-      <b>Security Note (Phase 1):</b> This key check can be local or manual.  
-      Phase 2: we tie Lodge access + roles to Supabase (no sharing keys publicly).
+      <b>Security Note (Phase 1):</b> Lodge verification is now centralized in Supabase.
+      Keys are valid across devices and can be revoked centrally.
     </div>
 
     <footer>
@@ -326,91 +324,115 @@
 
 </main>
 
+<!-- Supabase (must be OUTSIDE any other script tag) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
 <script>
-  // ====== CONFIG ======
-  // Phase 1 (simple): accept keys from a local allow-list stored in localStorage.
-  // If you already have a different key system, replace verifyKey() logic only.
-
-  const STORAGE_OK = "AGEX_LODGE_OK_V1";
-  const STORAGE_KEYS = "AGEX_ALLOWED_KEYS_V1"; // optional list on your device (admin)
-
-  // Optional: seed one founder key on YOUR device only (edit to your key if you want)
-  // localStorage.setItem(STORAGE_KEYS, JSON.stringify(["AGEX-XXXX-YYYY-1234"]));
+  // ====== STORAGE (per device) ======
+  const STORAGE_OK = "AGEX_LODGE_OK";
+  const STORAGE_LEVEL = "AGEX_LEARNER_LEVEL";
+  const STORAGE_NAME = "AGEX_LEARNER_NAME";
+  const STORAGE_KEYCODE = "AGEX_LODGE_KEY";
 
   const gateView = document.getElementById("gateView");
   const insideView = document.getElementById("insideView");
   const msg = document.getElementById("msg");
   const insideMsg = document.getElementById("insideMsg");
 
-  function loadAllowedKeys(){
-    try{ return JSON.parse(localStorage.getItem(STORAGE_KEYS) || "[]"); }
-    catch(e){ return []; }
-  }
-
-  function verifyKey(inputKey){
-    // If already “inside” on this device, keep them inside
-    if(localStorage.getItem(STORAGE_OK) === "1") return true;
-
-    const allowed = loadAllowedKeys();
-    if(!allowed.length){
-      // If no list exists, we still allow entry if you want manual mode OFF.
-      // For strict mode, change this to: return false;
-      return false;
-    }
-    return allowed.includes(inputKey);
+  function setMsg(el, text, cls){
+    el.textContent = text || "";
+    el.className = "msg " + (cls || "");
   }
 
   function enterInside(){
     gateView.style.display = "none";
     insideView.style.display = "block";
-    localStorage.setItem(STORAGE_OK, "1");
   }
 
   function signOut(){
     localStorage.removeItem(STORAGE_OK);
+    localStorage.removeItem(STORAGE_LEVEL);
+    localStorage.removeItem(STORAGE_NAME);
+    localStorage.removeItem(STORAGE_KEYCODE);
+
     insideView.style.display = "none";
     gateView.style.display = "block";
-    msg.textContent = "Signed out.";
-    msg.className = "msg";
+    setMsg(msg, "Signed out.", "");
   }
 
-  // Auto-enter if device already verified
+  // ====== Supabase verification ======
+  async function verifyLodgeKey(inputCode){
+    const code = (inputCode || "").trim();
+    if(!code) return { ok:false, msg:"Enter your Lodge Key." };
+
+    if(!window.supabaseClient){
+      return { ok:false, msg:"Supabase client not loaded. Check supabase.js file." };
+    }
+
+    const { data, error } = await window.supabaseClient
+      .from("issued_keys")
+      .select("code,name,level,status,expires_at")
+      .eq("code", code)
+      .eq("status", "active")
+      .maybeSingle();
+
+    if(error) return { ok:false, msg:"System error: " + error.message };
+    if(!data) return { ok:false, msg:"Key not recognized. Request a key from the admin." };
+
+    if(data.expires_at){
+      const exp = new Date(data.expires_at).getTime();
+      if(Date.now() > exp) return { ok:false, msg:"Key expired. Request a new key." };
+    }
+
+    // Success: store on THIS device
+    localStorage.setItem(STORAGE_OK, "1");
+    localStorage.setItem(STORAGE_LEVEL, (data.level || "FOUNDATION"));
+    localStorage.setItem(STORAGE_NAME, (data.name || ""));
+    localStorage.setItem(STORAGE_KEYCODE, code);
+
+    return {
+      ok:true,
+      msg:`Welcome ${data.name || "Steward"} — Access granted (${data.level || "FOUNDATION"}).`
+    };
+  }
+
+  // Auto-enter if already verified on this device
   if(localStorage.getItem(STORAGE_OK) === "1"){
     enterInside();
   }
 
-  document.getElementById("enterBtn").addEventListener("click", ()=>{
+  document.getElementById("enterBtn").addEventListener("click", async ()=>{
     const key = (document.getElementById("keyInput").value || "").trim();
     if(!key){
-      msg.textContent = "Enter your Lodge Key.";
-      msg.className = "msg bad";
+      setMsg(msg, "Enter your Lodge Key.", "bad");
       return;
     }
 
-    const ok = verifyKey(key);
-    if(!ok){
-      msg.textContent = "Key not recognized on this device. If you are verified, request a key from the admin.";
-      msg.className = "msg bad";
+    setMsg(msg, "Verifying…", "");
+    const res = await verifyLodgeKey(key);
+
+    if(!res.ok){
+      setMsg(msg, res.msg, "bad");
       return;
     }
 
-    msg.textContent = "Verified. Entering…";
-    msg.className = "msg ok";
+    setMsg(msg, res.msg, "ok");
     enterInside();
   });
 
   document.getElementById("clearBtn").addEventListener("click", ()=>{
     document.getElementById("keyInput").value = "";
-    msg.textContent = "";
-    msg.className = "msg";
+    setMsg(msg, "", "");
   });
 
   document.getElementById("signOutBtn").addEventListener("click", ()=>{
     signOut();
-    insideMsg.textContent = "";
+    setMsg(insideMsg, "", "");
   });
 </script>
 
 </body>
 </html>
+
 
