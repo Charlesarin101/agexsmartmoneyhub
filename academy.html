@@ -656,6 +656,22 @@
     const unlockDate = addDaysISO(state.foundation.startedAt, dayIndex);
     return todayISO() >= unlockDate;
   }
+  function maxUnlockedDayIndex(){
+  // If not started, only Day 1 is available
+  if(!state.foundation.startedAt) return 0;
+
+  // How many days have become available since start
+  const start = state.foundation.startedAt;
+  // Count days from start to today (inclusive)
+  let i = 0;
+  while(i < FOUNDATION_DAYS){
+    const unlockDate = addDaysISO(start, i);
+    if(todayISO() >= unlockDate) i++;
+    else break;
+  }
+  // i is number unlocked, so max index is i-1
+  return Math.max(0, Math.min(FOUNDATION_DAYS - 1, i - 1));
+}
 
   function firstLockedDayIndex(){
     for(let i=0;i<FOUNDATION_DAYS;i++){
@@ -691,15 +707,18 @@
    * UI INIT: SELECTS
    ***************/
   function initDaySelect(){
-    const sel = $("daySelect");
-    sel.innerHTML = "";
-    for(let i=1;i<=FOUNDATION_DAYS;i++){
-      const opt = document.createElement("option");
-      opt.value = String(i-1);
-      opt.textContent = `Day ${i} / ${FOUNDATION_DAYS}`;
-      sel.appendChild(opt);
-    }
+  const sel = $("daySelect");
+  sel.innerHTML = "";
+
+  for(let i=1;i<=FOUNDATION_DAYS;i++){
+    const idx = i-1;
+    const opt = document.createElement("option");
+    opt.value = String(idx);
+    opt.textContent = `Day ${i} / ${FOUNDATION_DAYS}`;
+    sel.appendChild(opt);
   }
+}
+
   function initWeekSelect(){
     const sel = $("weekSelect");
     sel.innerHTML = "";
@@ -856,9 +875,21 @@
     }
 
     sel.addEventListener("change", ()=> {
-      const idx = parseInt(sel.value,10);
-      renderFoundation(idx);
-    });
+  const idx = parseInt(sel.value,10);
+
+  // Hard lock: user can only select unlocked days
+  const allowedMax = maxUnlockedDayIndex();
+
+  if(idx > allowedMax){
+    alert("That day is locked. Complete today’s day and wait for the next day to unlock.");
+    sel.value = String(allowedMax);
+    renderFoundation(allowedMax);
+    return;
+  }
+
+  renderFoundation(idx);
+});
+
 
     ["dayAction","dayProof"].forEach(id=>{
       $(id).addEventListener("input", persistDay);
@@ -873,7 +904,7 @@
         $("dayDone").checked = false;
         alert("This day is locked. Wait for the next day to unlock.");
         return;
-      }
+      } 
 
       // Start Foundation if not started
       if(!state.foundation.startedAt && idx === 0){
