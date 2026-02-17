@@ -956,8 +956,10 @@
       toast("toastFoundation");
 
       // move select to next day (even if locked, user will see lock)
-      const next = Math.min(idx + 1, FOUNDATION_DAYS - 1);
-      sel.value = String(next);
+      const allowedMax = maxUnlockedDayIndex();
+sel.value = String(allowedMax);
+renderFoundation(allowedMax);
+
 
       renderTopPills();
       renderFoundation(next);
