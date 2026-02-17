@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="theme-color" content="#0B3D2E"/>
+  <title>AGEx — Admin Keys</title>
+  <style>
+    :root{
+      --green:#0B3D2E; --gold:#F4B41A; --bg:#061B14;
+      --card:rgba(255,255,255,.06); --line:rgba(244,180,26,.20);
+      --ink:#ECF4F1; --muted:rgba(236,244,241,.78); --r:18px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#04150F,var(--bg));color:var(--ink)}
+    .wrap{max-width:820px;margin:0 auto;padding:18px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:12px 0}
+    h1{margin:0 0 8px;color:#F6FBF9}
+    p{margin:0 0 10px;color:var(--muted);font-weight:700;font-size:13px;line-height:1.5}
+    label{display:block;font-weight:900;margin-top:10px;font-size:12px}
+    input{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(5,26,19,.55);color:var(--ink);margin-top:6px}
+    .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .btn{padding:12px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--ink);font-weight:950;cursor:pointer}
+    .btn.gold{background:var(--gold);border-color:rgba(244,180,26,.65);color:#1C1506}
+    .btn.ghost{background:transparent}
+    .list{margin:10px 0 0;padding:0;list-style:none}
+    .item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px;border:1px solid rgba(244,180,26,.16);border-radius:14px;margin-top:8px;background:rgba(5,26,19,.45)}
+    code{background:rgba(255,255,255,.07);padding:2px 6px;border-radius:10px;border:1px solid rgba(244,180,26,.16)}
+    .msg{margin-top:10px;font-weight:900;color:var(--muted);font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Admin Keys (Local Device)</h1>
+      <p>
+        This page stores Lodge keys in <code>localStorage</code> on <b>this device only</b>.
+        Your learners will still need their own key to enter the Lodge.
+      </p>
+
+      <label>New Learner Key</label>
+      <input id="newKey" placeholder="e.g. AGEX-LEARNER-0001" />
+
+      <div class="row">
+        <button class="btn gold" id="addBtn">Add Key</button>
+        <button class="btn" id="genBtn">Generate Key</button>
+        <button class="btn ghost" id="clearAllBtn">Clear All</button>
+        <a class="btn ghost" href="lodge.html">Go to Lodge</a>
+      </div>
+
+      <div class="msg" id="msg"></div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0 0 8px">Allowed Keys on This Device</h2>
+      <ul class="list" id="list"></ul>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEYS = "AGEX_ALLOWED_KEYS_V1";
+    const msg = document.getElementById("msg");
+    const list = document.getElementById("list");
+
+    function loadKeys(){
+      try{ return JSON.parse(localStorage.getItem(STORAGE_KEYS) || "[]"); }
+      catch(e){ return []; }
+    }
+    function saveKeys(keys){
+      localStorage.setItem(STORAGE_KEYS, JSON.stringify(keys));
+    }
+    function render(){
+      const keys = loadKeys();
+      list.innerHTML = "";
+      if(!keys.length){
+        list.innerHTML = "<li class='item'><span>No keys yet.</span></li>";
+        return;
+      }
+      keys.forEach((k, idx)=>{
+        const li = document.createElement("li");
+        li.className = "item";
+        li.innerHTML = `
+          <div><code>${k}</code></div>
+          <button class="btn" data-i="${idx}">Remove</button>
+        `;
+        li.querySelector("button").addEventListener("click", ()=>{
+          const keys2 = loadKeys();
+          keys2.splice(idx,1);
+          saveKeys(keys2);
+          msg.textContent = "Removed.";
+          render();
+        });
+        list.appendChild(li);
+      });
+    }
+
+    function addKey(k){
+      k = (k||"").trim();
+      if(!k){ msg.textContent = "Enter a key first."; return; }
+      const keys = loadKeys();
+      if(keys.includes(k)){ msg.textContent = "Key already exists."; return; }
+      keys.push(k);
+      saveKeys(keys);
+      msg.textContent = "Key added ✅";
+      render();
+    }
+
+    function genKey(){
+      const rand = Math.random().toString(36).slice(2,6).toUpperCase();
+      const ts = Date.now().toString().slice(-6);
+      return `AGEX-${rand}-${ts}`;
+    }
+
+    document.getElementById("addBtn").addEventListener("click", ()=>{
+      addKey(document.getElementById("newKey").value);
+      document.getElementById("newKey").value = "";
+    });
+
+    document.getElementById("genBtn").addEventListener("click", ()=>{
+      const k = genKey();
+      document.getElementById("newKey").value = k;
+      msg.textContent = "Generated. Click Add Key.";
+    });
+
+    document.getElementById("clearAllBtn").addEventListener("click", ()=>{
+      localStorage.removeItem(STORAGE_KEYS);
+      msg.textContent = "All keys cleared.";
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
