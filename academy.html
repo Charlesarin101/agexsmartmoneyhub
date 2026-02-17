@@ -515,7 +515,14 @@
     </div>
   </div>
 </div>
+<button id="requestApprenticeBtn" class="btn gold" style="display:none" type="button">
+  Request Apprentice Unlock
+</button>
 
+<script>
+  document.getElementById("requestApprenticeBtn").addEventListener("click", ()=>{
+    requestApprenticeUnlock(/* your current skillPoints variable */);
+  });
 <script>
   /***************
    * STORAGE KEYS
@@ -1237,7 +1244,55 @@ Completed: ${ws.done ? "✅ Yes" : "❌ Not yet"}
   }else{
     $("flowBadge").textContent = "Status: Active";
   }
+const MIN_SP = 2100;
 
-</script>
+async function syncProfileProgress({ foundationComplete, skillPoints }) {
+  const { data: u } = await supabaseClient.auth.getUser();
+  const user = u?.user;
+  if (!user) return null;
+
+  // Update profile (never reduce skill points)
+  await supabaseClient.from("profiles").update({
+    foundation_complete: !!foundationComplete,
+    skill_points: skillPoints,
+    apprentice_eligible: (!!foundationComplete && skillPoints >= MIN_SP)
+  }).eq("id", user.id);
+
+  const { data: p } = await supabaseClient
+    .from("profiles")
+    .select("stage,foundation_complete,skill_points,apprentice_eligible,apprentice_approved")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  return p;
+}
+
+async function requestApprenticeUnlock(skillPoints) {
+  const { data: u } = await supabaseClient.auth.getUser();
+  const user = u?.user;
+  if (!user) { alert("Please sign in first."); return; }
+
+  // Create request (manual approval)
+  const { error } = await supabaseClient.from("access_requests").insert([{
+    user_id: user.id,
+    requested_stage: "apprentice",
+    user_skill_points: skillPoints,
+    status: "pending"
+  }]);
+
+  if (error) {
+    alert("Error: " + error.message);
+    return;
+  }
+
+  alert("✅ Request submitted. Await approval.");
+}
+  // Example after you compute foundationComplete + skillPoints from your local academy state:
+const profile = await syncProfileProgress({ foundationComplete, skillPoints });
+
+const canRequest = foundationComplete && skillPoints >= MIN_SP && !profile?.apprentice_approved;
+document.getElementById("requestApprenticeBtn").style.display = canRequest ? "inline-flex" : "none";
+
+  <script>
 </body>
 </html>
