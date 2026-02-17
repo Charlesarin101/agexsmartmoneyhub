@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0B3D2E" />
+  <title>Sign In | AGEx</title>
+  <style>
+    :root{--g:#0B3D2E;--g2:#083326;--gold:#F4B41A;--bg:#F7FAF9;--card:#fff;--line:rgba(0,0,0,.10);--ink:#111;--muted:#667;}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#0b3d2e 0%, #0b3d2e 240px, var(--bg) 240px);color:var(--ink);}
+    .wrap{max-width:520px;margin:0 auto;padding:18px;}
+    .top{color:#fff;padding:18px 0}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 18px 45px rgba(0,0,0,.14)}
+    h1{margin:0 0 8px;color:#fff}
+    h2{margin:0 0 10px;color:var(--g)}
+    .muted{color:var(--muted);font-size:13px;line-height:1.45;font-weight:700;margin:0}
+    label{display:block;font-weight:900;font-size:12px;margin:10px 0 6px}
+    input{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);font-family:inherit;font-size:14px;background:#fff;}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+    .btn{border-radius:999px;padding:10px 14px;border:1px solid rgba(0,0,0,.10);background:#fff;color:#132;font-weight:900;cursor:pointer}
+    .btn.gold{background:var(--gold);border-color:transparent;color:#1a1406}
+    .note{margin-top:10px;font-size:13px;font-weight:900}
+    .pill{display:inline-block;padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:900;font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <h1>AGEx</h1>
+      <div class="pill">Admin Sign-in</div>
+    </div>
+
+    <div class="card">
+      <h2>Sign in</h2>
+      <p class="muted">Use your admin email + password. After sign-in, you’ll be redirected to Creator Wing.</p>
+
+      <label>Email</label>
+      <input id="email" type="email" placeholder="you@example.com" />
+
+      <label>Password</label>
+      <input id="password" type="password" placeholder="••••••••" />
+
+      <div class="row">
+        <button class="btn gold" id="signInBtn" type="button">Sign in</button>
+        <button class="btn" id="goBackBtn" type="button">Back</button>
+      </div>
+
+      <div class="note" id="msg"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./supabase.js"></script>
+  <script>
+    const $ = (id)=>document.getElementById(id);
+
+    function nextUrl(){
+      const p = new URLSearchParams(location.search);
+      return p.get("next") || "creator.html";
+    }
+
+    $("goBackBtn").onclick = ()=> history.back();
+
+    $("signInBtn").onclick = async ()=>{
+      $("msg").textContent = "Signing in…";
+
+      if(!window.supabaseClient){
+        $("msg").textContent = "Supabase client not loaded. Check supabase.js file.";
+        return;
+      }
+
+      const email = $("email").value.trim();
+      const password = $("password").value;
+
+      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+      if(error){
+        $("msg").textContent = "Error: " + error.message;
+        return;
+      }
+
+      $("msg").textContent = "✅ Signed in. Redirecting…";
+      location.href = nextUrl();
+    };
+  </script>
+</body>
+</html>
