@@ -252,345 +252,118 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js"></script>
-  <script>
-    const $ = (id) => document.getElementById(id);
+<script>
+  const $ = (id) => document.getElementById(id);
 
-    function setStatus(text){ $("statusText").textContent = text; }
-    function setTag(id, text, cls){
-      const el = $(id);
-      el.textContent = text;
-      el.className = "tag" + (cls ? (" " + cls) : "");
-    }
+  function setStatus(text){
+    const el = $("statusText");
+    if(el) el.textContent = text;
+  }
+  function setTag(id, text, cls){
+    const el = $(id);
+    if(!el) return;
+    el.textContent = text;
+    el.className = "tag" + (cls ? (" " + cls) : "");
+  }
 
-    function randPart(n=4){
-      const chars="ABCDEFGHJKMNPQRSTUVWXYZ23456789";
-      let out="";
-      for(let i=0;i<n;i++) out += chars[Math.floor(Math.random()*chars.length)];
-      return out;
-    }
-    function generateAGExCode(){
-      return `AGEX-${randPart(4)}-${randPart(4)}-${Math.floor(1000 + Math.random()*9000)}`;
-    }
+  // SHOW JS ERRORS ON SCREEN (phone-friendly)
+  window.addEventListener("error", (e)=>{
+    setStatus("JS error: " + (e?.message || "unknown"));
+    setTag("tagAuth", "Auth: error", "bad");
+    setTag("tagDb", "DB: error", "bad");
+  });
 
-    async function pingDb(){
-      try{
-        const { error } = await window.supabaseClient.from("profiles").select("id").limit(1);
-        if(error) throw error;
-        setTag("tagDb", "DB: ok", "ok");
-      }catch(e){
-        setTag("tagDb", "DB: error", "bad");
-      }
-    }
+  window.addEventListener("unhandledrejection", (e)=>{
+    setStatus("Promise error: " + (e?.reason?.message || String(e?.reason || "unknown")));
+    setTag("tagAuth", "Auth: error", "bad");
+    setTag("tagDb", "DB: error", "bad");
+  });
 
-    async function getUser(){
-      const { data, error } = await window.supabaseClient.auth.getUser();
-      if(error) return null;
-      return data?.user || null;
-    }
+  async function safeRender(){
+    try{
+      setStatus("Booting…");
 
-    async function getRole(user){
-      const { data, error } = await window.supabaseClient
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .maybeSingle();
-      if(error) return null;
-      return data?.role || null;
-    }
-
-    function show(elId){ $(elId).style.display = "block"; }
-    function hide(elId){ $(elId).style.display = "none"; }
-
-    async function render(){
-      if(!window.supabaseClient){
-        setStatus("Supabase client not loaded. Ensure supabase.js exists and is in the same repo folder.");
-        setTag("tagAuth", "Auth: error", "bad");
-        setTag("tagRole", "Role: —", "");
-        setTag("tagDb", "DB: —", "");
-        show("signinCard");
+      // 1) supabase-js library loaded?
+      if(typeof supabase === "undefined"){
+        setStatus("Supabase library not loaded (CDN blocked).");
+        setTag("tagDb", "DB: missing", "bad");
         return;
       }
 
-      await pingDb();
+      // 2) your supabaseClient loaded?
+      if(!window.supabaseClient){
+        setStatus("supabaseClient missing. supabase.js not found or wrong path.");
+        setTag("tagDb", "DB: missing", "bad");
+        return;
+      }
 
-      const user = await getUser();
+      // 3) test DB reachability quickly
+      setStatus("Checking DB…");
+      const ping = await window.supabaseClient.from("profiles").select("id").limit(1);
+      if(ping.error){
+        setStatus("DB error: " + ping.error.message);
+        setTag("tagDb", "DB: error", "bad");
+      }else{
+        setTag("tagDb", "DB: ok", "ok");
+      }
+
+      // 4) session check
+      setStatus("Checking session…");
+      const u = await window.supabaseClient.auth.getUser();
+      const user = u?.data?.user || null;
+
       if(!user){
-        setStatus("No session. Please sign in.");
+        setStatus("No session. Show sign-in.");
         setTag("tagAuth", "Auth: missing", "bad");
         setTag("tagRole", "Role: —", "");
-        hide("main"); hide("blocked");
-        show("signinCard");
+        $("signinCard").style.display = "block";
+        $("main").style.display = "none";
+        $("blocked").style.display = "none";
         return;
       }
 
       setTag("tagAuth", "Auth: ok", "ok");
 
-      const role = await getRole(user);
+      // 5) role check
+      setStatus("Checking role…");
+      const r = await window.supabaseClient.from("profiles").select("role").eq("id", user.id).maybeSingle();
+      const role = r?.data?.role || null;
+
       setTag("tagRole", "Role: " + (role || "—"), role === "admin" ? "ok" : "bad");
 
       if(role !== "admin"){
         setStatus("Signed in, but not admin.");
-        hide("signinCard"); hide("main");
-        show("blocked");
+        $("signinCard").style.display = "none";
+        $("main").style.display = "none";
+        $("blocked").style.display = "block";
         return;
       }
 
-      setStatus("Signed in as admin. Loading tools…");
-      hide("signinCard"); hide("blocked");
-      show("main");
+      setStatus("Admin ready. Loading UI…");
+      $("signinCard").style.display = "none";
+      $("blocked").style.display = "none";
+      $("main").style.display = "block";
 
-      await loadRequests();
-      await loadTasks();
-      await loadSubs();
       setStatus("Ready.");
+    }catch(err){
+      setStatus("Crash: " + (err?.message || String(err)));
+      setTag("tagAuth", "Auth: error", "bad");
+      setTag("tagDb", "DB: error", "bad");
     }
+  }
 
-    // ====== DATA LOADERS ======
-    async function loadRequests(){
-      const { data, error } = await window.supabaseClient
-        .from("access_requests")
-        .select("id,name,email,requested_level,status,created_at")
-        .order("created_at", { ascending:false })
-        .limit(50);
-
-      $("reqBody").innerHTML = "";
-      if(error){ $("reqCount").textContent = "Error"; return; }
-      $("reqCount").textContent = `${data.length} requests`;
-
-      data.forEach(r=>{
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><b>${r.name || "—"}</b></td>
-          <td>${r.email || "—"}</td>
-          <td>${r.requested_level || "FOUNDATION"}</td>
-          <td><b>${r.status}</b></td>
-          <td>
-            <button class="smallbtn gold" data-req="${r.id}" data-ract="approve">Approve</button>
-            <button class="smallbtn bad" data-req="${r.id}" data-ract="reject">Reject</button>
-          </td>
-        `;
-        $("reqBody").appendChild(tr);
-      });
-    }
-
-    async function setRequestStatus(id, status){
-      await window.supabaseClient.from("access_requests")
-        .update({ status, reviewed_at: new Date().toISOString() })
-        .eq("id", id);
-      await loadRequests();
-    }
-
-    async function loadTasks(){
-      const { data, error } = await window.supabaseClient
-        .from("tasks")
-        .select("id,title,category,reward_skill_points,status,created_at")
-        .order("created_at",{ascending:false})
-        .limit(50);
-
-      $("tasksBody").innerHTML = "";
-      if(error){ $("taskCount").textContent = "Error"; return; }
-      $("taskCount").textContent = `${data.length} tasks`;
-
-      data.forEach(t=>{
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><b>${t.title}</b></td>
-          <td>${t.category}</td>
-          <td>${t.reward_skill_points}</td>
-          <td><b>${t.status}</b></td>
-          <td>
-            <button class="smallbtn" data-task="${t.id}" data-set="paused">Pause</button>
-            <button class="smallbtn gold" data-task="${t.id}" data-set="open">Open</button>
-            <button class="smallbtn bad" data-task="${t.id}" data-del="1">Delete</button>
-          </td>
-        `;
-        $("tasksBody").appendChild(tr);
-      });
-    }
-
-    async function setTaskStatus(id, status){
-      await window.supabaseClient.from("tasks").update({ status }).eq("id", id);
-      await loadTasks();
-    }
-
-    async function deleteTask(id){
-      await window.supabaseClient.from("tasks").delete().eq("id", id);
-      await loadTasks();
-    }
-
-    async function loadSubs(){
-      const status = $("subFilter").value;
-      const { data, error } = await window.supabaseClient
-        .from("task_submissions")
-        .select("id,task_id,user_id,status,proof_text,proof_link,created_at")
-        .eq("status", status)
-        .order("created_at",{ascending:false})
-        .limit(50);
-
-      $("subsBody").innerHTML = "";
-      if(error){ return; }
-
-      data.forEach(s=>{
-        const proof = (s.proof_link ? `<a href="${s.proof_link}" target="_blank">link</a>` : "") +
-                      (s.proof_text ? `<div style="max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.proof_text}</div>` : "");
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><code>${s.task_id}</code></td>
-          <td><code style="font-size:12px">${s.user_id}</code></td>
-          <td><b>${s.status}</b></td>
-          <td>${proof || "—"}</td>
-          <td>
-            <button class="smallbtn gold" data-sub="${s.id}" data-sact="approved">Approve</button>
-            <button class="smallbtn bad" data-sub="${s.id}" data-sact="rejected">Reject</button>
-          </td>
-        `;
-        $("subsBody").appendChild(tr);
-      });
-    }
-
-    async function setSubStatus(id, status){
-      await window.supabaseClient.from("task_submissions")
-        .update({ status, reviewed_at:new Date().toISOString() })
-        .eq("id", id);
-      await loadSubs();
-    }
-
-    async function createTask(){
-      const user = await getUser();
-      const title = $("t_title").value.trim();
-      const category = $("t_category").value;
-      const reward = parseInt($("t_reward").value || "0", 10);
-      const instructions = $("t_instructions").value.trim();
-      const proof_required = $("t_proof_required").checked;
-
-      if(!title || !instructions){
-        $("taskMsg").textContent = "Fill title + instructions.";
-        return;
-      }
-
-      $("taskMsg").textContent = "Creating…";
-      const { error } = await window.supabaseClient.from("tasks").insert([{
-        created_by: user.id,
-        title, category,
-        reward_skill_points: reward,
-        instructions,
-        proof_required,
-        status: "open"
-      }]);
-
-      if(error){
-        $("taskMsg").textContent = "Error: " + error.message;
-        return;
-      }
-
-      $("taskMsg").textContent = "✅ Task created.";
-      $("t_title").value = "";
-      $("t_instructions").value = "";
-      await loadTasks();
-    }
-
-    async function issueKey(){
-      const user = await getUser();
-      const name = ($("k_name").value || "").trim();
-      const code = ($("k_code").value || "").trim();
-      const level = $("k_level").value;
-      const status = $("k_status").value;
-
-      if(!code){
-        $("keyMsg").textContent = "Enter a code.";
-        return;
-      }
-
-      $("keyMsg").textContent = "Saving…";
-
-      const { error } = await window.supabaseClient
-        .from("issued_keys")
-        .upsert([{
-          code,
-          name: name || null,
-          level,
-          status,
-          created_by: user?.id || null
-        }], { onConflict: "code" });
-
-      if(error){
-        $("keyMsg").textContent = "Error: " + error.message;
-        return;
-      }
-
-      $("keyMsg").textContent = "✅ Saved to issued_keys.";
-    }
-
-    // ====== AUTH BUTTONS ======
-    $("signOutBtn").addEventListener("click", async ()=>{
-      if(window.supabaseClient) await window.supabaseClient.auth.signOut();
+  // Make sure buttons still work even if the rest fails
+  const signOutBtn = document.getElementById("signOutBtn");
+  if(signOutBtn){
+    signOutBtn.addEventListener("click", async ()=>{
+      try{ if(window.supabaseClient) await window.supabaseClient.auth.signOut(); }catch(e){}
       location.reload();
     });
+  }
 
-    $("fillBtn").addEventListener("click", ()=>{
-      $("email").value = localStorage.getItem("AGEX_ADMIN_EMAIL") || "";
-    });
-
-    $("signInBtn").addEventListener("click", async ()=>{
-      const email = ($("email").value || "").trim();
-      const password = ($("password").value || "").trim();
-      if(!email || !password){
-        $("signinMsg").textContent = "Enter email + password.";
-        return;
-      }
-
-      localStorage.setItem("AGEX_ADMIN_EMAIL", email);
-      $("signinMsg").textContent = "Signing in…";
-
-      const { error } = await window.supabaseClient.auth.signInWithPassword({ email, password });
-      if(error){
-        $("signinMsg").textContent = "Error: " + error.message;
-        return;
-      }
-
-      $("signinMsg").textContent = "Signed in. Loading…";
-      await render();
-    });
-
-    // ====== UI BINDINGS ======
-    $("createTaskBtn").addEventListener("click", createTask);
-    $("refreshReqBtn").addEventListener("click", loadRequests);
-    $("refreshTasksBtn").addEventListener("click", loadTasks);
-    $("refreshSubsBtn").addEventListener("click", loadSubs);
-
-    $("issueKeyBtn").addEventListener("click", issueKey);
-    $("genKeyBtn").addEventListener("click", ()=>{
-      $("k_code").value = generateAGExCode();
-    });
-
-    document.body.addEventListener("click", async (e)=>{
-      const a = e.target;
-
-      if(a?.dataset?.req && a?.dataset?.ract){
-        await setRequestStatus(a.dataset.req, a.dataset.ract === "approve" ? "approved" : "rejected");
-      }
-
-      if(a?.dataset?.task && a?.dataset?.set){
-        await setTaskStatus(a.dataset.task, a.dataset.set);
-      }
-
-      if(a?.dataset?.task && a?.dataset?.del){
-        if(confirm("Delete task?")) await deleteTask(a.dataset.task);
-      }
-
-      if(a?.dataset?.sub && a?.dataset?.sact){
-        await setSubStatus(a.dataset.sub, a.dataset.sact);
-      }
-    });
-
-    // React when session changes (fixes the “signed in but still showing sign-in” bug)
-    if(window.supabaseClient){
-      window.supabaseClient.auth.onAuthStateChange(() => render());
-    }
-
-    render();
-  </script>
+  // Start
+  safeRender();
+</script>
 </body>
 </html>
 
