@@ -566,9 +566,10 @@
         location.href = "lodge.html";
       });
 
-      await loadRequests();
-      await loadTasks();
-      await loadSubs();
+     loadRequests();if(error){ $("reqCount").textContent = "Error: " + error.message; return; }
+    loadTasks();if(error){ $("taskloadSubs.textContent = "Error: " + error.message; return; }
+    loadSubs();if(error){ $("submissionCount").textContent = "Error: " + error.message; return; }
+
     }
 
     $("signInBtn")?.addEventListener("click", async ()=>{
