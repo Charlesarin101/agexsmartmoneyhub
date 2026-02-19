@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#0B3D2E" />
   <title>Creator Wing (Admin) | AGEx</title>
   <style>
-    :root{--g:#0B3D2E;--g2:#083326;--gold:#F4B41A;--bg:#F7FAF9;--card:#fff;--line:rgba(0,0,0,.10);--ink:#111;--muted:#667;--bad:#b42318;--ok:#1a7f37}
+    :root{--g:#0B3D2E;--g2:#083326;--gold:#F4B41A;--bg:#F7FAF9;--card:#fff;--line:rgba(0,0,0,.10);--ink:#111;--muted:#667;--bad:#a00;--ok:#1a7f37}
     body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#0b3d2e 0%, #0b3d2e 240px, var(--bg) 240px);color:var(--ink);}
     .wrap{max-width:1100px;margin:0 auto;padding:18px;}
-    .top{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#fff;padding:14px 0;}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#fff;padding:14px 0;flex-wrap:wrap}
     .brand{display:flex;align-items:center;gap:10px}
     .mark{width:40px;height:40px;border-radius:14px;background:linear-gradient(135deg,var(--g),var(--g2));display:grid;place-items:center;box-shadow:0 10px 25px rgba(0,0,0,.25)}
     .mark span{color:var(--gold);font-weight:900}
@@ -27,18 +27,17 @@
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     .pill{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:900}
     table{width:100%;border-collapse:collapse}
-    th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;vertical-align:top}
+    th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}
     th{color:var(--g);font-weight:950}
     .smallbtn{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:900;cursor:pointer}
     .smallbtn.gold{background:var(--gold);border-color:transparent}
     .smallbtn.bad{background:#fff;border-color:rgba(200,0,0,.25);color:#a00}
     .note{margin-top:10px;font-size:13px;font-weight:800}
-    .blocked{padding:14px;border-radius:18px;border:1px solid rgba(200,0,0,.25);background:#fff}
-    .statusbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    .tag{border-radius:999px;padding:6px 10px;border:1px solid var(--line);background:#fff;font-weight:950;font-size:12px}
-    .tag.bad{border-color:rgba(180,35,24,.25);color:var(--bad);background:#fff5f5}
-    .tag.ok{border-color:rgba(26,127,55,.25);color:var(--ok);background:#f0fff5}
-    .hr{height:1px;background:var(--line);margin:14px 0}
+    .box{padding:14px;border-radius:18px;border:1px solid var(--line);background:#fff}
+    .status{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+    .chip{padding:8px 10px;border-radius:999px;border:1px solid var(--line);font-weight:950;background:#fff}
+    .chip.ok{border-color:rgba(26,127,55,.35);color:var(--ok)}
+    .chip.bad{border-color:rgba(160,0,0,.25);color:var(--bad)}
   </style>
 </head>
 <body>
@@ -53,49 +52,50 @@
       </div>
       <div class="row">
         <a class="btn" href="lodge.html">Back to Lodge</a>
-        <button class="btn dark" id="signOutBtn">Sign out</button>
+        <button class="btn dark" id="signOutBtn" type="button">Sign out</button>
       </div>
     </div>
 
-    <!-- STATUS -->
     <div class="card">
-      <h2 style="margin-bottom:6px">Status</h2>
+      <h2>Status</h2>
       <div class="muted" id="statusText">Loading…</div>
-      <div class="statusbar">
-        <span class="tag" id="tagAuth">Auth: —</span>
-        <span class="tag" id="tagRole">Role: —</span>
-        <span class="tag" id="tagDb">DB: —</span>
+      <div class="status">
+        <span class="chip" id="chipAuth">Auth: —</span>
+        <span class="chip" id="chipRole">Role: —</span>
+        <span class="chip" id="chipDb">DB: —</span>
       </div>
+      <div class="note" id="statusNote"></div>
     </div>
 
     <!-- SIGN IN -->
-    <div id="signinCard" class="card" style="display:none">
+    <div class="card" id="signinCard" style="display:none">
       <h2>Sign in required</h2>
-      <div class="muted">Sign in with your admin email + password to use Creator Wing.</div>
-
-      <label>Email</label>
-      <input id="email" type="email" placeholder="you@example.com" />
-
-      <label>Password</label>
-      <input id="password" type="password" placeholder="••••••••••" />
-
-      <div class="row" style="margin-top:12px">
-        <button class="smallbtn gold" id="signInBtn" type="button">Sign in</button>
-        <button class="smallbtn" id="fillBtn" type="button">Use saved email</button>
+      <p class="muted">Use your admin email + password to access Creator Wing.</p>
+      <div class="grid two">
+        <div>
+          <label>Email</label>
+          <input id="email" type="email" placeholder="you@example.com" />
+        </div>
+        <div>
+          <label>Password</label>
+          <input id="password" type="password" placeholder="••••••••" />
+        </div>
       </div>
-
-      <div class="note" id="signinMsg"></div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn gold" id="signInBtn" type="button">Sign in</button>
+      </div>
+      <div class="note" id="signInMsg"></div>
     </div>
 
-    <!-- NOT ADMIN -->
-    <div id="blocked" class="blocked" style="display:none">
-      <h2 style="margin:0 0 8px;color:#a00">Access blocked</h2>
-      <div class="muted">You are signed in, but your profile role is not <b>admin</b>. Fix it in <b>profiles</b> table (role = 'admin').</div>
+    <!-- BLOCKED -->
+    <div class="card" id="blockedCard" style="display:none">
+      <h2 style="color:#a00">Access blocked</h2>
+      <div class="muted">Signed in, but your profile role is not <b>admin</b>. Check <b>profiles.role</b> for your user.</div>
     </div>
 
-    <!-- MAIN ADMIN UI -->
+    <!-- MAIN -->
     <div id="main" style="display:none">
-      <div class="grid two" style="margin-top:14px">
+      <div class="grid two">
         <div class="card">
           <h2>Create Task</h2>
           <div class="muted">These tasks appear inside Apprentice Micro-Tasks.</div>
@@ -127,28 +127,28 @@
               <input id="t_proof_required" type="checkbox" checked style="width:auto" />
               Proof required
             </label>
-            <button class="smallbtn gold" id="createTaskBtn">Create Task</button>
+            <button class="btn gold" id="createTaskBtn" type="button">Create Task</button>
           </div>
 
           <div class="note" id="taskMsg"></div>
         </div>
 
         <div class="card">
-          <h2>Access Requests</h2>
-          <div class="muted">Approve → then issue a Lodge Key into <b>issued_keys</b> (we can automate next).</div>
+          <h2>Access Requests (Approve Apprentice)</h2>
+          <div class="muted">Approve a learner, then issue a Lodge key if needed.</div>
 
           <div class="row" style="margin:10px 0">
             <span class="pill" id="reqCount">—</span>
-            <button class="smallbtn" id="refreshReqBtn">Refresh</button>
+            <button class="smallbtn" id="refreshReqBtn" type="button">Refresh</button>
           </div>
 
           <div style="overflow:auto">
             <table>
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Level</th>
+                  <th>User</th>
+                  <th>SP</th>
+                  <th>Stage</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
@@ -156,41 +156,6 @@
               <tbody id="reqBody"></tbody>
             </table>
           </div>
-
-          <div class="hr"></div>
-
-          <h2 style="margin-bottom:6px">Issue Lodge Key (Manual)</h2>
-          <div class="muted">Quickly create a key for a learner and store it centrally.</div>
-
-          <label>Name</label>
-          <input id="k_name" placeholder="e.g. Angela" />
-
-          <label>Code</label>
-          <input id="k_code" placeholder="e.g. AGEX-8MRM-Z8JM-1216" />
-
-          <div class="row">
-            <div style="flex:1;min-width:220px">
-              <label>Level</label>
-              <select id="k_level">
-                <option>FOUNDATION</option>
-                <option>APPRENTICE</option>
-                <option>BUILDER</option>
-              </select>
-            </div>
-            <div style="flex:1;min-width:220px">
-              <label>Status</label>
-              <select id="k_status">
-                <option>active</option>
-                <option>revoked</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="row" style="margin-top:10px">
-            <button class="smallbtn gold" id="issueKeyBtn">Save Key to issued_keys</button>
-            <button class="smallbtn" id="genKeyBtn">Generate Code</button>
-          </div>
-          <div class="note" id="keyMsg"></div>
         </div>
       </div>
 
@@ -199,7 +164,7 @@
           <h2>Tasks</h2>
           <div class="row" style="margin:10px 0">
             <span class="pill" id="taskCount">—</span>
-            <button class="smallbtn" id="refreshTasksBtn">Refresh</button>
+            <button class="smallbtn" id="refreshTasksBtn" type="button">Refresh</button>
           </div>
           <div style="overflow:auto">
             <table>
@@ -218,8 +183,40 @@
         </div>
 
         <div class="card">
+          <h2>Issued Keys (Lodge)</h2>
+          <div class="muted">Generate a key, save to <b>issued_keys</b>, share with learner.</div>
+
+          <div class="grid two">
+            <div>
+              <label>Name</label>
+              <input id="k_name" placeholder="e.g. Angela" />
+            </div>
+            <div>
+              <label>Level</label>
+              <select id="k_level">
+                <option>FOUNDATION</option>
+                <option>APPRENTICE</option>
+                <option>BUILDER</option>
+              </select>
+            </div>
+          </div>
+
+          <label>Code</label>
+          <input id="k_code" placeholder="Click Generate" />
+
+          <div class="row" style="margin-top:10px">
+            <button class="smallbtn" id="genKeyBtn" type="button">Generate</button>
+            <button class="smallbtn gold" id="saveKeyBtn" type="button">Save to issued_keys</button>
+          </div>
+
+          <div class="note" id="keyMsg"></div>
+        </div>
+      </div>
+
+      <div class="grid two" style="margin-top:14px">
+        <div class="card">
           <h2>Submissions</h2>
-          <div class="muted">Approve/reject proofs. (Awards can be added next.)</div>
+          <div class="muted">Approve/reject proofs.</div>
 
           <div class="row" style="margin:10px 0">
             <select id="subFilter" style="flex:1;min-width:220px">
@@ -227,7 +224,7 @@
               <option value="approved">approved</option>
               <option value="rejected">rejected</option>
             </select>
-            <button class="smallbtn" id="refreshSubsBtn">Refresh</button>
+            <button class="smallbtn" id="refreshSubsBtn" type="button">Refresh</button>
           </div>
 
           <div style="overflow:auto">
@@ -245,127 +242,348 @@
             </table>
           </div>
         </div>
-      </div>
 
+        <div class="card">
+          <h2>Notes</h2>
+          <div class="muted">
+            If you ever see “Auth missing” after signing in, it’s almost always because:
+            <b>supabase.js wasn’t loaded (404)</b> or browser cache.
+            Hard refresh, or open in Incognito.
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js"></script>
-<script>
-  const $ = (id) => document.getElementById(id);
 
-  function setStatus(text){
-    const el = $("statusText");
-    if(el) el.textContent = text;
-  }
-  function setTag(id, text, cls){
-    const el = $(id);
-    if(!el) return;
-    el.textContent = text;
-    el.className = "tag" + (cls ? (" " + cls) : "");
-  }
+  <script>
+    const $ = (id) => document.getElementById(id);
 
-  // SHOW JS ERRORS ON SCREEN (phone-friendly)
-  window.addEventListener("error", (e)=>{
-    setStatus("JS error: " + (e?.message || "unknown"));
-    setTag("tagAuth", "Auth: error", "bad");
-    setTag("tagDb", "DB: error", "bad");
-  });
+    function setChip(el, text, ok){
+      el.textContent = text;
+      el.classList.remove("ok","bad");
+      el.classList.add(ok ? "ok" : "bad");
+    }
 
-  window.addEventListener("unhandledrejection", (e)=>{
-    setStatus("Promise error: " + (e?.reason?.message || String(e?.reason || "unknown")));
-    setTag("tagAuth", "Auth: error", "bad");
-    setTag("tagDb", "DB: error", "bad");
-  });
+    function randPart(n=4){
+      const chars="ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+      let out="";
+      for(let i=0;i<n;i++) out += chars[Math.floor(Math.random()*chars.length)];
+      return out;
+    }
+    function makeKey(){
+      return `AGEX-${randPart(4)}-${randPart(4)}-${Math.floor(1000+Math.random()*9000)}`;
+    }
 
-  async function safeRender(){
-    try{
-      setStatus("Booting…");
-
-      // 1) supabase-js library loaded?
-      if(typeof supabase === "undefined"){
-        setStatus("Supabase library not loaded (CDN blocked).");
-        setTag("tagDb", "DB: missing", "bad");
-        return;
-      }
-
-      // 2) your supabaseClient loaded?
+    async function getUser(){
       if(!window.supabaseClient){
-        setStatus("supabaseClient missing. supabase.js not found or wrong path.");
-        setTag("tagDb", "DB: missing", "bad");
+        $("statusText").textContent = "Supabase client not loaded (supabase.js missing).";
+        $("statusNote").textContent = "Fix: ensure supabase.js is deployed (not 404) and contains your ANON key.";
+        setChip($("chipAuth"), "Auth: error", false);
+        setChip($("chipRole"), "Role: —", false);
+        setChip($("chipDb"), "DB: —", false);
+        return null;
+      }
+      const { data, error } = await window.supabaseClient.auth.getUser();
+      if(error) return null;
+      return data?.user || null;
+    }
+
+    async function getRole(user){
+      const { data, error } = await window.supabaseClient
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .maybeSingle();
+      if(error) return null;
+      return data?.role || null;
+    }
+
+    async function testDb(){
+      const { error } = await window.supabaseClient
+        .from("issued_keys")
+        .select("id")
+        .limit(1);
+      return !error;
+    }
+
+    async function signIn(email, password){
+      $("signInMsg").textContent = "Signing in…";
+      const { error } = await window.supabaseClient.auth.signInWithPassword({ email, password });
+      if(error){
+        $("signInMsg").textContent = "Error: " + error.message;
+        return false;
+      }
+      $("signInMsg").textContent = "Signed in. Loading…";
+      return true;
+    }
+
+    async function loadRequests(){
+      const { data, error } = await window.supabaseClient
+        .from("access_requests")
+        .select("id,user_id,requested_stage,user_skill_points,status,created_at")
+        .order("created_at", { ascending:false })
+        .limit(25);
+
+      $("reqBody").innerHTML = "";
+      if(error){ $("reqCount").textContent = "Error loading"; return; }
+      $("reqCount").textContent = `${data.length} requests`;
+
+      data.forEach(r=>{
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><code style="font-size:12px">${r.user_id || "—"}</code></td>
+          <td><b>${r.user_skill_points ?? 0}</b></td>
+          <td>${r.requested_stage}</td>
+          <td><b>${r.status}</b></td>
+          <td>
+            <button class="smallbtn gold" data-act="approve" data-id="${r.id}" data-uid="${r.user_id}">Approve</button>
+            <button class="smallbtn bad" data-act="reject" data-id="${r.id}">Reject</button>
+          </td>
+        `;
+        $("reqBody").appendChild(tr);
+      });
+    }
+
+    async function approveRequest(reqId, userId){
+      await window.supabaseClient
+        .from("access_requests")
+        .update({ status:"approved", reviewed_at:new Date().toISOString() })
+        .eq("id", reqId);
+
+      // Optional: if your profiles table has these fields
+      try{
+        await window.supabaseClient
+          .from("profiles")
+          .update({ apprentice_approved:true, stage:"apprentice" })
+          .eq("id", userId);
+      }catch(e){}
+
+      await loadRequests();
+      alert("Approved.");
+    }
+
+    async function rejectRequest(reqId){
+      await window.supabaseClient
+        .from("access_requests")
+        .update({ status:"rejected", reviewed_at:new Date().toISOString() })
+        .eq("id", reqId);
+      await loadRequests();
+      alert("Rejected.");
+    }
+
+    async function createTask(user){
+      const title = $("t_title").value.trim();
+      const category = $("t_category").value;
+      const reward = parseInt($("t_reward").value || "0", 10);
+      const instructions = $("t_instructions").value.trim();
+      const proof_required = $("t_proof_required").checked;
+
+      if(!title || !instructions){
+        $("taskMsg").textContent = "Fill title + instructions.";
         return;
       }
 
-      // 3) test DB reachability quickly
-      setStatus("Checking DB…");
-      const ping = await window.supabaseClient.from("profiles").select("id").limit(1);
-      if(ping.error){
-        setStatus("DB error: " + ping.error.message);
-        setTag("tagDb", "DB: error", "bad");
-      }else{
-        setTag("tagDb", "DB: ok", "ok");
+      $("taskMsg").textContent = "Creating…";
+      const { error } = await window.supabaseClient.from("tasks").insert([{
+        created_by: user.id,
+        title, category,
+        reward_skill_points: reward,
+        instructions,
+        proof_required,
+        status: "open"
+      }]);
+
+      if(error){
+        $("taskMsg").textContent = "Error: " + error.message;
+        return;
       }
 
-      // 4) session check
-      setStatus("Checking session…");
-      const u = await window.supabaseClient.auth.getUser();
-      const user = u?.data?.user || null;
+      $("taskMsg").textContent = "✅ Task created.";
+      $("t_title").value = "";
+      $("t_instructions").value = "";
+      await loadTasks();
+    }
+
+    async function loadTasks(){
+      const { data, error } = await window.supabaseClient
+        .from("tasks")
+        .select("id,title,category,reward_skill_points,status,created_at")
+        .order("created_at",{ascending:false})
+        .limit(25);
+
+      $("tasksBody").innerHTML = "";
+      if(error){ $("taskCount").textContent = "Error loading"; return; }
+      $("taskCount").textContent = `${data.length} tasks`;
+
+      data.forEach(t=>{
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><b>${t.title}</b></td>
+          <td>${t.category}</td>
+          <td>${t.reward_skill_points}</td>
+          <td><b>${t.status}</b></td>
+          <td>
+            <button class="smallbtn" data-task="${t.id}" data-set="paused">Pause</button>
+            <button class="smallbtn gold" data-task="${t.id}" data-set="open">Open</button>
+            <button class="smallbtn bad" data-task="${t.id}" data-del="1">Delete</button>
+          </td>
+        `;
+        $("tasksBody").appendChild(tr);
+      });
+    }
+
+    async function setTaskStatus(id, status){
+      await window.supabaseClient.from("tasks").update({ status }).eq("id", id);
+      await loadTasks();
+    }
+
+    async function deleteTask(id){
+      await window.supabaseClient.from("tasks").delete().eq("id", id);
+      await loadTasks();
+    }
+
+    async function loadSubs(){
+      const status = $("subFilter").value;
+      const { data, error } = await window.supabaseClient
+        .from("task_submissions")
+        .select("id,task_id,user_id,status,proof_text,proof_link,created_at")
+        .eq("status", status)
+        .order("created_at",{ascending:false})
+        .limit(25);
+
+      $("subsBody").innerHTML = "";
+      if(error){ return; }
+
+      data.forEach(s=>{
+        const proof = (s.proof_link ? `<a href="${s.proof_link}" target="_blank" rel="noopener">link</a>` : "") +
+                      (s.proof_text ? `<div style="max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.proof_text}</div>` : "");
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><code>${s.task_id}</code></td>
+          <td><code style="font-size:12px">${s.user_id}</code></td>
+          <td><b>${s.status}</b></td>
+          <td>${proof || "—"}</td>
+          <td>
+            <button class="smallbtn gold" data-sub="${s.id}" data-sact="approved">Approve</button>
+            <button class="smallbtn bad" data-sub="${s.id}" data-sact="rejected">Reject</button>
+          </td>
+        `;
+        $("subsBody").appendChild(tr);
+      });
+    }
+
+    async function setSubStatus(id, status){
+      await window.supabaseClient.from("task_submissions")
+        .update({ status, reviewed_at:new Date().toISOString() })
+        .eq("id", id);
+      await loadSubs();
+    }
+
+    async function saveIssuedKey(user){
+      const name = ($("k_name").value || "").trim();
+      const level = $("k_level").value;
+      const code = ($("k_code").value || "").trim() || makeKey();
+
+      $("k_code").value = code;
+      $("keyMsg").textContent = "Saving…";
+
+      const { error } = await window.supabaseClient
+        .from("issued_keys")
+        .insert([{ code, name, level, status:"active", created_by: user.id }]);
+
+      if(error){
+        $("keyMsg").textContent = "Error: " + error.message;
+        return;
+      }
+      $("keyMsg").textContent = "✅ Saved to issued_keys. Share this exact code with the learner.";
+    }
+
+    async function init(){
+      $("statusText").textContent = "Loading…";
+
+      const user = await getUser();
+
+      if(!window.supabaseClient){
+        $("signinCard").style.display = "none";
+        $("blockedCard").style.display = "none";
+        $("main").style.display = "none";
+        return;
+      }
 
       if(!user){
-        setStatus("No session. Show sign-in.");
-        setTag("tagAuth", "Auth: missing", "bad");
-        setTag("tagRole", "Role: —", "");
+        $("statusText").textContent = "Not signed in.";
+        setChip($("chipAuth"), "Auth: missing", false);
+        setChip($("chipRole"), "Role: —", false);
+        setChip($("chipDb"), "DB: —", false);
         $("signinCard").style.display = "block";
-        $("main").style.display = "none";
-        $("blocked").style.display = "none";
         return;
       }
 
-      setTag("tagAuth", "Auth: ok", "ok");
+      setChip($("chipAuth"), "Auth: ok", true);
 
-      // 5) role check
-      setStatus("Checking role…");
-      const r = await window.supabaseClient.from("profiles").select("role").eq("id", user.id).maybeSingle();
-      const role = r?.data?.role || null;
+      const role = await getRole(user);
+      if(role === "admin"){
+        setChip($("chipRole"), "Role: admin", true);
+      }else{
+        setChip($("chipRole"), "Role: " + (role || "unknown"), false);
+      }
 
-      setTag("tagRole", "Role: " + (role || "—"), role === "admin" ? "ok" : "bad");
+      const dbOk = await testDb();
+      setChip($("chipDb"), "DB: " + (dbOk ? "ok" : "error"), dbOk);
 
       if(role !== "admin"){
-        setStatus("Signed in, but not admin.");
-        $("signinCard").style.display = "none";
-        $("main").style.display = "none";
-        $("blocked").style.display = "block";
+        $("statusText").textContent = "Signed in, but not admin.";
+        $("blockedCard").style.display = "block";
         return;
       }
 
-      setStatus("Admin ready. Loading UI…");
-      $("signinCard").style.display = "none";
-      $("blocked").style.display = "none";
+      $("statusText").textContent = "Ready.";
       $("main").style.display = "block";
 
-      setStatus("Ready.");
-    }catch(err){
-      setStatus("Crash: " + (err?.message || String(err)));
-      setTag("tagAuth", "Auth: error", "bad");
-      setTag("tagDb", "DB: error", "bad");
+      $("createTaskBtn").addEventListener("click", ()=>createTask(user));
+      $("refreshReqBtn").addEventListener("click", loadRequests);
+      $("refreshTasksBtn").addEventListener("click", loadTasks);
+      $("refreshSubsBtn").addEventListener("click", loadSubs);
+
+      $("genKeyBtn").addEventListener("click", ()=>{ $("k_code").value = makeKey(); });
+      $("saveKeyBtn").addEventListener("click", ()=>saveIssuedKey(user));
+
+      document.body.addEventListener("click", async (e)=>{
+        const a = e.target;
+        if(a?.dataset?.act === "approve") await approveRequest(a.dataset.id, a.dataset.uid);
+        if(a?.dataset?.act === "reject") await rejectRequest(a.dataset.id);
+        if(a?.dataset?.task && a?.dataset?.set) await setTaskStatus(a.dataset.task, a.dataset.set);
+        if(a?.dataset?.task && a?.dataset?.del){ if(confirm("Delete task?")) await deleteTask(a.dataset.task); }
+        if(a?.dataset?.sub && a?.dataset?.sact) await setSubStatus(a.dataset.sub, a.dataset.sact);
+      });
+
+      $("signOutBtn").addEventListener("click", async ()=>{
+        await window.supabaseClient.auth.signOut();
+        location.href = "lodge.html";
+      });
+
+      await loadRequests();
+      await loadTasks();
+      await loadSubs();
     }
-  }
 
-  // Make sure buttons still work even if the rest fails
-  const signOutBtn = document.getElementById("signOutBtn");
-  if(signOutBtn){
-    signOutBtn.addEventListener("click", async ()=>{
-      try{ if(window.supabaseClient) await window.supabaseClient.auth.signOut(); }catch(e){}
-      location.reload();
+    $("signInBtn")?.addEventListener("click", async ()=>{
+      const email = ($("email").value || "").trim();
+      const password = $("password").value || "";
+      if(!email || !password){ $("signInMsg").textContent = "Enter email + password."; return; }
+      const ok = await signIn(email, password);
+      if(ok) location.reload();
     });
-  }
 
-  // Start
-  safeRender();
-</script>
+    init();
+  </script>
 </body>
 </html>
+
 
 
 
