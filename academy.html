@@ -177,6 +177,33 @@
       background:linear-gradient(180deg, rgba(244,180,26,.08), rgba(11,61,46,.04));
     }
 
+    /* TEST MODE PANEL */
+    .testPanel{
+      border:1px solid rgba(244,180,26,.35);
+      background:rgba(244,180,26,.10);
+      border-radius:16px;
+      padding:12px;
+      margin-top:10px;
+    }
+    .switch{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 12px;
+    }
+    .switch strong{color:var(--green)}
+    .switch small{display:block;color:rgba(15,15,15,.62);font-weight:750;margin-top:2px}
+    .toggle{
+      display:flex;align-items:center;gap:10px;
+      font-weight:950;
+      user-select:none;
+    }
+    .toggle input{width:auto;transform:scale(1.05)}
+    .dangerNote{
+      margin-top:8px;
+      font-size:12px;
+      color:rgba(15,15,15,.65);
+      font-weight:800;
+    }
+
     .overlay{
       position:fixed;inset:0;display:none;
       background:rgba(3,10,8,.72);
@@ -243,6 +270,34 @@
     </div>
 
     <div class="divider"></div>
+
+    <!-- TEST MODE: gate override (admin only, wired to Supabase profile role) -->
+    <div class="testPanel" id="testPanel" style="display:none">
+      <div class="row" style="justify-content:space-between;align-items:flex-start">
+        <div style="min-width:220px">
+          <h2 style="margin:0;color:var(--green)">Test Mode</h2>
+          <p class="muted" style="margin:6px 0 0">
+            Admin-only override to enter Apprentice without finishing Foundation. This is for testing tasks.
+          </p>
+        </div>
+      </div>
+
+      <div class="switch">
+        <div>
+          <strong id="testModeTitle">Test Mode: OFF</strong>
+          <small id="testModeDesc">Apprentice remains locked until Foundation is completed.</small>
+        </div>
+
+        <label class="toggle">
+          <input type="checkbox" id="testModeToggle" />
+          <span>Enable</span>
+        </label>
+      </div>
+
+      <div class="dangerNote">
+        This does not change the real progression rules for normal learners. It only affects this device + your session.
+      </div>
+    </div>
 
     <div class="pillRow">
       <div class="pill">Stage: <b id="stageName">Foundation</b></div>
@@ -452,6 +507,7 @@
         <li><b>Flexible pace:</b> pause anytime; continue where you stopped.</li>
         <li><b>Skill Points:</b> earned daily; used for unlocking levels.</li>
         <li><b>Manual approval:</b> eligible learners submit request; Creator’s Wing approves.</li>
+        <li><b>Test Mode:</b> admin-only override for testing (does not change global rules).</li>
       </ul>
     </div>
 
@@ -496,498 +552,582 @@
   </div>
 </div>
 
-<!-- 1) Your supabase config (ONE place) -->
-<script src="supabase.js"></script>
+<!-- Supabase CDN (needed for admin test-mode detection) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- 2) Supabase client loader (optional) -->
+<!-- Your supabase config -->
+<script src="./supabase.js"></script>
+
 <script>
-  // If you already load Supabase CDN in another file, keep that there.
-  // If not, you can uncomment the CDN line below:
-  // document.write('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><\/script>');
-
-  function getSupabaseClientIfAvailable(){
+  /***********************
+   * SUPABASE BOOTSTRAP
+   ***********************/
+  function ensureSupabaseClient(){
     try{
-      if (!window.supabase || !window.AGEX_SUPABASE) return null;
-      if (!window.supabaseClient){
-        window.supabaseClient = window.supabase.createClient(
-          window.AGEX_SUPABASE.url,
-          window.AGEX_SUPABASE.anon
-        );
+      // Support either:
+      // 1) supabase.js defines window.supabaseClient directly (your current approach), OR
+      // 2) supabase.js defines window.AGEX_SUPABASE = { url, anon } and we create client here.
+      if (window.supabaseClient) return window.supabaseClient;
+
+      if (window.supabase && window.AGEX_SUPABASE?.url && window.AGEX_SUPABASE?.anon){
+        window.supabaseClient = window.supabase.createClient(window.AGEX_SUPABASE.url, window.AGEX_SUPABASE.anon);
+        return window.supabaseClient;
       }
-      return window.supabaseClient;
+      return null;
     }catch(e){
       return null;
     }
   }
-</script>
 
-<script>
-/***************
- * STORAGE KEYS
- ***************/
-const KEY = "agex_academy_v1_singleflow";
-
-/***************
- * CONFIG (v1 defaults)
- ***************/
-const FOUNDATION_DAYS = 21;
-const SP_PER_FOUNDATION_DAY = 100;
-const SP_TO_UNLOCK_APPRENTICE = FOUNDATION_DAYS * SP_PER_FOUNDATION_DAY; // 2100
-const SP_TO_UNLOCK_LEVEL3 = 10000;
-const SP_PER_APPRENTICE_WEEK_DONE = 250;
-const SP_PER_APPRENTICE_DAY_CYCLE = 25;
-
-const weeks = [
-  { title:"Week 1 — The Apprentice Covenant", objective:"Establish your non-negotiable discipline loop.", plan:"Set a daily spending cap. Log every expense. Total at night. Do one refusal daily.", proof:"Submit: weekly totals + biggest categories + 3 refusals + reflection." },
-  { title:"Week 2 — The One-Page Budget", objective:"Build a simple budget you can obey.", plan:"Write a one-page budget: needs, wants cap, savings, support, buffer. Use it daily.", proof:"Submit: one-page budget + 7-day log totals." },
-  { title:"Week 3 — Categories & Caps", objective:"Stop leaks by setting category caps.", plan:"Choose 3 categories and set weekly caps. Track daily and adjust.", proof:"Submit: caps + totals + what you corrected." },
-  { title:"Week 4 — Saving Before Spending", objective:"Install a saving rule.", plan:"Pick a weekly saving amount (even small). Save first, then spend.", proof:"Submit: saving rule + proof + totals." },
-  { title:"Week 5 — The Refusal System", objective:"Build the habit of saying no.", plan:"Write refusal scripts for 3 triggers. Practice daily.", proof:"Submit: scripts + evidence of 5 refusals." },
-  { title:"Week 6 — Cashflow Awareness", objective:"Know what comes in vs what goes out.", plan:"Track income and expenses. Identify the cashflow gap.", proof:"Submit: cashflow snapshot + one correction." },
-  { title:"Week 7 — Weekly Review Ritual", objective:"Build your review ritual.", plan:"Create a 15-min weekly review template. Perform it twice.", proof:"Submit: template + 2 reviews completed." },
-  { title:"Week 8 — Cutting One Major Leak", objective:"Make one visible reduction.", plan:"Identify biggest leak and reduce it by 30–50%.", proof:"Submit: before/after totals + what you changed." },
-  { title:"Week 9 — Buffer & Emergency Order", objective:"Stability through buffers.", plan:"Create a buffer rule. Practice restraint.", proof:"Submit: buffer rule + proof + reflection." },
-  { title:"Week 10 — Discipline Under Stress", objective:"Maintain rules under pressure.", plan:"Choose stress trigger. Write response plan. Execute once.", proof:"Submit: trigger + plan + outcome." },
-  { title:"Week 11 — Spending Alignment", objective:"Spend in alignment with identity.", plan:"Before any spend ask: “Does this serve my system?” Record yes/no.", proof:"Submit: 10 decisions record + totals." },
-  { title:"Week 12 — System Optimization", objective:"Strengthen what already works.", plan:"Review last weeks. Tighten 2 rules, remove 1 habit.", proof:"Submit: optimization notes + corrected rules." },
-  { title:"Week 13 — Apprentice Confirmation", objective:"Produce a complete proof bundle.", plan:"Compile: budget, caps, saving rule, review, logs, refusals.", proof:"Submit: Apprentice Proof Bundle + reflection." }
-];
-
-const foundationTeachings = [
-  { title:"Day 1 — Identity Before Income", text:`CHAPTER I\nIdentity Before Income\n\nMost people pursue wealth as an external event.\nStewards understand it as an internal condition.\n\nBefore money enters your account, it answers a deeper question:\nWho are you prepared to become?\n\nThis is not philosophy.\nIt is pattern recognition.\n\nThose who sustain wealth resolved identity before opportunity arrived.` },
-  { title:"Day 2 — Vision Beyond Immediate Gain", text:`Vision is discipline applied forward.\n\nShort-term thinking is expensive.\nStewards think in decades, not weeks.\nVision simplifies decisions and strengthens refusal.` },
-  { title:"Day 3 — Discipline as Power", text:`Discipline is control.\nMoney responds to order.\nRoutine builds what intensity cannot sustain.\nExpansion amplifies whatever already exists.` }
-];
-
-function getFoundationText(day){
-  if(day <= foundationTeachings.length) return foundationTeachings[day-1].text;
-  return `Day ${day} — Foundation Practice\n\nToday you will practice one small discipline loop:\n- Set a spending cap\n- Log expenses\n- Total at night\n- Make one refusal\n\nWrite your action. Capture proof. Build order.`;
-}
-
-/***************
- * HELPERS
- ***************/
-function $(id){ return document.getElementById(id); }
-function todayISO(){
-  const d = new Date();
-  const y = d.getFullYear();
-  const m = String(d.getMonth()+1).padStart(2,'0');
-  const dd = String(d.getDate()).padStart(2,'0');
-  return `${y}-${m}-${dd}`;
-}
-function addDaysISO(iso, add){
-  const [y,m,d] = iso.split("-").map(Number);
-  const dt = new Date(y, m-1, d);
-  dt.setDate(dt.getDate() + add);
-  const yy = dt.getFullYear();
-  const mm = String(dt.getMonth()+1).padStart(2,'0');
-  const dd = String(dt.getDate()).padStart(2,'0');
-  return `${yy}-${mm}-${dd}`;
-}
-function toast(id){
-  const t = $(id);
-  if(!t) return;
-  t.style.display="block";
-  setTimeout(()=>t.style.display="none", 1600);
-}
-
-/***************
- * STATE
- ***************/
-function defaultState(){
-  return {
-    createdAt: todayISO(),
-    skillPoints: 0,
-    a1Coins: 0,
-    apprenticeUsdCents: 0,
-    foundation: {
-      startedAt: null,
-      days: Array.from({length: FOUNDATION_DAYS}, ()=>({
-        action:"", proof:"", done:false, completedAt:null
-      }))
-    },
-    apprentice: {
-      unlocked:false,
-      approved:false, // manual approval flag (local fallback)
-      weeks: weeks.map(()=>({ plan:"", proof:"", reflection:"", done:false })),
-      daily: { checks:{}, note:"", lastCreditDate:null }
+  async function getSignedInUser(){
+    const sb = ensureSupabaseClient();
+    if(!sb) return null;
+    try{
+      const { data, error } = await sb.auth.getUser();
+      if(error) return null;
+      return data?.user || null;
+    }catch(e){
+      return null;
     }
-  };
-}
-
-function loadState(){
-  try{
-    const raw = localStorage.getItem(KEY);
-    if(!raw) return defaultState();
-    const data = JSON.parse(raw);
-    if(!data.foundation || !Array.isArray(data.foundation.days)) return defaultState();
-    if(data.foundation.days.length !== FOUNDATION_DAYS) return defaultState();
-    if(!data.apprentice || !Array.isArray(data.apprentice.weeks) || data.apprentice.weeks.length !== 13) return defaultState();
-
-    if(typeof data.skillPoints !== "number") data.skillPoints = 0;
-    if(typeof data.a1Coins !== "number") data.a1Coins = 0;
-    if(typeof data.apprenticeUsdCents !== "number") data.apprenticeUsdCents = 0;
-    if(typeof data.apprentice.approved !== "boolean") data.apprentice.approved = false;
-    if(!data.apprentice.daily) data.apprentice.daily = { checks:{}, note:"", lastCreditDate:null };
-    return data;
-  }catch(e){
-    return defaultState();
-  }
-}
-
-function saveState(){ localStorage.setItem(KEY, JSON.stringify(state)); }
-
-function foundationCompletedCount(){ return state.foundation.days.filter(d => d && d.done).length; }
-function isFoundationComplete(){ return foundationCompletedCount() === FOUNDATION_DAYS; }
-
-function isDayUnlocked(dayIndex){
-  if(!state.foundation.startedAt) return dayIndex === 0;
-  const unlockDate = addDaysISO(state.foundation.startedAt, dayIndex);
-  return todayISO() >= unlockDate;
-}
-function maxUnlockedDayIndex(){
-  if(!state.foundation.startedAt) return 0;
-  const start = state.foundation.startedAt;
-  let i = 0;
-  while(i < FOUNDATION_DAYS){
-    const unlockDate = addDaysISO(start, i);
-    if(todayISO() >= unlockDate) i++;
-    else break;
-  }
-  return Math.max(0, Math.min(FOUNDATION_DAYS - 1, i - 1));
-}
-function firstIncompleteDayIndex(){
-  for(let i=0;i<FOUNDATION_DAYS;i++){
-    if(!state.foundation.days[i].done) return i;
-  }
-  return FOUNDATION_DAYS-1;
-}
-
-function apprenticeWeeksCompleted(){ return state.apprentice.weeks.filter(w => w && w.done).length; }
-
-// Eligible = finished foundation + enough SP
-function isApprenticeEligible(){
-  return isFoundationComplete() && state.skillPoints >= SP_TO_UNLOCK_APPRENTICE;
-}
-
-// Unlocked = eligible + approved (manual)
-function isApprenticeUnlocked(){
-  return isApprenticeEligible() && state.apprentice.approved === true;
-}
-
-function isLevel3Eligible(){
-  return isFoundationComplete() && apprenticeWeeksCompleted() === 13 && state.skillPoints >= SP_TO_UNLOCK_LEVEL3;
-}
-
-/***************
- * UI INIT
- ***************/
-function initDaySelect(){
-  const sel = $("daySelect");
-  sel.innerHTML = "";
-  for(let i=1;i<=FOUNDATION_DAYS;i++){
-    const opt = document.createElement("option");
-    opt.value = String(i-1);
-    opt.textContent = `Day ${i} / ${FOUNDATION_DAYS}`;
-    sel.appendChild(opt);
-  }
-}
-function initWeekSelect(){
-  const sel = $("weekSelect");
-  sel.innerHTML = "";
-  weeks.forEach((w,i)=>{
-    const opt = document.createElement("option");
-    opt.value = String(i);
-    opt.textContent = w.title;
-    sel.appendChild(opt);
-  });
-}
-
-/***************
- * RENDER
- ***************/
-function renderTopPills(){
-  $("spPill").textContent = String(state.skillPoints);
-  $("a1Pill").textContent = String(state.a1Coins);
-  $("usdPill").textContent = `$${(state.apprenticeUsdCents/100).toFixed(2)}`;
-  $("foundationProgress").textContent = `${foundationCompletedCount()}/${FOUNDATION_DAYS}`;
-  $("apprenticeProgress").textContent = `${apprenticeWeeksCompleted()}/13`;
-  $("spNeedPill").textContent = `${SP_TO_UNLOCK_APPRENTICE} SP (Apprentice) · ${SP_TO_UNLOCK_LEVEL3} SP (Level 3)`;
-  $("todayBadge").textContent = `Today: ${todayISO()}`;
-
-  if(!isFoundationComplete()){
-    $("stageName").textContent = "Foundation";
-  }else if(isApprenticeEligible() && !state.apprentice.approved){
-    $("stageName").textContent = "Awaiting Approval";
-  }else if(isApprenticeUnlocked() && !isLevel3Eligible()){
-    $("stageName").textContent = "Apprentice";
-  }else if(isLevel3Eligible()){
-    $("stageName").textContent = "Level 3 Eligible";
-  }else{
-    $("stageName").textContent = "Awaiting Apprentice Eligibility";
   }
 
-  if(!state.foundation.startedAt){
-    $("flowBadge").textContent = "Status: Start Day 1";
-  }else{
-    $("flowBadge").textContent = "Status: Active";
-  }
-
-  // Request button visibility
-  const canRequest = isApprenticeEligible() && !state.apprentice.approved;
-  $("requestApprenticeBtn").style.display = canRequest ? "inline-flex" : "none";
-  $("requestHint").textContent = canRequest ? "Eligible ✅ Submit request for approval." : "Not eligible yet.";
-}
-
-function renderFoundation(dayIndex){
-  const d = state.foundation.days[dayIndex];
-  const unlocked = isDayUnlocked(dayIndex);
-
-  if(!state.foundation.startedAt && dayIndex === 0){
-    $("dayLockPill").textContent = "Ready to start (Day 1)";
-  }else{
-    $("dayLockPill").textContent = unlocked ? "Unlocked ✅" : "Locked ⛔ (wait for next day)";
-  }
-
-  $("dayTeaching").value = getFoundationText(dayIndex+1);
-  $("dayAction").value = d.action || "";
-  $("dayProof").value = d.proof || "";
-  $("dayDone").checked = !!d.done;
-
-  const disabled = !unlocked || d.done;
-  $("dayAction").disabled = disabled;
-  $("dayProof").disabled = disabled;
-  $("dayDone").disabled = !unlocked;
-  $("completeDayBtn").disabled = disabled;
-  $("copyDayBtn").disabled = (!d.action && !d.proof && !d.done);
-
-  $("foundationBadge").textContent = isFoundationComplete() ? "Completed ✅" : "21 Days";
-}
-
-function renderApprentice(weekIndex){
-  const eligible = isApprenticeEligible();
-  const unlocked = isApprenticeUnlocked();
-
-  $("apprenticeLockBadge").textContent =
-    unlocked ? "Unlocked ✅" : (eligible ? "Eligible (Needs Approval)" : "Locked");
-
-  $("apprenticeLockBadge").className =
-    unlocked ? "okBadge" : "lockedBadge on";
-
-  $("apprenticeCard").style.opacity = unlocked ? "1" : ".62";
-
-  const disableAll = !unlocked;
-
-  [
-    "weekSelect","weekPlan","weekProof","weekReflection","weekDone",
-    "a_checkin","a_log","a_total","a_refuse","a_proof","apprenticeDailyNote",
-    "copyWeekBtn","copyDailyBtn","nextWeekBtn","resetDailyBtn"
-  ].forEach(id=>{
-    const el = $(id);
-    if(el) el.disabled = disableAll;
-  });
-
-  const w = weeks[weekIndex];
-  const ws = state.apprentice.weeks[weekIndex];
-
-  $("weekObjective").value = w.objective;
-  if(!ws.plan) ws.plan = w.plan;
-  if(!ws.proof) ws.proof = w.proof;
-
-  $("weekPlan").value = ws.plan;
-  $("weekProof").value = ws.proof;
-  $("weekReflection").value = ws.reflection || "";
-  $("weekDone").checked = !!ws.done;
-  $("weekStatus").textContent = ws.done ? "Completed ✅" : "In Progress";
-
-  const checks = state.apprentice.daily.checks || {};
-  ["a_checkin","a_log","a_total","a_refuse","a_proof"].forEach(id=>{
-    $(id).checked = !!checks[id];
-  });
-  $("apprenticeDailyNote").value = state.apprentice.daily.note || "";
-}
-
-function renderLevel3(){
-  const eligible = isLevel3Eligible();
-  $("level3LockBadge").textContent = eligible ? "Unlocked ✅" : "Locked";
-  $("level3LockBadge").className = eligible ? "okBadge" : "lockedBadge on";
-
-  const btn = $("islBtn");
-  const hint = $("islHint");
-  if(eligible){
-    btn.onclick = null;
-    btn.href = "isl.html";
-    hint.textContent = "Eligible ✅ You can enter ISL.";
-  }else{
-    btn.onclick = ()=>false;
-    btn.href = "isl.html";
-    hint.textContent = "Locked until Level 3 eligibility.";
-  }
-}
-
-/***************
- * CLIPBOARD
- ***************/
-async function copyToClipboard(text){
-  try{
-    await navigator.clipboard.writeText(text);
-    alert("Copied. Paste into WhatsApp (or your submission channel).");
-  }catch(e){
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand("copy");
-    document.body.removeChild(ta);
-    alert("Copied. Paste into WhatsApp (or your submission channel).");
-  }
-}
-
-/***************
- * SUPABASE: submit request (no crash if supabase not loaded)
- ***************/
-async function requestApprenticeUnlock(){
-  // Local fallback request (still useful even without supabase)
-  if(!isApprenticeEligible()){
-    alert("Not eligible yet.");
-    return;
-  }
-
-  const supabaseClient = getSupabaseClientIfAvailable();
-  if(!supabaseClient){
-    alert("Request noted on this device. (Supabase not loaded on this page yet.)");
-    return;
-  }
-
-  const { data: u } = await supabaseClient.auth.getUser();
-  const user = u?.user;
-  if (!user){
-    alert("Please sign in first (from the Lodge/App).");
-    return;
-  }
-
-  const { error } = await supabaseClient.from("access_requests").insert([{
-    user_id: user.id,
-    requested_stage: "apprentice",
-    user_skill_points: state.skillPoints,
-    status: "pending"
-  }]);
-
-  if (error){
-    alert("Error: " + error.message);
-    return;
-  }
-
-  alert("✅ Request submitted. Await approval in Creator’s Wing.");
-}
-
-/***************
- * BINDINGS
- ***************/
-function bindFoundation(){
-  const sel = $("daySelect");
-
-  sel.addEventListener("change", ()=>{
-    const idx = parseInt(sel.value,10);
-    const allowedMax = maxUnlockedDayIndex();
-    if(idx > allowedMax){
-      alert("That day is locked. Complete today’s day and wait for the next day to unlock.");
-      sel.value = String(allowedMax);
-      renderFoundation(allowedMax);
-      return;
+  async function getUserRole(user){
+    const sb = ensureSupabaseClient();
+    if(!sb || !user) return null;
+    try{
+      const { data, error } = await sb
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .maybeSingle();
+      if(error) return null;
+      return data?.role || null;
+    }catch(e){
+      return null;
     }
-    renderFoundation(idx);
-  });
-
-  function persistDay(){
-    const idx = parseInt(sel.value, 10);
-    const d = state.foundation.days[idx];
-
-    if(!state.foundation.startedAt && idx === 0){
-      state.foundation.startedAt = todayISO();
-    }
-
-    d.action = $("dayAction").value;
-    d.proof = $("dayProof").value;
-
-    saveState();
-    toast("toastFoundation");
-    renderTopPills();
-    renderFoundation(idx);
-    renderApprentice(parseInt($("weekSelect").value,10));
-    renderLevel3();
   }
 
-  ["dayAction","dayProof"].forEach(id=>{
-    $(id).addEventListener("input", persistDay);
-  });
+  /***********************
+   * TEST MODE (ADMIN ONLY)
+   ***********************/
+  const TEST_KEY = "AGEX_TEST_MODE"; // "1" or "0"
 
-  $("dayDone").addEventListener("change", ()=>{
-    const idx = parseInt(sel.value,10);
-    const d = state.foundation.days[idx];
+  function isTestModeOn(){
+    return localStorage.getItem(TEST_KEY) === "1";
+  }
+  function setTestMode(on){
+    localStorage.setItem(TEST_KEY, on ? "1" : "0");
+  }
 
-    if(!isDayUnlocked(idx)){
-      $("dayDone").checked = false;
-      alert("This day is locked. Wait for the next day to unlock.");
+  function updateTestModeUI(isAdmin){
+    const panel = document.getElementById("testPanel");
+    const toggle = document.getElementById("testModeToggle");
+    const title = document.getElementById("testModeTitle");
+    const desc  = document.getElementById("testModeDesc");
+
+    if(!panel || !toggle) return;
+
+    if(!isAdmin){
+      panel.style.display = "none";
+      setTestMode(false);
       return;
     }
 
-    if(!state.foundation.startedAt && idx === 0){
-      state.foundation.startedAt = todayISO();
-    }
+    panel.style.display = "block";
+    toggle.checked = isTestModeOn();
 
-    if(!d.done){
-      d.done = true;
-      d.completedAt = todayISO();
-      state.skillPoints += SP_PER_FOUNDATION_DAY;
+    if(toggle.checked){
+      title.textContent = "Test Mode: ON";
+      desc.textContent  = "Apprentice is unlocked for testing on this device (even if Foundation is incomplete).";
     }else{
-      d.done = false;
-      d.completedAt = null;
-      state.skillPoints = Math.max(0, state.skillPoints - SP_PER_FOUNDATION_DAY);
+      title.textContent = "Test Mode: OFF";
+      desc.textContent  = "Apprentice remains locked until Foundation is completed.";
+    }
+  }
+
+  /***************
+   * STORAGE KEYS
+   ***************/
+  const KEY = "agex_academy_v1_singleflow";
+
+  /***************
+   * CONFIG (v1 defaults)
+   ***************/
+  const FOUNDATION_DAYS = 21;
+  const SP_PER_FOUNDATION_DAY = 100;
+  const SP_TO_UNLOCK_APPRENTICE = FOUNDATION_DAYS * SP_PER_FOUNDATION_DAY; // 2100
+  const SP_TO_UNLOCK_LEVEL3 = 10000;
+  const SP_PER_APPRENTICE_WEEK_DONE = 250;
+  const SP_PER_APPRENTICE_DAY_CYCLE = 25;
+
+  const weeks = [
+    { title:"Week 1 — The Apprentice Covenant", objective:"Establish your non-negotiable discipline loop.", plan:"Set a daily spending cap. Log every expense. Total at night. Do one refusal daily.", proof:"Submit: weekly totals + biggest categories + 3 refusals + reflection." },
+    { title:"Week 2 — The One-Page Budget", objective:"Build a simple budget you can obey.", plan:"Write a one-page budget: needs, wants cap, savings, support, buffer. Use it daily.", proof:"Submit: one-page budget + 7-day log totals." },
+    { title:"Week 3 — Categories & Caps", objective:"Stop leaks by setting category caps.", plan:"Choose 3 categories and set weekly caps. Track daily and adjust.", proof:"Submit: caps + totals + what you corrected." },
+    { title:"Week 4 — Saving Before Spending", objective:"Install a saving rule.", plan:"Pick a weekly saving amount (even small). Save first, then spend.", proof:"Submit: saving rule + proof + totals." },
+    { title:"Week 5 — The Refusal System", objective:"Build the habit of saying no.", plan:"Write refusal scripts for 3 triggers. Practice daily.", proof:"Submit: scripts + evidence of 5 refusals." },
+    { title:"Week 6 — Cashflow Awareness", objective:"Know what comes in vs what goes out.", plan:"Track income and expenses. Identify the cashflow gap.", proof:"Submit: cashflow snapshot + one correction." },
+    { title:"Week 7 — Weekly Review Ritual", objective:"Build your review ritual.", plan:"Create a 15-min weekly review template. Perform it twice.", proof:"Submit: template + 2 reviews completed." },
+    { title:"Week 8 — Cutting One Major Leak", objective:"Make one visible reduction.", plan:"Identify biggest leak and reduce it by 30–50%.", proof:"Submit: before/after totals + what you changed." },
+    { title:"Week 9 — Buffer & Emergency Order", objective:"Stability through buffers.", plan:"Create a buffer rule. Practice restraint.", proof:"Submit: buffer rule + proof + reflection." },
+    { title:"Week 10 — Discipline Under Stress", objective:"Maintain rules under pressure.", plan:"Choose stress trigger. Write response plan. Execute once.", proof:"Submit: trigger + plan + outcome." },
+    { title:"Week 11 — Spending Alignment", objective:"Spend in alignment with identity.", plan:"Before any spend ask: “Does this serve my system?” Record yes/no.", proof:"Submit: 10 decisions record + totals." },
+    { title:"Week 12 — System Optimization", objective:"Strengthen what already works.", plan:"Review last weeks. Tighten 2 rules, remove 1 habit.", proof:"Submit: optimization notes + corrected rules." },
+    { title:"Week 13 — Apprentice Confirmation", objective:"Produce a complete proof bundle.", plan:"Compile: budget, caps, saving rule, review, logs, refusals.", proof:"Submit: Apprentice Proof Bundle + reflection." }
+  ];
+
+  const foundationTeachings = [
+    { title:"Day 1 — Identity Before Income", text:`CHAPTER I\nIdentity Before Income\n\nMost people pursue wealth as an external event.\nStewards understand it as an internal condition.\n\nBefore money enters your account, it answers a deeper question:\nWho are you prepared to become?\n\nThis is not philosophy.\nIt is pattern recognition.\n\nThose who sustain wealth resolved identity before opportunity arrived.` },
+    { title:"Day 2 — Vision Beyond Immediate Gain", text:`Vision is discipline applied forward.\n\nShort-term thinking is expensive.\nStewards think in decades, not weeks.\nVision simplifies decisions and strengthens refusal.` },
+    { title:"Day 3 — Discipline as Power", text:`Discipline is control.\nMoney responds to order.\nRoutine builds what intensity cannot sustain.\nExpansion amplifies whatever already exists.` }
+  ];
+
+  function getFoundationText(day){
+    if(day <= foundationTeachings.length) return foundationTeachings[day-1].text;
+    return `Day ${day} — Foundation Practice\n\nToday you will practice one small discipline loop:\n- Set a spending cap\n- Log expenses\n- Total at night\n- Make one refusal\n\nWrite your action. Capture proof. Build order.`;
+  }
+
+  /***************
+   * HELPERS
+   ***************/
+  function $(id){ return document.getElementById(id); }
+  function todayISO(){
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const dd = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${dd}`;
+  }
+  function addDaysISO(iso, add){
+    const [y,m,d] = iso.split("-").map(Number);
+    const dt = new Date(y, m-1, d);
+    dt.setDate(dt.getDate() + add);
+    const yy = dt.getFullYear();
+    const mm = String(dt.getMonth()+1).padStart(2,'0');
+    const dd = String(dt.getDate()).padStart(2,'0');
+    return `${yy}-${mm}-${dd}`;
+  }
+  function toast(id){
+    const t = $(id);
+    if(!t) return;
+    t.style.display="block";
+    setTimeout(()=>t.style.display="none", 1600);
+  }
+
+  /***************
+   * STATE
+   ***************/
+  function defaultState(){
+    return {
+      createdAt: todayISO(),
+      skillPoints: 0,
+      a1Coins: 0,
+      apprenticeUsdCents: 0,
+      foundation: {
+        startedAt: null,
+        days: Array.from({length: FOUNDATION_DAYS}, ()=>({
+          action:"", proof:"", done:false, completedAt:null
+        }))
+      },
+      apprentice: {
+        unlocked:false,
+        approved:false, // manual approval flag (local fallback)
+        weeks: weeks.map(()=>({ plan:"", proof:"", reflection:"", done:false })),
+        daily: { checks:{}, note:"", lastCreditDate:null }
+      }
+    };
+  }
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(KEY);
+      if(!raw) return defaultState();
+      const data = JSON.parse(raw);
+      if(!data.foundation || !Array.isArray(data.foundation.days)) return defaultState();
+      if(data.foundation.days.length !== FOUNDATION_DAYS) return defaultState();
+      if(!data.apprentice || !Array.isArray(data.apprentice.weeks) || data.apprentice.weeks.length !== 13) return defaultState();
+
+      if(typeof data.skillPoints !== "number") data.skillPoints = 0;
+      if(typeof data.a1Coins !== "number") data.a1Coins = 0;
+      if(typeof data.apprenticeUsdCents !== "number") data.apprenticeUsdCents = 0;
+      if(typeof data.apprentice.approved !== "boolean") data.apprentice.approved = false;
+      if(!data.apprentice.daily) data.apprentice.daily = { checks:{}, note:"", lastCreditDate:null };
+      return data;
+    }catch(e){
+      return defaultState();
+    }
+  }
+
+  function saveState(){ localStorage.setItem(KEY, JSON.stringify(state)); }
+
+  function foundationCompletedCount(){ return state.foundation.days.filter(d => d && d.done).length; }
+  function isFoundationComplete(){ return foundationCompletedCount() === FOUNDATION_DAYS; }
+
+  function isDayUnlocked(dayIndex){
+    if(!state.foundation.startedAt) return dayIndex === 0;
+    const unlockDate = addDaysISO(state.foundation.startedAt, dayIndex);
+    return todayISO() >= unlockDate;
+  }
+  function maxUnlockedDayIndex(){
+    if(!state.foundation.startedAt) return 0;
+    const start = state.foundation.startedAt;
+    let i = 0;
+    while(i < FOUNDATION_DAYS){
+      const unlockDate = addDaysISO(start, i);
+      if(todayISO() >= unlockDate) i++;
+      else break;
+    }
+    return Math.max(0, Math.min(FOUNDATION_DAYS - 1, i - 1));
+  }
+  function firstIncompleteDayIndex(){
+    for(let i=0;i<FOUNDATION_DAYS;i++){
+      if(!state.foundation.days[i].done) return i;
+    }
+    return FOUNDATION_DAYS-1;
+  }
+
+  function apprenticeWeeksCompleted(){ return state.apprentice.weeks.filter(w => w && w.done).length; }
+
+  // Eligible = finished foundation + enough SP
+  function isApprenticeEligible(){
+    return isFoundationComplete() && state.skillPoints >= SP_TO_UNLOCK_APPRENTICE;
+  }
+
+  // Unlocked = eligible + approved (manual) OR TEST MODE override (admin only)
+  function isApprenticeUnlocked(){
+    // Admin-only override stored in localStorage; UI only shows for admin,
+    // but we still protect it by checking role when page loads.
+    if(isTestModeOn()) return true;
+    return isApprenticeEligible() && state.apprentice.approved === true;
+  }
+
+  function isLevel3Eligible(){
+    // Level3 is NOT overridden by test mode (keeps integrity).
+    return isFoundationComplete() && apprenticeWeeksCompleted() === 13 && state.skillPoints >= SP_TO_UNLOCK_LEVEL3;
+  }
+
+  /***************
+   * UI INIT
+   ***************/
+  function initDaySelect(){
+    const sel = $("daySelect");
+    sel.innerHTML = "";
+    for(let i=1;i<=FOUNDATION_DAYS;i++){
+      const opt = document.createElement("option");
+      opt.value = String(i-1);
+      opt.textContent = `Day ${i} / ${FOUNDATION_DAYS}`;
+      sel.appendChild(opt);
+    }
+  }
+  function initWeekSelect(){
+    const sel = $("weekSelect");
+    sel.innerHTML = "";
+    weeks.forEach((w,i)=>{
+      const opt = document.createElement("option");
+      opt.value = String(i);
+      opt.textContent = w.title;
+      sel.appendChild(opt);
+    });
+  }
+
+  /***************
+   * RENDER
+   ***************/
+  function renderTopPills(){
+    $("spPill").textContent = String(state.skillPoints);
+    $("a1Pill").textContent = String(state.a1Coins);
+    $("usdPill").textContent = `$${(state.apprenticeUsdCents/100).toFixed(2)}`;
+    $("foundationProgress").textContent = `${foundationCompletedCount()}/${FOUNDATION_DAYS}`;
+    $("apprenticeProgress").textContent = `${apprenticeWeeksCompleted()}/13`;
+    $("spNeedPill").textContent = `${SP_TO_UNLOCK_APPRENTICE} SP (Apprentice) · ${SP_TO_UNLOCK_LEVEL3} SP (Level 3)`;
+    $("todayBadge").textContent = `Today: ${todayISO()}`;
+
+    const foundationDone = isFoundationComplete();
+    const eligible = isApprenticeEligible();
+    const unlocked = isApprenticeUnlocked();
+
+    if(!foundationDone){
+      $("stageName").textContent = "Foundation";
+    }else if(eligible && !state.apprentice.approved){
+      $("stageName").textContent = "Awaiting Approval";
+    }else if(unlocked && !isLevel3Eligible()){
+      $("stageName").textContent = "Apprentice";
+    }else if(isLevel3Eligible()){
+      $("stageName").textContent = "Level 3 Eligible";
+    }else{
+      $("stageName").textContent = "Awaiting Apprentice Eligibility";
     }
 
-    saveState();
-    toast("toastFoundation");
-    renderTopPills();
-    renderFoundation(idx);
-    renderApprentice(parseInt($("weekSelect").value,10));
-    renderLevel3();
-  });
+    if(isTestModeOn()){
+      $("flowBadge").textContent = "Status: Test Mode (Admin Override)";
+    }else if(!state.foundation.startedAt){
+      $("flowBadge").textContent = "Status: Start Day 1";
+    }else{
+      $("flowBadge").textContent = "Status: Active";
+    }
 
-  $("completeDayBtn").addEventListener("click", ()=>{
-    const idx = parseInt(sel.value,10);
-    const d = state.foundation.days[idx];
+    // Request button visibility (never show in test mode)
+    const canRequest = eligible && !state.apprentice.approved && !isTestModeOn();
+    $("requestApprenticeBtn").style.display = canRequest ? "inline-flex" : "none";
+    $("requestHint").textContent = isTestModeOn()
+      ? "Test Mode is ON (admin override)."
+      : (canRequest ? "Eligible ✅ Submit request for approval." : "Not eligible yet.");
+  }
 
-    if(!isDayUnlocked(idx)){
-      alert("This day is locked. Wait for the next day to unlock.");
+  function renderFoundation(dayIndex){
+    const d = state.foundation.days[dayIndex];
+    const unlocked = isDayUnlocked(dayIndex);
+
+    if(!state.foundation.startedAt && dayIndex === 0){
+      $("dayLockPill").textContent = "Ready to start (Day 1)";
+    }else{
+      $("dayLockPill").textContent = unlocked ? "Unlocked ✅" : "Locked ⛔ (wait for next day)";
+    }
+
+    $("dayTeaching").value = getFoundationText(dayIndex+1);
+    $("dayAction").value = d.action || "";
+    $("dayProof").value = d.proof || "";
+    $("dayDone").checked = !!d.done;
+
+    const disabled = !unlocked || d.done;
+    $("dayAction").disabled = disabled;
+    $("dayProof").disabled = disabled;
+    $("dayDone").disabled = !unlocked;
+    $("completeDayBtn").disabled = disabled;
+    $("copyDayBtn").disabled = (!d.action && !d.proof && !d.done);
+
+    $("foundationBadge").textContent = isFoundationComplete() ? "Completed ✅" : "21 Days";
+  }
+
+  function renderApprentice(weekIndex){
+    const eligible = isApprenticeEligible();
+    const unlocked = isApprenticeUnlocked();
+    const test = isTestModeOn();
+
+    $("apprenticeLockBadge").textContent =
+      unlocked ? (test ? "Unlocked (Test Mode)" : "Unlocked ✅") : (eligible ? "Eligible (Needs Approval)" : "Locked");
+
+    $("apprenticeLockBadge").className =
+      unlocked ? "okBadge" : "lockedBadge on";
+
+    $("apprenticeCard").style.opacity = unlocked ? "1" : ".62";
+
+    const disableAll = !unlocked;
+
+    [
+      "weekSelect","weekPlan","weekProof","weekReflection","weekDone",
+      "a_checkin","a_log","a_total","a_refuse","a_proof","apprenticeDailyNote",
+      "copyWeekBtn","copyDailyBtn","nextWeekBtn","resetDailyBtn"
+    ].forEach(id=>{
+      const el = $(id);
+      if(el) el.disabled = disableAll;
+    });
+
+    const w = weeks[weekIndex];
+    const ws = state.apprentice.weeks[weekIndex];
+
+    $("weekObjective").value = w.objective;
+    if(!ws.plan) ws.plan = w.plan;
+    if(!ws.proof) ws.proof = w.proof;
+
+    $("weekPlan").value = ws.plan;
+    $("weekProof").value = ws.proof;
+    $("weekReflection").value = ws.reflection || "";
+    $("weekDone").checked = !!ws.done;
+    $("weekStatus").textContent = ws.done ? "Completed ✅" : "In Progress";
+
+    const checks = state.apprentice.daily.checks || {};
+    ["a_checkin","a_log","a_total","a_refuse","a_proof"].forEach(id=>{
+      $(id).checked = !!checks[id];
+    });
+    $("apprenticeDailyNote").value = state.apprentice.daily.note || "";
+  }
+
+  function renderLevel3(){
+    const eligible = isLevel3Eligible();
+    $("level3LockBadge").textContent = eligible ? "Unlocked ✅" : "Locked";
+    $("level3LockBadge").className = eligible ? "okBadge" : "lockedBadge on";
+
+    const btn = $("islBtn");
+    const hint = $("islHint");
+    if(eligible){
+      btn.onclick = null;
+      btn.href = "isl.html";
+      hint.textContent = "Eligible ✅ You can enter ISL.";
+    }else{
+      btn.onclick = ()=>false;
+      btn.href = "isl.html";
+      hint.textContent = "Locked until Level 3 eligibility.";
+    }
+  }
+
+  /***************
+   * CLIPBOARD
+   ***************/
+  async function copyToClipboard(text){
+    try{
+      await navigator.clipboard.writeText(text);
+      alert("Copied. Paste into WhatsApp (or your submission channel).");
+    }catch(e){
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      alert("Copied. Paste into WhatsApp (or your submission channel).");
+    }
+  }
+
+  /***************
+   * SUPABASE: submit request
+   ***************/
+  async function requestApprenticeUnlock(){
+    if(isTestModeOn()){
+      alert("Test Mode is ON. Turn it OFF to submit a real unlock request.");
       return;
     }
 
-    if(!state.foundation.startedAt && idx === 0){
-      state.foundation.startedAt = todayISO();
+    if(!isApprenticeEligible()){
+      alert("Not eligible yet.");
+      return;
     }
 
-    if(!d.done){
-      d.done = true;
-      d.completedAt = todayISO();
-      state.skillPoints += SP_PER_FOUNDATION_DAY;
+    const sb = ensureSupabaseClient();
+    if(!sb){
+      alert("Supabase not loaded on this page yet.");
+      return;
     }
 
-    saveState();
-    toast("toastFoundation");
+    const { data: u } = await sb.auth.getUser();
+    const user = u?.user;
+    if (!user){
+      alert("Please sign in first (from the Lodge/App).");
+      return;
+    }
 
-    const allowedMax = maxUnlockedDayIndex();
-    sel.value = String(allowedMax);
-    renderTopPills();
-    renderFoundation(allowedMax);
-    renderApprentice(parseInt($("weekSelect").value,10));
-    renderLevel3();
-  });
+    const { error } = await sb.from("access_requests").insert([{
+      user_id: user.id,
+      requested_stage: "apprentice",
+      user_skill_points: state.skillPoints,
+      status: "pending"
+    }]);
 
-  $("copyDayBtn").addEventListener("click", async ()=>{
-    const idx = parseInt(sel.value,10);
-    const d = state.foundation.days[idx];
-    const txt =
+    if (error){
+      alert("Error: " + error.message);
+      return;
+    }
+
+    alert("✅ Request submitted. Await approval in Creator’s Wing.");
+  }
+
+  /***************
+   * BINDINGS
+   ***************/
+  function bindFoundation(){
+    const sel = $("daySelect");
+
+    sel.addEventListener("change", ()=>{
+      const idx = parseInt(sel.value,10);
+      const allowedMax = maxUnlockedDayIndex();
+      if(idx > allowedMax){
+        alert("That day is locked. Complete today’s day and wait for the next day to unlock.");
+        sel.value = String(allowedMax);
+        renderFoundation(allowedMax);
+        return;
+      }
+      renderFoundation(idx);
+    });
+
+    function persistDay(){
+      const idx = parseInt(sel.value, 10);
+      const d = state.foundation.days[idx];
+
+      if(!state.foundation.startedAt && idx === 0){
+        state.foundation.startedAt = todayISO();
+      }
+
+      d.action = $("dayAction").value;
+      d.proof = $("dayProof").value;
+
+      saveState();
+      toast("toastFoundation");
+      renderTopPills();
+      renderFoundation(idx);
+      renderApprentice(parseInt($("weekSelect").value,10));
+      renderLevel3();
+    }
+
+    ["dayAction","dayProof"].forEach(id=>{
+      $(id).addEventListener("input", persistDay);
+    });
+
+    $("dayDone").addEventListener("change", ()=>{
+      const idx = parseInt(sel.value,10);
+      const d = state.foundation.days[idx];
+
+      if(!isDayUnlocked(idx)){
+        $("dayDone").checked = false;
+        alert("This day is locked. Wait for the next day to unlock.");
+        return;
+      }
+
+      if(!state.foundation.startedAt && idx === 0){
+        state.foundation.startedAt = todayISO();
+      }
+
+      if(!d.done){
+        d.done = true;
+        d.completedAt = todayISO();
+        state.skillPoints += SP_PER_FOUNDATION_DAY;
+      }else{
+        d.done = false;
+        d.completedAt = null;
+        state.skillPoints = Math.max(0, state.skillPoints - SP_PER_FOUNDATION_DAY);
+      }
+
+      saveState();
+      toast("toastFoundation");
+      renderTopPills();
+      renderFoundation(idx);
+      renderApprentice(parseInt($("weekSelect").value,10));
+      renderLevel3();
+    });
+
+    $("completeDayBtn").addEventListener("click", ()=>{
+      const idx = parseInt(sel.value,10);
+      const d = state.foundation.days[idx];
+
+      if(!isDayUnlocked(idx)){
+        alert("This day is locked. Wait for the next day to unlock.");
+        return;
+      }
+
+      if(!state.foundation.startedAt && idx === 0){
+        state.foundation.startedAt = todayISO();
+      }
+
+      if(!d.done){
+        d.done = true;
+        d.completedAt = todayISO();
+        state.skillPoints += SP_PER_FOUNDATION_DAY;
+      }
+
+      saveState();
+      toast("toastFoundation");
+
+      const allowedMax = maxUnlockedDayIndex();
+      sel.value = String(allowedMax);
+      renderTopPills();
+      renderFoundation(allowedMax);
+      renderApprentice(parseInt($("weekSelect").value,10));
+      renderLevel3();
+    });
+
+    $("copyDayBtn").addEventListener("click", async ()=>{
+      const idx = parseInt(sel.value,10);
+      const d = state.foundation.days[idx];
+      const txt =
 `AGEx — Foundation Proof
 Day ${idx+1} / ${FOUNDATION_DAYS}
 
@@ -1003,114 +1143,107 @@ ${(d.proof || "—").trim()}
 Completed: ${d.done ? "✅ Yes" : "❌ Not yet"}
 Date: ${todayISO()}
 `;
-    await copyToClipboard(txt);
-  });
-}
-
-function bindApprentice(){
-  const sel = $("weekSelect");
-
-  sel.addEventListener("change", ()=> renderApprentice(parseInt(sel.value,10)));
-
-  function persistWeek(){
-    const idx = parseInt(sel.value,10);
-    const ws = state.apprentice.weeks[idx];
-
-    ws.plan = $("weekPlan").value;
-    ws.proof = $("weekProof").value;
-    ws.reflection = $("weekReflection").value;
-
-    saveState();
-    toast("toastApprentice");
-    renderTopPills();
-    renderApprentice(idx);
-    renderLevel3();
+      await copyToClipboard(txt);
+    });
   }
 
-  ["weekPlan","weekProof","weekReflection"].forEach(id=>{
-    $(id).addEventListener("input", persistWeek);
-  });
+  function bindApprentice(){
+    const sel = $("weekSelect");
 
-  $("weekDone").addEventListener("change", ()=>{
-    if(!isApprenticeUnlocked()){
-      $("weekDone").checked = false;
-      alert("Apprentice is locked (requires approval).");
-      return;
+    sel.addEventListener("change", ()=> renderApprentice(parseInt(sel.value,10)));
+
+    function persistWeek(){
+      const idx = parseInt(sel.value,10);
+      const ws = state.apprentice.weeks[idx];
+
+      ws.plan = $("weekPlan").value;
+      ws.proof = $("weekProof").value;
+      ws.reflection = $("weekReflection").value;
+
+      saveState();
+      toast("toastApprentice");
+      renderTopPills();
+      renderApprentice(idx);
+      renderLevel3();
     }
 
-    const idx = parseInt(sel.value,10);
-    const ws = state.apprentice.weeks[idx];
-
-    const wasDone = !!ws.done;
-    ws.done = $("weekDone").checked;
-
-    if(!wasDone && ws.done) state.skillPoints += SP_PER_APPRENTICE_WEEK_DONE;
-    if(wasDone && !ws.done) state.skillPoints = Math.max(0, state.skillPoints - SP_PER_APPRENTICE_WEEK_DONE);
-
-    saveState();
-    toast("toastApprentice");
-    renderTopPills();
-    renderApprentice(idx);
-    renderLevel3();
-  });
-
-  const checkIds = ["a_checkin","a_log","a_total","a_refuse","a_proof"];
-  checkIds.forEach(id=>{
-    $(id).addEventListener("change", ()=>{
-      if(!isApprenticeUnlocked()) return;
-      const testMode = localStorage.getItem("AGEX_TEST_MODE") === "1";
-
-// Old:
-if(!foundationComplete){ blockApprentice(); }
-
-// New:
-if(!foundationComplete && !testMode){ blockApprentice(); }
-
-      const checks = state.apprentice.daily.checks || {};
-      checks[id] = $(id).checked;
-      state.apprentice.daily.checks = checks;
-
-      const allDone = checkIds.every(cid => !!checks[cid]);
-      const today = todayISO();
-      const alreadyCreditedToday = state.apprentice.daily.lastCreditDate === today;
-
-      if(allDone && !alreadyCreditedToday){
-        state.apprentice.daily.lastCreditDate = today;
-        state.a1Coins += 1;
-        state.apprenticeUsdCents += 1;
-        state.skillPoints += SP_PER_APPRENTICE_DAY_CYCLE;
-
-        saveState();
-        renderTopPills();
-        renderLevel3();
-        toast("toastApprentice");
-      }else{
-        saveState();
-      }
+    ["weekPlan","weekProof","weekReflection"].forEach(id=>{
+      $(id).addEventListener("input", persistWeek);
     });
-  });
 
-  $("apprenticeDailyNote").addEventListener("input", ()=>{
-    state.apprentice.daily.note = $("apprenticeDailyNote").value;
-    saveState();
-    toast("toastApprentice");
-  });
+    $("weekDone").addEventListener("change", ()=>{
+      if(!isApprenticeUnlocked()){
+        $("weekDone").checked = false;
+        alert(isTestModeOn() ? "Apprentice is available in Test Mode, but unlock approvals are separate." : "Apprentice is locked (requires approval).");
+        return;
+      }
 
-  $("resetDailyBtn").addEventListener("click", ()=>{
-    if(!isApprenticeUnlocked()) return;
-    state.apprentice.daily.checks = {};
-    state.apprentice.daily.note = "";
-    ["a_checkin","a_log","a_total","a_refuse","a_proof"].forEach(id=> $(id).checked=false);
-    $("apprenticeDailyNote").value = "";
-    saveState();
-    toast("toastApprentice");
-  });
+      const idx = parseInt(sel.value,10);
+      const ws = state.apprentice.weeks[idx];
 
-  $("copyDailyBtn").addEventListener("click", async ()=>{
-    if(!isApprenticeUnlocked()) return;
-    const idx = parseInt(sel.value,10);
-    const checks = state.apprentice.daily.checks || {};
-    const txt =
+      const wasDone = !!ws.done;
+      ws.done = $("weekDone").checked;
+
+      if(!wasDone && ws.done) state.skillPoints += SP_PER_APPRENTICE_WEEK_DONE;
+      if(wasDone && !ws.done) state.skillPoints = Math.max(0, state.skillPoints - SP_PER_APPRENTICE_WEEK_DONE);
+
+      saveState();
+      toast("toastApprentice");
+      renderTopPills();
+      renderApprentice(idx);
+      renderLevel3();
+    });
+
+    const checkIds = ["a_checkin","a_log","a_total","a_refuse","a_proof"];
+    checkIds.forEach(id=>{
+      $(id).addEventListener("change", ()=>{
+        if(!isApprenticeUnlocked()) return;
+
+        const checks = state.apprentice.daily.checks || {};
+        checks[id] = $(id).checked;
+        state.apprentice.daily.checks = checks;
+
+        const allDone = checkIds.every(cid => !!checks[cid]);
+        const today = todayISO();
+        const alreadyCreditedToday = state.apprentice.daily.lastCreditDate === today;
+
+        if(allDone && !alreadyCreditedToday){
+          state.apprentice.daily.lastCreditDate = today;
+          state.a1Coins += 1;
+          state.apprenticeUsdCents += 1;
+          state.skillPoints += SP_PER_APPRENTICE_DAY_CYCLE;
+
+          saveState();
+          renderTopPills();
+          renderLevel3();
+          toast("toastApprentice");
+        }else{
+          saveState();
+        }
+      });
+    });
+
+    $("apprenticeDailyNote").addEventListener("input", ()=>{
+      state.apprentice.daily.note = $("apprenticeDailyNote").value;
+      saveState();
+      toast("toastApprentice");
+    });
+
+    $("resetDailyBtn").addEventListener("click", ()=>{
+      if(!isApprenticeUnlocked()) return;
+      state.apprentice.daily.checks = {};
+      state.apprentice.daily.note = "";
+      ["a_checkin","a_log","a_total","a_refuse","a_proof"].forEach(id=> $(id).checked=false);
+      $("apprenticeDailyNote").value = "";
+      saveState();
+      toast("toastApprentice");
+    });
+
+    $("copyDailyBtn").addEventListener("click", async ()=>{
+      if(!isApprenticeUnlocked()) return;
+      const idx = parseInt(sel.value,10);
+      const checks = state.apprentice.daily.checks || {};
+      const txt =
 `AGEx — Apprentice Daily Proof
 ${weeks[idx].title}
 Date: ${todayISO()}
@@ -1125,15 +1258,15 @@ Checklist:
 Daily Note:
 ${(state.apprentice.daily.note || "—").trim()}
 `;
-    await copyToClipboard(txt);
-  });
+      await copyToClipboard(txt);
+    });
 
-  $("copyWeekBtn").addEventListener("click", async ()=>{
-    if(!isApprenticeUnlocked()) return;
-    const idx = parseInt(sel.value,10);
-    const w = weeks[idx];
-    const ws = state.apprentice.weeks[idx];
-    const txt =
+    $("copyWeekBtn").addEventListener("click", async ()=>{
+      if(!isApprenticeUnlocked()) return;
+      const idx = parseInt(sel.value,10);
+      const w = weeks[idx];
+      const ws = state.apprentice.weeks[idx];
+      const txt =
 `AGEx — Apprentice Weekly Proof
 ${w.title}
 
@@ -1151,72 +1284,94 @@ ${(ws.reflection || "—").trim()}
 
 Completed: ${ws.done ? "✅ Yes" : "❌ Not yet"}
 `;
-    await copyToClipboard(txt);
+      await copyToClipboard(txt);
+    });
+
+    $("nextWeekBtn").addEventListener("click", ()=>{
+      if(!isApprenticeUnlocked()) return;
+      const idx = parseInt(sel.value,10);
+
+      if(!$("weekDone").checked){
+        $("weekDone").checked = true;
+        const ws = state.apprentice.weeks[idx];
+        const wasDone = !!ws.done;
+        ws.done = true;
+        ws.plan = $("weekPlan").value;
+        ws.proof = $("weekProof").value;
+        ws.reflection = $("weekReflection").value;
+        if(!wasDone) state.skillPoints += SP_PER_APPRENTICE_WEEK_DONE;
+      }
+
+      saveState();
+      toast("toastApprentice");
+
+      const next = Math.min(idx + 1, 12);
+      sel.value = String(next);
+      renderTopPills();
+      renderApprentice(next);
+      renderLevel3();
+    });
+  }
+
+  /***************
+   * RESET
+   ***************/
+  $("resetAllBtn").addEventListener("click", ()=> $("resetOverlay").style.display="flex");
+  $("cancelResetBtn").addEventListener("click", ()=> $("resetOverlay").style.display="none");
+  $("confirmResetBtn").addEventListener("click", ()=>{
+    localStorage.removeItem(KEY);
+    // Do not clear test mode here (admin may want to keep it)
+    location.reload();
   });
 
-  $("nextWeekBtn").addEventListener("click", ()=>{
-    if(!isApprenticeUnlocked()) return;
-    const idx = parseInt(sel.value,10);
+  /***************
+   * INIT
+   ***************/
+  let state = loadState();
+  initDaySelect();
+  initWeekSelect();
 
-    if(!$("weekDone").checked){
-      $("weekDone").checked = true;
-      const ws = state.apprentice.weeks[idx];
-      const wasDone = !!ws.done;
-      ws.done = true;
-      ws.plan = $("weekPlan").value;
-      ws.proof = $("weekProof").value;
-      ws.reflection = $("weekReflection").value;
-      if(!wasDone) state.skillPoints += SP_PER_APPRENTICE_WEEK_DONE;
+  const startDay = firstIncompleteDayIndex();
+  $("daySelect").value = String(startDay);
+
+  const firstIncompleteWeek = state.apprentice.weeks.findIndex(w => !w.done);
+  $("weekSelect").value = String(firstIncompleteWeek === -1 ? 12 : firstIncompleteWeek);
+
+  // 1) Detect admin and show the test-mode switch (wired)
+  (async function bootTestMode(){
+    const user = await getSignedInUser();
+    const role = await getUserRole(user);
+    const isAdmin = (role === "admin");
+    updateTestModeUI(isAdmin);
+
+    const toggle = document.getElementById("testModeToggle");
+    if(toggle && isAdmin){
+      toggle.addEventListener("change", ()=>{
+        setTestMode(toggle.checked);
+        updateTestModeUI(true);
+        // Re-render gates immediately
+        renderTopPills();
+        renderApprentice(parseInt($("weekSelect").value,10));
+        renderLevel3();
+      });
+    }else{
+      // hard-disable if not admin (extra safety)
+      setTestMode(false);
     }
 
-    saveState();
-    toast("toastApprentice");
-
-    const next = Math.min(idx + 1, 12);
-    sel.value = String(next);
+    // Initial render (after test mode UI decision)
     renderTopPills();
-    renderApprentice(next);
+    renderFoundation(startDay);
+    renderApprentice(parseInt($("weekSelect").value,10));
     renderLevel3();
-  });
-}
+  })();
 
-/***************
- * RESET
- ***************/
-$("resetAllBtn").addEventListener("click", ()=> $("resetOverlay").style.display="flex");
-$("cancelResetBtn").addEventListener("click", ()=> $("resetOverlay").style.display="none");
-$("confirmResetBtn").addEventListener("click", ()=>{
-  localStorage.removeItem(KEY);
-  location.reload();
-});
-
-/***************
- * INIT
- ***************/
-let state = loadState();
-initDaySelect();
-initWeekSelect();
-
-const startDay = firstIncompleteDayIndex();
-$("daySelect").value = String(startDay);
-
-const firstIncompleteWeek = state.apprentice.weeks.findIndex(w => !w.done);
-$("weekSelect").value = String(firstIncompleteWeek === -1 ? 12 : firstIncompleteWeek);
-
-renderTopPills();
-renderFoundation(startDay);
-renderApprentice(parseInt($("weekSelect").value,10));
-renderLevel3();
-
-bindFoundation();
-bindApprentice();
-
-// Request button bind
-$("requestApprenticeBtn").addEventListener("click", requestApprenticeUnlock);
+  // 2) Bind handlers
+  bindFoundation();
+  bindApprentice();
+  $("requestApprenticeBtn").addEventListener("click", requestApprenticeUnlock);
 </script>
 
 </body>
 </html>
-
-
-
+```0
