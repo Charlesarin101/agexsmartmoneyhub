@@ -25,7 +25,7 @@
     input,textarea,select{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);font-family:inherit}
     textarea{min-height:84px;resize:vertical}
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .pill{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:900;max-width:100%;word-break:break-word}
+    .pill{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:900}
     table{width:100%;border-collapse:collapse}
     th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}
     th{color:var(--g);font-weight:950}
@@ -37,7 +37,7 @@
     .chip{padding:8px 10px;border-radius:999px;border:1px solid var(--line);font-weight:950;background:#fff}
     .chip.ok{border-color:rgba(26,127,55,.35);color:var(--ok)}
     .chip.bad{border-color:rgba(160,0,0,.25);color:var(--bad)}
-    code{word-break:break-word}
+    code{background:#f2f4f5;padding:2px 6px;border-radius:8px}
   </style>
 </head>
 <body>
@@ -247,7 +247,7 @@
           <h2>Notes</h2>
           <div class="muted">
             If you ever see “Auth missing” after signing in, it’s almost always because:
-            <b>supabase.js wasn’t loaded</b> or browser cache.
+            <b>supabase.js wasn’t loaded</b> (wrong path) or browser cache.
             Hard refresh, or open in Incognito.
           </div>
         </div>
@@ -255,9 +255,9 @@
     </div>
   </div>
 
-  <!-- Supabase (order matters) -->
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- IMPORTANT: relative path for GitHub Pages repo-sites -->
+  <!-- IMPORTANT: site is in /agexsmartmoneyhub/ so use RELATIVE path -->
   <script src="./supabase.js"></script>
 
   <script>
@@ -267,13 +267,6 @@
       el.textContent = text;
       el.classList.remove("ok","bad");
       el.classList.add(ok ? "ok" : "bad");
-    }
-
-    function showPillError(pillId, error, label){
-      const msg = error?.message ? error.message : String(error || "Unknown error");
-      $(pillId).textContent = `Error: ${msg}`;
-      const extra = error?.code ? ` (code: ${error.code})` : "";
-      $("statusNote").textContent = `${label || "Load failed"}: ${msg}${extra}`;
     }
 
     function randPart(n=4){
@@ -289,7 +282,7 @@
     async function getUser(){
       if(!window.supabaseClient){
         $("statusText").textContent = "Supabase client not loaded (supabase.js missing).";
-        $("statusNote").textContent = "Fix: ensure ./supabase.js is deployed and contains your ANON key.";
+        $("statusNote").textContent = "Fix: confirm ./supabase.js exists in the SAME folder and contains your ANON key.";
         setChip($("chipAuth"), "Auth: error", false);
         setChip($("chipRole"), "Role: —", false);
         setChip($("chipDb"), "DB: —", false);
@@ -311,12 +304,11 @@
     }
 
     async function testDb(){
-      // test a table the admin view needs; this catches RLS/permission errors
       const { error } = await window.supabaseClient
-        .from("access_requests")
+        .from("issued_keys")
         .select("id")
         .limit(1);
-      return { ok: !error, error };
+      return !error;
     }
 
     async function signIn(email, password){
@@ -331,8 +323,6 @@
     }
 
     async function loadRequests(){
-      $("reqCount").textContent = "Loading…";
-
       const { data, error } = await window.supabaseClient
         .from("access_requests")
         .select("id,user_id,requested_stage,user_skill_points,status,created_at")
@@ -341,10 +331,9 @@
 
       $("reqBody").innerHTML = "";
       if(error){
-        showPillError("reqCount", error, "Access requests");
+        $("reqCount").textContent = "Error: " + error.message;
         return;
       }
-
       $("reqCount").textContent = `${data.length} requests`;
 
       data.forEach(r=>{
@@ -369,16 +358,13 @@
         .update({ status:"approved", reviewed_at:new Date().toISOString() })
         .eq("id", reqId);
 
-      if(error){
-        alert("Approve failed: " + error.message);
-        return;
-      }
+      if(error){ alert("Approve error: " + error.message); return; }
 
       // Optional: if your profiles table has these fields
       try{
         await window.supabaseClient
           .from("profiles")
-          .update({ apprentice_approved:true, stage:"apprentice" })
+          .update({ stage:"apprentice" })
           .eq("id", userId);
       }catch(e){}
 
@@ -392,11 +378,7 @@
         .update({ status:"rejected", reviewed_at:new Date().toISOString() })
         .eq("id", reqId);
 
-      if(error){
-        alert("Reject failed: " + error.message);
-        return;
-      }
-
+      if(error){ alert("Reject error: " + error.message); return; }
       await loadRequests();
       alert("Rejected.");
     }
@@ -416,7 +398,8 @@
       $("taskMsg").textContent = "Creating…";
       const { error } = await window.supabaseClient.from("tasks").insert([{
         created_by: user.id,
-        title, category,
+        title,
+        category,
         reward_skill_points: reward,
         instructions,
         proof_required,
@@ -435,8 +418,6 @@
     }
 
     async function loadTasks(){
-      $("taskCount").textContent = "Loading…";
-
       const { data, error } = await window.supabaseClient
         .from("tasks")
         .select("id,title,category,reward_skill_points,status,created_at")
@@ -445,16 +426,15 @@
 
       $("tasksBody").innerHTML = "";
       if(error){
-        showPillError("taskCount", error, "Tasks");
+        $("taskCount").textContent = "Error: " + error.message;
         return;
       }
-
       $("taskCount").textContent = `${data.length} tasks`;
 
       data.forEach(t=>{
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td><b>${t.title || "—"}</b></td>
+          <td><b>${t.title}</b></td>
           <td>${t.category || "—"}</td>
           <td>${t.reward_skill_points ?? 0}</td>
           <td><b>${t.status || "—"}</b></td>
@@ -470,13 +450,13 @@
 
     async function setTaskStatus(id, status){
       const { error } = await window.supabaseClient.from("tasks").update({ status }).eq("id", id);
-      if(error){ alert("Update failed: " + error.message); return; }
+      if(error){ alert("Task update error: " + error.message); return; }
       await loadTasks();
     }
 
     async function deleteTask(id){
       const { error } = await window.supabaseClient.from("tasks").delete().eq("id", id);
-      if(error){ alert("Delete failed: " + error.message); return; }
+      if(error){ alert("Task delete error: " + error.message); return; }
       await loadTasks();
     }
 
@@ -494,6 +474,7 @@
         $("statusNote").textContent = "Submissions: " + error.message;
         return;
       }
+      $("statusNote").textContent = "";
 
       data.forEach(s=>{
         const proof = (s.proof_link ? `<a href="${s.proof_link}" target="_blank" rel="noopener">link</a>` : "") +
@@ -518,8 +499,7 @@
       const { error } = await window.supabaseClient.from("task_submissions")
         .update({ status, reviewed_at:new Date().toISOString() })
         .eq("id", id);
-
-      if(error){ alert("Update failed: " + error.message); return; }
+      if(error){ alert("Submission update error: " + error.message); return; }
       await loadSubs();
     }
 
@@ -541,12 +521,6 @@
       }
       $("keyMsg").textContent = "✅ Saved to issued_keys. Share this exact code with the learner.";
     }
-
-    // Header signout (works even before init completes)
-    $("signOutBtn")?.addEventListener("click", async ()=>{
-      try{ await window.supabaseClient?.auth?.signOut(); }catch(e){}
-      location.href = "lodge.html";
-    });
 
     async function init(){
       $("statusText").textContent = "Loading…";
@@ -578,11 +552,8 @@
         setChip($("chipRole"), "Role: " + (role || "unknown"), false);
       }
 
-      const dbTest = await testDb();
-      setChip($("chipDb"), "DB: " + (dbTest.ok ? "ok" : "error"), dbTest.ok);
-      if(!dbTest.ok && dbTest.error){
-        $("statusNote").textContent = "DB error: " + dbTest.error.message;
-      }
+      const dbOk = await testDb();
+      setChip($("chipDb"), "DB: " + (dbOk ? "ok" : "error"), dbOk);
 
       if(role !== "admin"){
         $("statusText").textContent = "Signed in, but not admin.";
@@ -608,6 +579,11 @@
         if(a?.dataset?.task && a?.dataset?.set) await setTaskStatus(a.dataset.task, a.dataset.set);
         if(a?.dataset?.task && a?.dataset?.del){ if(confirm("Delete task?")) await deleteTask(a.dataset.task); }
         if(a?.dataset?.sub && a?.dataset?.sact) await setSubStatus(a.dataset.sub, a.dataset.sact);
+      });
+
+      $("signOutBtn").addEventListener("click", async ()=>{
+        await window.supabaseClient.auth.signOut();
+        location.href = "lodge.html";
       });
 
       await loadRequests();
