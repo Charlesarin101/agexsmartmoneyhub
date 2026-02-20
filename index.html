@@ -107,9 +107,7 @@
     .muted{color:rgba(15,15,15,.62);font-weight:750;font-size:13px}
     .divider{height:1px;background:var(--line);margin:14px 0}
 
-    .benefits{
-      display:grid;gap:10px;margin-top:12px;
-    }
+    .benefits{display:grid;gap:10px;margin-top:12px;}
     @media(min-width:760px){ .benefits{grid-template-columns:repeat(2,minmax(0,1fr));} }
     .b{
       border:1px solid var(--line);
@@ -176,16 +174,15 @@
       </a>
 
       <div class="row">
-        <a
-  class="btn primary"
-  href="https://paystack.shop/pay/2afhvl8-nf"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  Pay $1 Verification
-</a>
+        <a class="btn primary" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener noreferrer">
+          Pay $1 Verification
+        </a>
 
-        <a class="btn ghost" href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Request Access</a>
+        <!-- CHANGED: Google Form -> In-site apply.html -->
+        <a class="btn ghost" href="./apply.html">Request Access</a>
+
+        <!-- OPTIONAL: Founder note page (you created founder.html) -->
+        <a class="btn ghost" href="./founder.html">Founder’s Note</a>
       </div>
     </div>
   </div>
@@ -197,13 +194,16 @@
       <div class="pill"><span class="dot"></span> $1 is not a fee — it is a filter.</div>
 
       <h1>Build money order with discipline — not noise.</h1>
+
       <p class="lead">
         Smart Money Hub is a structured pathway for people who want financial clarity and practice.
         You do not buy motivation here. You build systems and submit proof.
-        <p class="muted">
-  Inside the Lodge, you begin with the <b>Foundation Class</b>. After that, you unlock <b>Apprentice</b>
-  — and earning begins (<b>$0.01/day</b> for verified consistency). <b>Minimum withdrawal: $1</b>.
-  By <b>Level 3</b>, you become eligible for the <b>Income Stack Lab</b>.
+      </p>
+
+      <p class="muted">
+        Inside the Lodge, you begin with the <b>Foundation Class</b>. After that, you unlock <b>Apprentice</b>
+        — and earning begins (<b>$0.01/day</b> for verified consistency). <b>Minimum withdrawal: $1</b>.
+        By <b>Level 3</b>, you become eligible for the <b>Income Stack Lab</b>.
       </p>
 
       <div class="benefits">
@@ -224,6 +224,21 @@
           <p>Discipline first — then income proof and responsible execution.</p>
         </div>
       </div>
+
+      <div class="divider"></div>
+
+      <!-- NEW: Founder Note summary on landing (and link to founder.html) -->
+      <section class="card" style="margin:0;box-shadow:none">
+        <h2 style="margin:0 0 10px;color:var(--green)">Founder’s Note</h2>
+        <p class="muted" style="margin:0">
+          Smart Money Hub was built for people who are tired of noise and ready for structure.
+          This is training — small daily discipline, proof submissions, and measurable growth.
+          If you want shortcuts, this is not for you. If you want order and accountability — welcome.
+        </p>
+        <div class="row">
+          <a class="btn ghost" href="./founder.html">Read full Founder’s Note</a>
+        </div>
+      </section>
 
       <div class="divider"></div>
 
@@ -253,14 +268,9 @@
               <span class="num">1</span>
               <b>Pay $1 Verification</b>
             </div>
-            <a
-  class="btn primary"
-  href="https://paystack.shop/pay/2afhvl8-nf"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  Pay $1 Verification
-</a>
+            <a class="btn primary" href="https://paystack.shop/pay/2afhvl8-nf" target="_blank" rel="noopener noreferrer">
+              Pay $1 Verification
+            </a>
           </div>
           <p>
             This is not tuition. It is a filter that separates builders from browsers.
@@ -271,9 +281,11 @@
           <div class="stepTop">
             <div class="stepTitle">
               <span class="num">2</span>
-              <b>Request Access (Form)</b>
+              <b>Request Access</b>
             </div>
-            <a class="btn ghost" href="https://forms.gle/2kEkm3JWf35ns3AcA" target="_blank" rel="noopener">Open Form</a>
+
+            <!-- CHANGED: Google Form -> apply.html -->
+            <a class="btn ghost" href="./apply.html">Open Request Form</a>
           </div>
           <p>
             Submit your name, WhatsApp, and verification reference. Approval is manual.
@@ -298,16 +310,18 @@
       <div class="divider"></div>
 
       <p class="muted">
-  Inside the Lodge, you begin with the <b>Foundation Class</b>. After Foundation, you unlock
-  <b>Apprentice</b> — and that is where earning begins (<b>$0.01/day</b> for verified consistency).
-  <br><br>
-  <b>Minimum withdrawal is $1</b> (so you don’t need to reach huge figures before you can withdraw).
-  As you grow through the levels, by <b>Level 3</b> you become eligible for the <b>Income Stack Lab</b>.
-</p>
+        Inside the Lodge, you begin with the <b>Foundation Class</b>. After Foundation, you unlock
+        <b>Apprentice</b> — and that is where earning begins (<b>$0.01/day</b> for verified consistency).
+        <br><br>
+        <b>Minimum withdrawal is $1</b> (so you don’t need to reach huge figures before you can withdraw).
+        As you grow through the levels, by <b>Level 3</b> you become eligible for the <b>Income Stack Lab</b>.
+      </p>
 
       <div class="row">
         <a class="btn ghost" href="dashboard.html">Preview: Learner Dashboard</a>
-        <a class="btn ghost" href="isl.html" onclick="alert('ISL unlocks at Level 3 (Contributor) after verification + proof.'); return false;">Income Stack Lab (Level 3)</a>
+        <a class="btn ghost" href="isl.html" onclick="alert('ISL unlocks at Level 3 (Contributor) after verification + proof.'); return false;">
+          Income Stack Lab (Level 3)
+        </a>
       </div>
 
       <p class="fine">
@@ -330,8 +344,8 @@
     <small>AGEx Smart Money Hub — Built for structure over shortcuts.</small>
   </footer>
 </main>
-</script>
 </body>
 </html>
+```0
 
 
