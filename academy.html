@@ -25,8 +25,6 @@
       --shadow:0 18px 45px rgba(0,0,0,.18);
       --radius:22px;
       --max:1100px;
-      --bad:#a00;
-      --ok:#1a7f37;
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0}
@@ -135,13 +133,6 @@
       border:1px solid rgba(11,61,46,.18);
       color:var(--green);font-weight:950;font-size:12px;
     }
-    .badBadge{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:7px 10px;border-radius:999px;
-      background:rgba(160,0,0,.08);
-      border:1px solid rgba(160,0,0,.18);
-      color:var(--bad);font-weight:950;font-size:12px;
-    }
 
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     .field{margin-top:10px}
@@ -186,6 +177,49 @@
       background:linear-gradient(180deg, rgba(244,180,26,.08), rgba(11,61,46,.04));
     }
 
+    /* Test mode UI */
+    .switch{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:7px 10px;border-radius:999px;
+      border:1px solid rgba(244,180,26,.35);
+      background:rgba(244,180,26,.12);
+      color:#fff;font-weight:950;font-size:12px;
+    }
+    .toggle{
+      width:44px;height:24px;border-radius:999px;
+      background:rgba(255,255,255,.22);
+      border:1px solid rgba(255,255,255,.22);
+      position:relative;flex:0 0 auto;
+      cursor:pointer;
+    }
+    .knob{
+      width:20px;height:20px;border-radius:99px;
+      background:#fff;
+      position:absolute;top:1px;left:1px;
+      transition:.15s ease;
+    }
+    .toggle.on{background:rgba(244,180,26,.55);border-color:rgba(244,180,26,.65)}
+    .toggle.on .knob{left:21px}
+
+    /* Microtasks */
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}
+    th{color:var(--green);font-weight:950}
+    .smallbtn{
+      padding:8px 10px;border-radius:999px;border:1px solid var(--line);
+      background:#fff;font-weight:900;cursor:pointer
+    }
+    .smallbtn.gold{background:var(--gold);border-color:transparent}
+    .noteBox{
+      margin-top:10px;
+      padding:10px 12px;border-radius:14px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-weight:850;font-size:13px;
+      color:rgba(15,15,15,.78);
+      word-break:break-word;
+    }
+
     .overlay{
       position:fixed;inset:0;display:none;
       background:rgba(3,10,8,.72);
@@ -193,35 +227,10 @@
       z-index:80;
     }
     .overlayCard{
-      max-width:560px;width:100%;
+      max-width:620px;width:100%;
       background:#fff;border-radius:18px;
       padding:16px;border:1px solid var(--line);
       box-shadow:0 22px 60px rgba(0,0,0,.25);
-    }
-
-    /* Micro tasks */
-    .taskList{margin-top:10px;display:grid;gap:10px}
-    .taskItem{
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:12px;
-      background:#fff;
-    }
-    .taskTop{display:flex;gap:10px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
-    .taskTop b{color:var(--green)}
-    .taskMeta{font-size:12px;font-weight:900;color:rgba(15,15,15,.62)}
-    .taskDesc{margin:8px 0 0;font-size:13px;font-weight:750;color:rgba(15,15,15,.66);white-space:pre-wrap}
-    .taskActions{margin-top:10px;display:grid;gap:8px}
-    .taskActions textarea{min-height:70px}
-    .mini{
-      font-size:12px;font-weight:900;color:rgba(15,15,15,.62)
-    }
-    .hr{height:1px;background:var(--line);margin:10px 0}
-    .subRow{
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:10px;
-      background:rgba(11,61,46,.04);
     }
 
     footer{
@@ -253,6 +262,12 @@
       </a>
 
       <div class="row">
+        <span class="switch" id="testModeWrap" style="display:none">
+          TEST MODE
+          <span class="toggle" id="testToggle" role="switch" aria-checked="false" tabindex="0">
+            <span class="knob"></span>
+          </span>
+        </span>
         <button class="btn ghost" id="resetAllBtn" type="button">Reset Progress</button>
         <a class="btn gold" href="app.html">Back to App</a>
       </div>
@@ -334,6 +349,10 @@
       </div>
 
       <div class="toast" id="toastFoundation">Saved.</div>
+
+      <div class="noteBox" id="testModeNote" style="display:none">
+        <b>Test Mode is ON.</b> Apprentice + Microtasks will unlock for testing even if Foundation is not finished.
+      </div>
     </div>
 
     <!-- APPRENTICE -->
@@ -342,26 +361,10 @@
         <h2>Apprentice Level</h2>
         <span class="lockedBadge on" id="apprenticeLockBadge">Locked</span>
       </div>
-      <p class="muted" style="margin:8px 0 0" id="apprenticeExplain">
+      <p class="muted" style="margin:8px 0 0">
         Apprentice unlocks after Foundation completion + required skill points, then <b>manual approval</b>.
+        <span id="testModeHintInline" style="display:none"><b> (Test Mode bypass active.)</b></span>
       </p>
-
-      <!-- TEST MODE (admin only) -->
-      <div class="panel" style="margin-top:10px;display:none" id="testModePanel">
-        <b style="color:var(--green)">Test Mode (Admin only)</b>
-        <p class="small" style="margin:6px 0 0">
-          When ON, it lets an admin view and test Apprentice + Micro-Tasks without completing Foundation.
-          This is a safe “system test” gate.
-        </p>
-        <div class="row" style="margin-top:10px">
-          <label style="display:flex;gap:10px;align-items:center;margin:0">
-            <input type="checkbox" id="testModeToggle" style="width:auto">
-            <span><b>Enable Test Mode</b></span>
-          </label>
-          <span class="okBadge" id="testModeBadge" style="display:none">Test Mode: ON</span>
-        </div>
-        <div class="small" id="testModeHint" style="margin-top:8px"></div>
-      </div>
 
       <div class="panel" style="margin-top:10px">
         <b style="color:var(--green)">Manual Approval (Request Button)</b>
@@ -378,25 +381,37 @@
 
       <div class="divider"></div>
 
-      <!-- MICRO TASKS BOARD -->
-      <div class="card" style="box-shadow:none;border:1px solid var(--line);background:#fff">
+      <!-- MICRO TASKS (LIVE) -->
+      <div class="card" style="box-shadow:none;border:1px solid var(--line);border-radius:18px;padding:12px;background:#fff">
         <div class="sectionHead">
-          <div>
-            <h2 style="font-size:16px">Apprentice Micro-Tasks</h2>
-            <div class="mini" id="tasksHint">Loading…</div>
-          </div>
-          <div class="row">
-            <button class="btn ghost" id="refreshTasksBtn" type="button">Refresh</button>
-          </div>
+          <h2 style="font-size:16px">Micro Tasks (Live)</h2>
+          <span class="lockedBadge on" id="tasksLockBadge">Locked</span>
+        </div>
+        <p class="small" style="margin:6px 0 10px">
+          These are the tasks created in Creator Wing. In Test Mode, they unlock for admin testing.
+        </p>
+
+        <div class="row" style="margin:6px 0 10px">
+          <span class="pill" id="taskCountPill">—</span>
+          <button class="smallbtn" id="refreshMicroBtn" type="button">Refresh</button>
         </div>
 
-        <div class="taskList" id="tasksList"></div>
+        <div style="overflow:auto">
+          <table>
+            <thead>
+              <tr>
+                <th>Task</th>
+                <th>Cat</th>
+                <th>SP</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="microBody"></tbody>
+          </table>
+        </div>
 
-        <div class="hr"></div>
-
-        <h2 style="font-size:14px;margin:0">My submissions</h2>
-        <div class="mini" id="subsHint" style="margin-top:6px">—</div>
-        <div class="taskList" id="subsList" style="margin-top:8px"></div>
+        <div class="noteBox" id="microMsg" style="display:none"></div>
       </div>
 
       <div class="divider"></div>
@@ -526,6 +541,7 @@
         <li><b>Flexible pace:</b> pause anytime; continue where you stopped.</li>
         <li><b>Skill Points:</b> earned daily; used for unlocking levels.</li>
         <li><b>Manual approval:</b> eligible learners submit request; Creator’s Wing approves.</li>
+        <li><b>Test Mode:</b> admin-only bypass to verify system end-to-end safely.</li>
       </ul>
     </div>
 
@@ -546,7 +562,7 @@
     <div class="divider"></div>
 
     <p class="small">
-      If anything looks empty or not saving, tell me the exact section and I’ll fix it without breaking your structure.
+      If Micro Tasks shows “locked” while Test Mode is ON, refresh this page once.
     </p>
   </aside>
 
@@ -570,44 +586,34 @@
   </div>
 </div>
 
-<!-- Supabase (must load CDN FIRST, then your supabase.js config) -->
+<!-- TASK SUBMIT OVERLAY -->
+<div class="overlay" id="taskOverlay">
+  <div class="overlayCard">
+    <div class="sectionHead">
+      <h2 style="margin:0;color:var(--green)">Submit Proof</h2>
+      <span class="lockedBadge" id="taskOverlayTag">Task</span>
+    </div>
+    <div class="divider"></div>
+
+    <div class="noteBox" id="taskOverlayTitle">—</div>
+
+    <div class="field">
+      <label for="taskProofText">Your Proof (text)</label>
+      <textarea id="taskProofText" placeholder="Write proof clearly. Example: I invited 10 people. Here are their names..."></textarea>
+    </div>
+
+    <div class="row" style="margin-top:12px">
+      <button class="btn gold" id="submitProofBtn" type="button">Submit</button>
+      <button class="btn dark" id="closeTaskOverlayBtn" type="button">Close</button>
+    </div>
+
+    <div class="noteBox" id="taskOverlayMsg" style="display:none"></div>
+  </div>
+</div>
+
+<!-- Supabase (must load BEFORE supabase.js) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
-
-<script>
-  /***************
-   * SUPABASE HELPERS
-   ***************/
-  async function getSupabaseClient(){
-    try{
-      if (!window.supabase || !window.AGEX_SUPABASE) return null;
-      if (!window.supabaseClient){
-        window.supabaseClient = window.supabase.createClient(
-          window.AGEX_SUPABASE.url,
-          window.AGEX_SUPABASE.anon
-        );
-      }
-      return window.supabaseClient;
-    }catch(e){ return null; }
-  }
-
-  async function getAuthUser(){
-    const sb = await getSupabaseClient();
-    if(!sb) return null;
-    const { data } = await sb.auth.getUser();
-    return data?.user || null;
-  }
-
-  async function getUserRole(user){
-    try{
-      const sb = await getSupabaseClient();
-      if(!sb || !user) return null;
-      const { data, error } = await sb.from("profiles").select("role").eq("id", user.id).maybeSingle();
-      if(error) return null;
-      return data?.role || null;
-    }catch(e){ return null; }
-  }
-</script>
+<script src="./supabase.js"></script>
 
 <script>
 /***************
@@ -679,6 +685,22 @@ function toast(id){
   t.style.display="block";
   setTimeout(()=>t.style.display="none", 1600);
 }
+function setNote(id, msg){
+  const el = $(id);
+  if(!el) return;
+  el.style.display = msg ? "block" : "none";
+  el.textContent = msg || "";
+}
+
+/***************
+ * TEST MODE
+ ***************/
+function isTestModeOn(){
+  return localStorage.getItem(TEST_KEY) === "1";
+}
+function setTestMode(on){
+  localStorage.setItem(TEST_KEY, on ? "1" : "0");
+}
 
 /***************
  * STATE
@@ -736,10 +758,9 @@ function isDayUnlocked(dayIndex){
 }
 function maxUnlockedDayIndex(){
   if(!state.foundation.startedAt) return 0;
-  const start = state.foundation.startedAt;
   let i = 0;
   while(i < FOUNDATION_DAYS){
-    const unlockDate = addDaysISO(start, i);
+    const unlockDate = addDaysISO(state.foundation.startedAt, i);
     if(todayISO() >= unlockDate) i++;
     else break;
   }
@@ -751,36 +772,55 @@ function firstIncompleteDayIndex(){
   }
   return FOUNDATION_DAYS-1;
 }
-
 function apprenticeWeeksCompleted(){ return state.apprentice.weeks.filter(w => w && w.done).length; }
 
+/* ✅ TEST MODE GATE (the real fix):
+   - When Test Mode is ON: treat Apprentice as eligible + unlocked for testing.
+   - Also allow Microtasks to show for testing. */
 function isApprenticeEligible(){
+  if(isTestModeOn()) return true;
   return isFoundationComplete() && state.skillPoints >= SP_TO_UNLOCK_APPRENTICE;
 }
 function isApprenticeUnlocked(){
+  if(isTestModeOn()) return true;
   return isApprenticeEligible() && state.apprentice.approved === true;
 }
 function isLevel3Eligible(){
+  if(isTestModeOn()) return true; // admin testing
   return isFoundationComplete() && apprenticeWeeksCompleted() === 13 && state.skillPoints >= SP_TO_UNLOCK_LEVEL3;
 }
 
 /***************
- * TEST MODE (admin-only)
+ * SUPABASE helpers
  ***************/
-let authUser = null;
-let authRole = null;
+function hasSupabase(){
+  return !!window.supabaseClient;
+}
 
-function isTestModeOn(){
-  return localStorage.getItem(TEST_KEY) === "1";
+async function getAuthUser(){
+  try{
+    if(!hasSupabase()) return null;
+    const { data, error } = await window.supabaseClient.auth.getUser();
+    if(error) return null;
+    return data?.user || null;
+  }catch(e){
+    return null;
+  }
 }
-function canUseTestMode(){
-  return authRole === "admin";
-}
-function apprenticeAccessible(){
-  // normal: requires approval
-  if(isApprenticeUnlocked()) return true;
-  // test mode: admin bypass
-  return canUseTestMode() && isTestModeOn();
+
+async function getRoleFromProfiles(user){
+  try{
+    if(!hasSupabase() || !user) return null;
+    const { data, error } = await window.supabaseClient
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+    if(error) return null;
+    return data?.role || null;
+  }catch(e){
+    return null;
+  }
 }
 
 /***************
@@ -810,6 +850,19 @@ function initWeekSelect(){
 /***************
  * RENDER
  ***************/
+function renderTestModeUI(isAdmin){
+  const wrap = $("testModeWrap");
+  const toggle = $("testToggle");
+  const on = isTestModeOn();
+
+  wrap.style.display = isAdmin ? "inline-flex" : "none";
+  $("testModeNote").style.display = (isAdmin && on) ? "block" : "none";
+  $("testModeHintInline").style.display = on ? "inline" : "none";
+
+  toggle.classList.toggle("on", on);
+  toggle.setAttribute("aria-checked", on ? "true" : "false");
+}
+
 function renderTopPills(){
   $("spPill").textContent = String(state.skillPoints);
   $("a1Pill").textContent = String(state.a1Coins);
@@ -819,7 +872,11 @@ function renderTopPills(){
   $("spNeedPill").textContent = `${SP_TO_UNLOCK_APPRENTICE} SP (Apprentice) · ${SP_TO_UNLOCK_LEVEL3} SP (Level 3)`;
   $("todayBadge").textContent = `Today: ${todayISO()}`;
 
-  if(!isFoundationComplete()){
+  const tm = isTestModeOn();
+
+  if(tm){
+    $("stageName").textContent = "TEST MODE";
+  }else if(!isFoundationComplete()){
     $("stageName").textContent = "Foundation";
   }else if(isApprenticeEligible() && !state.apprentice.approved){
     $("stageName").textContent = "Awaiting Approval";
@@ -837,21 +894,12 @@ function renderTopPills(){
     $("flowBadge").textContent = "Status: Active";
   }
 
-  const canRequest = isApprenticeEligible() && !state.apprentice.approved;
+  // Request button visibility (only in normal mode)
+  const canRequest = (!tm) && isApprenticeEligible() && !state.apprentice.approved;
   $("requestApprenticeBtn").style.display = canRequest ? "inline-flex" : "none";
-  $("requestHint").textContent = canRequest ? "Eligible ✅ Submit request for approval." : "Not eligible yet.";
-
-  // Test mode panel
-  if(canUseTestMode()){
-    $("testModePanel").style.display = "block";
-    $("testModeToggle").checked = isTestModeOn();
-    $("testModeBadge").style.display = isTestModeOn() ? "inline-flex" : "none";
-    $("testModeHint").textContent = isTestModeOn()
-      ? "Bypass active: Apprentice + Micro-Tasks available for testing."
-      : "Bypass OFF: normal gates apply.";
-  }else{
-    $("testModePanel").style.display = "none";
-  }
+  $("requestHint").textContent = tm
+    ? "Test Mode: approval bypassed."
+    : (canRequest ? "Eligible ✅ Submit request for approval." : "Not eligible yet.");
 }
 
 function renderFoundation(dayIndex){
@@ -880,34 +928,29 @@ function renderFoundation(dayIndex){
 }
 
 function renderApprentice(weekIndex){
+  const tm = isTestModeOn();
   const eligible = isApprenticeEligible();
   const unlocked = isApprenticeUnlocked();
-  const access = apprenticeAccessible();
 
-  // badge text
-  let badgeText = "Locked";
-  if(access && unlocked) badgeText = "Unlocked ✅";
-  else if(access && !unlocked) badgeText = "Test Mode ✅";
-  else if(eligible) badgeText = "Eligible (Needs Approval)";
+  $("apprenticeLockBadge").textContent =
+    unlocked ? "Unlocked ✅" : (eligible ? "Eligible (Needs Approval)" : "Locked");
 
-  $("apprenticeLockBadge").textContent = badgeText;
-  $("apprenticeLockBadge").className = access ? "okBadge" : "lockedBadge on";
+  $("apprenticeLockBadge").className =
+    unlocked ? "okBadge" : "lockedBadge on";
 
-  $("apprenticeExplain").innerHTML = access
-    ? (unlocked
-        ? `Apprentice active. Complete weeks, earn A1 coins, submit proofs.`
-        : `You are in <b>Test Mode</b> (admin). Apprentice is open for system testing.`)
-    : `Apprentice unlocks after Foundation completion + required skill points, then <b>manual approval</b>.`;
+  $("apprenticeCard").style.opacity = unlocked ? "1" : ".62";
 
-  $("apprenticeCard").style.opacity = access ? "1" : ".62";
+  // Microtasks lock badge
+  $("tasksLockBadge").textContent = unlocked ? "Unlocked ✅" : "Locked";
+  $("tasksLockBadge").className = unlocked ? "okBadge" : "lockedBadge on";
 
-  const disableAll = !access;
+  const disableAll = !unlocked;
 
   [
     "weekSelect","weekPlan","weekProof","weekReflection","weekDone",
     "a_checkin","a_log","a_total","a_refuse","a_proof","apprenticeDailyNote",
     "copyWeekBtn","copyDailyBtn","nextWeekBtn","resetDailyBtn",
-    "refreshTasksBtn"
+    "refreshMicroBtn"
   ].forEach(id=>{
     const el = $(id);
     if(el) el.disabled = disableAll;
@@ -931,6 +974,14 @@ function renderApprentice(weekIndex){
     $(id).checked = !!checks[id];
   });
   $("apprenticeDailyNote").value = state.apprentice.daily.note || "";
+
+  // If now unlocked, load microtasks once
+  if(unlocked){
+    loadMicroTasks().catch(()=>{});
+  }else{
+    $("microBody").innerHTML = "";
+    $("taskCountPill").textContent = "Locked";
+  }
 }
 
 function renderLevel3(){
@@ -970,27 +1021,29 @@ async function copyToClipboard(text){
 }
 
 /***************
- * SUPABASE: request apprentice unlock
+ * SUPABASE: submit request
  ***************/
 async function requestApprenticeUnlock(){
+  if(isTestModeOn()){
+    alert("Test Mode is ON — approval is bypassed for testing.");
+    return;
+  }
   if(!isApprenticeEligible()){
     alert("Not eligible yet.");
     return;
   }
-
-  const sb = await getSupabaseClient();
-  if(!sb){
-    alert("Supabase not loaded on this page. Please refresh or check supabase.js path.");
+  if(!hasSupabase()){
+    alert("Supabase is not loaded on this page.");
     return;
   }
 
   const user = await getAuthUser();
-  if (!user){
+  if(!user){
     alert("Please sign in first (from the Lodge/App).");
     return;
   }
 
-  const { error } = await sb.from("access_requests").insert([{
+  const { error } = await window.supabaseClient.from("access_requests").insert([{
     user_id: user.id,
     requested_stage: "apprentice",
     user_skill_points: state.skillPoints,
@@ -1006,186 +1059,114 @@ async function requestApprenticeUnlock(){
 }
 
 /***************
- * MICRO TASKS (Supabase)
+ * MICRO TASKS (LIVE) + SUBMISSION
  ***************/
-function esc(s){
-  return String(s ?? "").replace(/[&<>"']/g, (c)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+let selectedTask = null;
+
+function openTaskOverlay(task){
+  selectedTask = task;
+  $("taskOverlayTitle").textContent = `${task.title || "Task"} — ${task.category || "—"} · SP: ${task.reward_skill_points ?? 0}`;
+  $("taskOverlayTag").textContent = task.status ? `Status: ${task.status}` : "Task";
+  $("taskProofText").value = "";
+  setNote("taskOverlayMsg", "");
+  $("taskOverlay").style.display = "flex";
+}
+
+function closeTaskOverlay(){
+  selectedTask = null;
+  $("taskOverlay").style.display = "none";
 }
 
 async function loadMicroTasks(){
-  const access = apprenticeAccessible();
-  const list = $("tasksList");
-  const hint = $("tasksHint");
-  list.innerHTML = "";
-
-  if(!access){
-    hint.textContent = "Locked. Finish Foundation + approval (or admin Test Mode).";
+  if(!isApprenticeUnlocked()){
+    return;
+  }
+  if(!hasSupabase()){
+    $("taskCountPill").textContent = "Supabase missing";
+    setNote("microMsg", "Supabase client not loaded on this page. Check ./supabase.js and refresh.");
     return;
   }
 
-  const sb = await getSupabaseClient();
-  if(!sb){
-    hint.textContent = "Supabase not loaded here (check supabase.js / cache).";
-    return;
-  }
+  setNote("microMsg", "");
+  $("microBody").innerHTML = `<tr><td colspan="5"><span class="muted">Loading…</span></td></tr>`;
 
-  hint.textContent = "Loading tasks…";
-
-  const { data, error } = await sb
+  // Keep columns safe: reward_skill_points + description exist in your DB now
+  const { data, error } = await window.supabaseClient
     .from("tasks")
-    .select("id,title,category,status,reward_skill_points,description,instructions,proof_required,created_at")
-    .eq("status","open")
-    .order("created_at",{ascending:false})
-    .limit(25);
+    .select("id,title,category,reward_skill_points,status,created_at")
+    .order("created_at", { ascending:false })
+    .limit(50);
 
   if(error){
-    hint.textContent = "Error: " + error.message;
+    $("microBody").innerHTML = "";
+    $("taskCountPill").textContent = "Error";
+    setNote("microMsg", "Tasks: " + error.message);
     return;
   }
 
-  if(!data || data.length === 0){
-    hint.textContent = "No open tasks yet (create from Creator Wing).";
+  const rows = (data || []).filter(t => t && (!t.status || t.status === "open"));
+  $("taskCountPill").textContent = `${rows.length} tasks`;
+  $("microBody").innerHTML = "";
+
+  if(rows.length === 0){
+    $("microBody").innerHTML = `<tr><td colspan="5"><span class="muted">No open tasks yet.</span></td></tr>`;
     return;
   }
 
-  hint.textContent = `${data.length} open task(s) available.`;
-
-  data.forEach(t=>{
-    const div = document.createElement("div");
-    div.className = "taskItem";
-    div.innerHTML = `
-      <div class="taskTop">
-        <div>
-          <b>${esc(t.title)}</b>
-          <div class="taskMeta">Cat: ${esc(t.category || "—")} · SP: ${esc(t.reward_skill_points ?? 0)} · Proof: ${t.proof_required ? "Required" : "Optional"}</div>
-        </div>
-        <span class="okBadge">Open</span>
-      </div>
-
-      <div class="taskDesc">${esc(t.description || t.instructions || "")}</div>
-
-      <div class="taskActions">
-        <div class="mini">Submit your proof (text + optional link). Status becomes <b>pending</b> until Creator approves.</div>
-        <textarea id="proofText_${t.id}" placeholder="Write what you did + your proof note..."></textarea>
-        <input id="proofLink_${t.id}" placeholder="Optional proof link (image, drive, etc.)" />
-        <div class="row">
-          <button class="btn gold" data-submit-task="${t.id}" type="button">Submit Proof</button>
-          <span class="mini" id="proofMsg_${t.id}"></span>
-        </div>
-      </div>
+  rows.forEach(t=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><b>${(t.title || "—")}</b></td>
+      <td>${t.category || "—"}</td>
+      <td>${t.reward_skill_points ?? 0}</td>
+      <td><b>${t.status || "open"}</b></td>
+      <td><button class="smallbtn gold" data-start="1" data-id="${t.id}">Submit Proof</button></td>
     `;
-    list.appendChild(div);
+    $("microBody").appendChild(tr);
   });
 }
 
-async function submitTaskProof(taskId){
-  const access = apprenticeAccessible();
-  if(!access){
-    alert("Apprentice is locked.");
-    return;
-  }
-
-  const sb = await getSupabaseClient();
-  if(!sb){
-    alert("Supabase not loaded.");
+async function submitTaskProof(){
+  if(!selectedTask) return;
+  if(!hasSupabase()){
+    setNote("taskOverlayMsg", "Supabase client missing on this page.");
     return;
   }
 
   const user = await getAuthUser();
   if(!user){
-    alert("Please sign in first (from the Lodge/App).");
+    setNote("taskOverlayMsg", "Please sign in first (from Lodge/App).");
     return;
   }
 
-  const proof_text = ($("proofText_"+taskId).value || "").trim();
-  const proof_link = ($("proofLink_"+taskId).value || "").trim();
-
-  const msg = $("proofMsg_"+taskId);
-  if(!proof_text && !proof_link){
-    msg.textContent = "Add proof text or a link.";
+  const proofText = ($("taskProofText").value || "").trim();
+  if(!proofText){
+    setNote("taskOverlayMsg", "Write your proof first.");
     return;
   }
 
-  msg.textContent = "Submitting…";
+  setNote("taskOverlayMsg", "Submitting…");
 
-  const { error } = await sb.from("task_submissions").insert([{
-    task_id: taskId,
-    user_id: user.id,
-    status: "pending",
-    proof_text: proof_text || null,
-    proof_link: proof_link || null
-  }]);
+  // IMPORTANT:
+  // Your DB earlier complained proof_link does not exist, so we ONLY send proof_text.
+  // Also status might be required or defaulted. We include it as 'pending' safely.
+  const payload = {
+    task_id: selectedTask.id,
+    proof_text: proofText,
+    status: "pending"
+  };
 
-  if(error){
-    msg.textContent = "Error: " + error.message;
-    return;
-  }
-
-  msg.textContent = "✅ Submitted (pending).";
-  $("proofText_"+taskId).value = "";
-  $("proofLink_"+taskId).value = "";
-  await loadMySubmissions();
-}
-
-async function loadMySubmissions(){
-  const list = $("subsList");
-  const hint = $("subsHint");
-  list.innerHTML = "";
-
-  const access = apprenticeAccessible();
-  if(!access){
-    hint.textContent = "Locked.";
-    return;
-  }
-
-  const sb = await getSupabaseClient();
-  if(!sb){
-    hint.textContent = "Supabase not loaded.";
-    return;
-  }
-
-  const user = await getAuthUser();
-  if(!user){
-    hint.textContent = "Sign in to see your submissions.";
-    return;
-  }
-
-  hint.textContent = "Loading…";
-
-  const { data, error } = await sb
+  const { error } = await window.supabaseClient
     .from("task_submissions")
-    .select("id,task_id,status,proof_text,proof_link,created_at")
-    .eq("user_id", user.id)
-    .order("created_at",{ascending:false})
-    .limit(25);
+    .insert([payload]);
 
   if(error){
-    hint.textContent = "Error: " + error.message;
+    setNote("taskOverlayMsg", "Error: " + error.message);
     return;
   }
 
-  if(!data || data.length === 0){
-    hint.textContent = "No submissions yet.";
-    return;
-  }
-
-  hint.textContent = `${data.length} submission(s).`;
-
-  data.forEach(s=>{
-    const div = document.createElement("div");
-    div.className = "subRow";
-    const st = String(s.status || "—");
-    const badge = st === "approved" ? "okBadge" : (st === "rejected" ? "badBadge" : "lockedBadge on");
-    div.innerHTML = `
-      <div class="row" style="justify-content:space-between">
-        <div class="mini">Task: <b>${esc(s.task_id)}</b> · <span class="mini">${esc(s.created_at || "")}</span></div>
-        <span class="${badge}">${esc(st)}</span>
-      </div>
-      <div class="mini" style="margin-top:8px;white-space:pre-wrap">${esc(s.proof_text || "")}</div>
-      ${s.proof_link ? `<div class="mini" style="margin-top:6px"><a href="${esc(s.proof_link)}" target="_blank" rel="noopener" class="miniLink">proof link</a></div>` : ""}
-    `;
-    list.appendChild(div);
-  });
+  setNote("taskOverlayMsg", "✅ Submitted. It will appear in Creator Wing → Submissions (pending).");
+  setTimeout(()=>{ closeTaskOverlay(); }, 900);
 }
 
 /***************
@@ -1339,9 +1320,9 @@ function bindApprentice(){
   });
 
   $("weekDone").addEventListener("change", ()=>{
-    if(!apprenticeAccessible()){
+    if(!isApprenticeUnlocked()){
       $("weekDone").checked = false;
-      alert("Apprentice is locked.");
+      alert("Apprentice is locked (requires approval).");
       return;
     }
 
@@ -1364,7 +1345,7 @@ function bindApprentice(){
   const checkIds = ["a_checkin","a_log","a_total","a_refuse","a_proof"];
   checkIds.forEach(id=>{
     $(id).addEventListener("change", ()=>{
-      if(!apprenticeAccessible()) return;
+      if(!isApprenticeUnlocked()) return;
 
       const checks = state.apprentice.daily.checks || {};
       checks[id] = $(id).checked;
@@ -1397,7 +1378,7 @@ function bindApprentice(){
   });
 
   $("resetDailyBtn").addEventListener("click", ()=>{
-    if(!apprenticeAccessible()) return;
+    if(!isApprenticeUnlocked()) return;
     state.apprentice.daily.checks = {};
     state.apprentice.daily.note = "";
     ["a_checkin","a_log","a_total","a_refuse","a_proof"].forEach(id=> $(id).checked=false);
@@ -1407,7 +1388,7 @@ function bindApprentice(){
   });
 
   $("copyDailyBtn").addEventListener("click", async ()=>{
-    if(!apprenticeAccessible()) return;
+    if(!isApprenticeUnlocked()) return;
     const idx = parseInt(sel.value,10);
     const checks = state.apprentice.daily.checks || {};
     const txt =
@@ -1429,7 +1410,7 @@ ${(state.apprentice.daily.note || "—").trim()}
   });
 
   $("copyWeekBtn").addEventListener("click", async ()=>{
-    if(!apprenticeAccessible()) return;
+    if(!isApprenticeUnlocked()) return;
     const idx = parseInt(sel.value,10);
     const w = weeks[idx];
     const ws = state.apprentice.weeks[idx];
@@ -1455,7 +1436,7 @@ Completed: ${ws.done ? "✅ Yes" : "❌ Not yet"}
   });
 
   $("nextWeekBtn").addEventListener("click", ()=>{
-    if(!apprenticeAccessible()) return;
+    if(!isApprenticeUnlocked()) return;
     const idx = parseInt(sel.value,10);
 
     if(!$("weekDone").checked){
@@ -1491,6 +1472,31 @@ $("confirmResetBtn").addEventListener("click", ()=>{
 });
 
 /***************
+ * TASK OVERLAY
+ ***************/
+$("closeTaskOverlayBtn").addEventListener("click", closeTaskOverlay);
+$("submitProofBtn").addEventListener("click", submitTaskProof);
+$("refreshMicroBtn").addEventListener("click", ()=>loadMicroTasks());
+
+document.body.addEventListener("click", (e)=>{
+  const btn = e.target;
+  if(btn?.dataset?.start && btn?.dataset?.id){
+    const id = btn.dataset.id;
+    // Find in table by reloading tasks quickly from DOM cache is messy; simplest: re-query and open
+    (async ()=>{
+      if(!hasSupabase()) return;
+      const { data, error } = await window.supabaseClient
+        .from("tasks")
+        .select("id,title,category,reward_skill_points,status,created_at")
+        .eq("id", id)
+        .maybeSingle();
+      if(error || !data){ alert("Could not load task."); return; }
+      openTaskOverlay(data);
+    })();
+  }
+});
+
+/***************
  * INIT
  ***************/
 let state = loadState();
@@ -1503,6 +1509,40 @@ $("daySelect").value = String(startDay);
 const firstIncompleteWeek = state.apprentice.weeks.findIndex(w => !w.done);
 $("weekSelect").value = String(firstIncompleteWeek === -1 ? 12 : firstIncompleteWeek);
 
+// Admin-only test mode control
+(async ()=>{
+  let isAdmin = false;
+
+  // Only show the toggle if signed in AND role=admin
+  const user = await getAuthUser();
+  const role = await getRoleFromProfiles(user);
+  isAdmin = (role === "admin");
+
+  renderTestModeUI(isAdmin);
+
+  const toggle = $("testToggle");
+  function flip(){
+    if(!isAdmin) return;
+    const next = !isTestModeOn();
+    setTestMode(next);
+    renderTestModeUI(isAdmin);
+
+    // Re-render + unlock apprentice immediately
+    renderTopPills();
+    renderFoundation(parseInt($("daySelect").value,10));
+    renderApprentice(parseInt($("weekSelect").value,10));
+    renderLevel3();
+  }
+
+  toggle.addEventListener("click", flip);
+  toggle.addEventListener("keydown", (e)=>{
+    if(e.key === "Enter" || e.key === " "){
+      e.preventDefault();
+      flip();
+    }
+  });
+})();
+
 renderTopPills();
 renderFoundation(startDay);
 renderApprentice(parseInt($("weekSelect").value,10));
@@ -1510,53 +1550,9 @@ renderLevel3();
 
 bindFoundation();
 bindApprentice();
+
+// Request button bind
 $("requestApprenticeBtn").addEventListener("click", requestApprenticeUnlock);
-
-// Micro tasks refresh + submit
-$("refreshTasksBtn").addEventListener("click", async ()=>{
-  await loadMicroTasks();
-  await loadMySubmissions();
-});
-
-document.body.addEventListener("click", async (e)=>{
-  const btn = e.target;
-  const taskId = btn?.dataset?.submitTask;
-  if(taskId){
-    await submitTaskProof(taskId);
-  }
-});
-
-// Test mode toggle (admin only)
-$("testModeToggle").addEventListener("change", async ()=>{
-  if(!canUseTestMode()){
-    $("testModeToggle").checked = false;
-    alert("Test Mode is admin-only.");
-    return;
-  }
-  localStorage.setItem(TEST_KEY, $("testModeToggle").checked ? "1" : "0");
-  renderTopPills();
-  renderApprentice(parseInt($("weekSelect").value,10));
-  await loadMicroTasks();
-  await loadMySubmissions();
-});
-
-// Boot: detect auth + role, then show admin test gate properly
-(async function bootAuth(){
-  authUser = await getAuthUser();
-  authRole = await getUserRole(authUser);
-
-  // if not admin, force test mode off
-  if(authRole !== "admin"){
-    localStorage.removeItem(TEST_KEY);
-  }
-
-  renderTopPills();
-  renderApprentice(parseInt($("weekSelect").value,10));
-
-  // Try load tasks/subs if apprentice accessible (or admin test)
-  await loadMicroTasks();
-  await loadMySubmissions();
-})();
 </script>
 
 </body>
