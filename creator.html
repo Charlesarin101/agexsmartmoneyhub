@@ -99,6 +99,21 @@
         <div class="card">
           <h2>Create Task</h2>
           <div class="muted">These tasks appear inside Apprentice Micro-Tasks.</div>
+          <div class="card" style="margin-top:14px">
+  <h2>Admin Test Mode (This Device)</h2>
+  <div class="muted">
+    Enables Apprentice testing on this phone even if Foundation is not completed.
+    This does not change the database — it only affects your device via <code>localStorage</code>.
+  </div>
+
+  <div class="row" style="margin-top:10px">
+    <button class="smallbtn gold" id="enableTestModeBtn" type="button">Enable Test Mode</button>
+    <button class="smallbtn" id="disableTestModeBtn" type="button">Disable Test Mode</button>
+    <a class="smallbtn" href="./dashboard.html">Open Learner Dashboard</a>
+  </div>
+
+  <div class="note" id="testModeMsg"></div>
+</div>
 
           <label>Title</label>
           <input id="t_title" placeholder="e.g. Outreach: Invite 10 people to AGEx" />
@@ -603,6 +618,15 @@
       const ok = await signIn(email, password);
       if(ok) location.reload();
     });
+   function setTestMode(on){
+  localStorage.setItem("AGEX_TEST_MODE", on ? "1" : "0");
+  $("testModeMsg").textContent = on
+    ? "✅ Test Mode enabled on this device."
+    : "Test Mode disabled.";
+}
+
+$("enableTestModeBtn")?.addEventListener("click", ()=>setTestMode(true));
+$("disableTestModeBtn")?.addEventListener("click", ()=>setTestMode(false)); 
 
     init();
   </script>
