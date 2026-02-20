@@ -1058,6 +1058,13 @@ function bindApprentice(){
   checkIds.forEach(id=>{
     $(id).addEventListener("change", ()=>{
       if(!isApprenticeUnlocked()) return;
+      const testMode = localStorage.getItem("AGEX_TEST_MODE") === "1";
+
+// Old:
+if(!foundationComplete){ blockApprentice(); }
+
+// New:
+if(!foundationComplete && !testMode){ blockApprentice(); }
 
       const checks = state.apprentice.daily.checks || {};
       checks[id] = $(id).checked;
