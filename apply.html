@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0B3D2E" />
+  <title>Request Access | AGEx Smart Money Hub</title>
+  <style>
+    :root{--g:#0B3D2E;--g2:#083326;--gold:#F4B41A;--bg:#F7FAF9;--card:#fff;--line:rgba(0,0,0,.10);--ink:#111;--muted:#667;--bad:#a00;--ok:#1a7f37}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#0b3d2e 0%, #0b3d2e 240px, var(--bg) 240px);color:var(--ink);}
+    .wrap{max-width:920px;margin:0 auto;padding:18px;}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#fff;padding:14px 0;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:10px}
+    .mark{width:40px;height:40px;border-radius:14px;background:linear-gradient(135deg,var(--g),var(--g2));display:grid;place-items:center;box-shadow:0 10px 25px rgba(0,0,0,.25)}
+    .mark span{color:var(--gold);font-weight:900}
+    .btn{border-radius:999px;padding:10px 14px;border:1px solid rgba(255,255,255,.22);background:transparent;color:#fff;font-weight:900;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+    .btn.gold{background:var(--gold);border-color:transparent;color:#1a1406}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}
+    h1,h2{margin:0 0 10px;color:var(--g)}
+    .muted{color:var(--muted);font-size:13px;line-height:1.45;font-weight:700}
+    label{display:block;font-weight:900;font-size:12px;margin:10px 0 6px}
+    input,textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);font-family:inherit}
+    textarea{min-height:90px;resize:vertical}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .note{margin-top:10px;font-size:13px;font-weight:800;word-break:break-word}
+    .ok{color:var(--ok)}
+    .bad{color:var(--bad)}
+    code{background:#f2f4f5;padding:2px 6px;border-radius:8px}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="mark"><span>↳</span></div>
+        <div>
+          <div style="font-weight:950">Request Access</div>
+          <div style="opacity:.85;font-weight:800;font-size:13px">Smart Money Hub • Entry Protocol</div>
+        </div>
+      </div>
+      <div class="row">
+        <a class="btn" href="./index.html">Back</a>
+        <a class="btn" href="./lodge.html">Enter Lodge</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Submit your request</h2>
+      <p class="muted">
+        This replaces the Google form. Your request is saved securely in our database.
+        After review, your Lodge key is sent to you by message.
+      </p>
+
+      <label>Full name</label>
+      <input id="full_name" placeholder="Your name" />
+
+      <div class="row">
+        <div style="flex:1;min-width:220px">
+          <label>WhatsApp number</label>
+          <input id="whatsapp" placeholder="+234..." />
+        </div>
+        <div style="flex:1;min-width:220px">
+          <label>Email (optional)</label>
+          <input id="email" type="email" placeholder="you@example.com" />
+        </div>
+      </div>
+
+      <label>$1 verification reference (optional)</label>
+      <input id="verification_reference" placeholder="Paystack reference (if available)" />
+
+      <label>Note (optional)</label>
+      <textarea id="note" placeholder="Any short note (e.g., why you want to join)"></textarea>
+
+      <div class="row" style="margin-top:12px">
+        <button class="btn gold" id="submitBtn" type="button">Submit request</button>
+      </div>
+
+      <div class="note" id="msg"></div>
+
+      <div class="note muted" style="margin-top:14px">
+        If you already have a Lodge key, go straight to <a href="./lodge.html">Enter Lodge</a>.
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./supabase.js"></script>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    function requireClient(){
+      if(!window.supabaseClient){
+        $("msg").innerHTML = '<span class="bad">Supabase client not loaded. Ensure <code>./supabase.js</code> exists in this folder.</span>';
+        return false;
+      }
+      return true;
+    }
+
+    $("submitBtn").addEventListener("click", async ()=>{
+      if(!requireClient()) return;
+
+      const full_name = ($("full_name").value || "").trim();
+      const whatsapp = ($("whatsapp").value || "").trim();
+      const email = ($("email").value || "").trim();
+      const verification_reference = ($("verification_reference").value || "").trim();
+      const note = ($("note").value || "").trim();
+
+      if(!full_name || !whatsapp){
+        $("msg").innerHTML = '<span class="bad">Please enter your name and WhatsApp number.</span>';
+        return;
+      }
+
+      $("msg").textContent = "Submitting…";
+
+      const { error } = await window.supabaseClient
+        .from("entry_requests")
+        .insert([{ full_name, whatsapp, email: email || null, verification_reference: verification_reference || null, note: note || null }]);
+
+      if(error){
+        $("msg").innerHTML = '<span class="bad">Error: ' + error.message + '</span>';
+        return;
+      }
+
+      $("msg").innerHTML = '<span class="ok">✅ Submitted successfully. You will be contacted with your Lodge key after review.</span>';
+      $("full_name").value = "";
+      $("whatsapp").value = "";
+      $("email").value = "";
+      $("verification_reference").value = "";
+      $("note").value = "";
+    });
+  </script>
+</body>
+</html>
