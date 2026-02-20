@@ -257,7 +257,7 @@
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- IMPORTANT: site is in /agexsmartmoneyhub/ so use RELATIVE path -->
+  <!-- IMPORTANT: site is in /agexsmartmoneyhub/ so keep RELATIVE path -->
   <script src="./supabase.js"></script>
 
   <script>
@@ -360,7 +360,7 @@
 
       if(error){ alert("Approve error: " + error.message); return; }
 
-      // Optional: if your profiles table has these fields
+      // Optional profile update (only if those columns exist)
       try{
         await window.supabaseClient
           .from("profiles")
@@ -396,12 +396,16 @@
       }
 
       $("taskMsg").textContent = "Creating…";
+
+      // ✅ FIX: your DB expects "description" NOT NULL
+      // We save instructions into description to satisfy the constraint.
       const { error } = await window.supabaseClient.from("tasks").insert([{
         created_by: user.id,
         title,
         category,
         reward_skill_points: reward,
-        instructions,
+        description: instructions,     // ✅ REQUIRED (NOT NULL)
+        instructions: instructions,    // optional (keep if your table has it)
         proof_required,
         status: "open"
       }]);
@@ -477,8 +481,9 @@
       $("statusNote").textContent = "";
 
       data.forEach(s=>{
-        const proof = (s.proof_link ? `<a href="${s.proof_link}" target="_blank" rel="noopener">link</a>` : "") +
-                      (s.proof_text ? `<div style="max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.proof_text}</div>` : "");
+        const proof =
+          (s.proof_link ? `<a href="${s.proof_link}" target="_blank" rel="noopener">link</a>` : "") +
+          (s.proof_text ? `<div style="max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.proof_text}</div>` : "");
 
         const tr = document.createElement("tr");
         tr.innerHTML = `
@@ -603,10 +608,4 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
+```0
