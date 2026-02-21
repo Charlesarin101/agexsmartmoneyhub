@@ -83,7 +83,6 @@
     .btn.dark:hover{transform:translateY(-1px)}
     .btn.ghost{background:transparent;border-color:rgba(244,180,26,.35);color:#fff}
     .btn.ghost:hover{background:rgba(244,180,26,.12)}
-    .btn.bad{background:#fff;color:var(--bad);border-color:rgba(160,0,0,.25)}
     .btn[disabled]{opacity:.55;cursor:not-allowed;transform:none}
 
     .main{padding:14px 0 20px}
@@ -139,7 +138,7 @@
     .badBadge{
       display:inline-flex;align-items:center;gap:8px;
       padding:7px 10px;border-radius:999px;
-      background:rgba(160,0,0,.06);
+      background:rgba(160,0,0,.08);
       border:1px solid rgba(160,0,0,.18);
       color:var(--bad);font-weight:950;font-size:12px;
     }
@@ -163,7 +162,6 @@
       background:rgba(11,61,46,.08);
       border:1px solid rgba(11,61,46,.14);
       color:#123;font-weight:900;font-size:13px;
-      word-break:break-word;
     }
 
     .checklist{
@@ -195,7 +193,7 @@
       z-index:80;
     }
     .overlayCard{
-      max-width:560px;width:100%;
+      max-width:620px;width:100%;
       background:#fff;border-radius:18px;
       padding:16px;border:1px solid var(--line);
       box-shadow:0 22px 60px rgba(0,0,0,.25);
@@ -208,7 +206,15 @@
       text-align:center;
     }
     .miniLink{color:rgba(255,255,255,.85);text-decoration:underline}
-    code{background:#f2f4f5;padding:2px 6px;border-radius:8px}
+
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}
+    th{color:var(--green);font-weight:950}
+    .smallbtn{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:900;cursor:pointer}
+    .smallbtn.gold{background:var(--gold);border-color:transparent}
+    .smallbtn.bad{border-color:rgba(160,0,0,.25);color:var(--bad)}
+    .noteLine{margin-top:10px;font-weight:900;font-size:13px;color:rgba(15,15,15,.72)}
+    .finePrint{font-size:12px;color:rgba(15,15,15,.58);font-weight:750;margin-top:8px}
   </style>
 </head>
 
@@ -247,8 +253,8 @@
         <div class="tag"><span class="dot"></span> Discipline • Proof • Production</div>
         <h1 style="margin-top:10px">AGEx Academy</h1>
         <p class="muted" style="margin:8px 0 0">
-          This is a working system: you only progress by <b>writing the action + proof</b> and completing in order.
-          No skipping. No empty completion.
+          One journey. One flow. You start with Foundation and unlock levels by time + proof + skill points.
+          You cannot rush tomorrow today.
         </p>
       </div>
       <div class="okBadge" id="flowBadge">Status: Loading…</div>
@@ -272,8 +278,7 @@
         <span class="okBadge" id="foundationBadge">21 Days</span>
       </div>
       <p class="muted" style="margin:8px 0 0">
-        Foundation is <b>time-locked</b> and <b>sequence-locked</b>.
-        Even if the calendar day arrives, you cannot open Day 6 if Day 5 is not completed with proof.
+        Strict mode: You must write <b>Action + Proof</b>. Sequence is locked (no skipping).
       </p>
 
       <div class="row" style="margin-top:10px">
@@ -293,18 +298,18 @@
       </div>
 
       <div class="field">
-        <label for="dayAction">Your Action (Required)</label>
+        <label for="dayAction">Your Action (required)</label>
         <textarea id="dayAction" placeholder="Write your action for today..."></textarea>
       </div>
 
       <div class="field">
-        <label for="dayProof">Your Proof Note (Required)</label>
+        <label for="dayProof">Your Proof Note (required)</label>
         <textarea id="dayProof" placeholder="Write proof note here... (this is saved)"></textarea>
       </div>
 
       <label style="display:flex;gap:10px;align-items:center;margin-top:8px">
         <input type="checkbox" id="dayDone">
-        <span><b>Mark Day Completed</b> (only works if Action + Proof are filled)</span>
+        <span><b>Mark Day Completed</b> (adds Skill Points, locks the day)</span>
       </label>
 
       <div class="row" style="margin-top:12px">
@@ -313,6 +318,7 @@
       </div>
 
       <div class="toast" id="toastFoundation">Saved.</div>
+      <div class="noteLine" id="foundationMsg"></div>
     </div>
 
     <!-- APPRENTICE -->
@@ -323,8 +329,7 @@
       </div>
       <p class="muted" style="margin:8px 0 0">
         Apprentice unlocks after Foundation completion + required skill points, then <b>manual approval</b>.
-        <br>
-        <b>Admin Test Mode</b> can temporarily open Apprentice for testing without breaking the real rules.
+        <span id="testModeHint" style="display:none"><b>(Admin Test Mode is ON)</b></span>
       </p>
 
       <div class="panel" style="margin-top:10px">
@@ -338,6 +343,33 @@
           </button>
           <span class="small" id="requestHint">Not eligible yet.</span>
         </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Micro Tasks (Live) -->
+      <div class="card" style="box-shadow:none;border-radius:16px;border:1px solid var(--line);background:#fff">
+        <div class="sectionHead">
+          <h2 style="font-size:16px;margin:0">Micro Tasks (Live)</h2>
+          <span class="okBadge" id="tasksBadge">Loading…</span>
+        </div>
+        <p class="small" style="margin:8px 0 0">
+          Do tasks, submit proof (text + link or screenshot). Admin approves in Creator Wing.
+        </p>
+        <div style="overflow:auto;margin-top:10px">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>SP</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="tasksBody"></tbody>
+          </table>
+        </div>
+        <div class="finePrint" id="tasksMsg"></div>
       </div>
 
       <div class="divider"></div>
@@ -359,32 +391,29 @@
       </div>
 
       <div class="field">
-        <label for="weekPlan">Weekly Plan (Required)</label>
+        <label for="weekPlan">Weekly Plan (required)</label>
         <textarea id="weekPlan"></textarea>
       </div>
 
       <div class="field">
-        <label for="weekProof">Weekly Proof (Required)</label>
+        <label for="weekProof">Weekly Proof (required)</label>
         <textarea id="weekProof"></textarea>
       </div>
 
       <div class="field">
-        <label for="weekReflection">Weekly Reflection (Required)</label>
+        <label for="weekReflection">Weekly Reflection (required)</label>
         <textarea id="weekReflection" placeholder="What worked? What failed? What will you adjust next week?"></textarea>
       </div>
 
       <label style="display:flex;gap:10px;align-items:center;margin-top:8px">
         <input type="checkbox" id="weekDone">
-        <span><b>Mark Week as Completed</b> (requires Plan + Proof + Reflection)</span>
+        <span><b>Mark Week as Completed</b></span>
       </label>
 
       <div class="divider"></div>
 
       <h2 style="font-size:16px">Daily Checklist (repeat all week)</h2>
-      <p class="small" style="margin:6px 0 0">
-        You earn 1 A1 coin ($0.01) only when <b>all checks are completed</b> and <b>a Daily Proof Note is written</b>.
-        Credits only once per day.
-      </p>
+      <p class="small" style="margin:6px 0 0">Strict: A1 credit requires <b>all checks + Daily Proof Note</b>.</p>
 
       <div class="checklist" style="margin-top:10px">
         <div class="checkrow">
@@ -405,12 +434,12 @@
         </div>
         <div class="checkrow">
           <input type="checkbox" id="a_proof">
-          <div><b>Micro-proof captured</b><br><span class="small">Screenshot or short note as proof (required).</span></div>
+          <div><b>Micro-proof captured</b><br><span class="small">Screenshot or short note as proof.</span></div>
         </div>
       </div>
 
       <div class="field">
-        <label for="apprenticeDailyNote">Daily Proof Note (Required for A1 credit)</label>
+        <label for="apprenticeDailyNote">Daily Proof Note (required for A1 credit)</label>
         <textarea id="apprenticeDailyNote" placeholder="Example: Total spent ₦3,200. Biggest category: transport. Refused: impulse airtime..."></textarea>
       </div>
 
@@ -422,6 +451,7 @@
       </div>
 
       <div class="toast" id="toastApprentice">Saved.</div>
+      <div class="noteLine" id="apprenticeMsg"></div>
     </div>
 
     <!-- LEVEL 3 -->
@@ -431,15 +461,13 @@
         <span class="lockedBadge on" id="level3LockBadge">Locked</span>
       </div>
       <p class="muted" style="margin:8px 0 0">
-        Level 3 becomes available after Foundation + all 13 Apprentice weeks + required skill points.
+        By Level 3, you become eligible for Income Stack Lab. Eligibility is unlocked by proof + progress.
+        <span id="testModeHint2" style="display:none"><b>(Admin Test Mode is ON)</b></span>
       </p>
 
       <div class="panel" style="margin-top:10px">
         <b style="color:var(--green)">Income Stack Lab</b>
-        <p class="small" style="margin:6px 0 0">
-          When you qualify, the button becomes active and you can enter ISL.
-          <br><span class="small" id="testModeNote" style="display:none"><b>Admin Test Mode:</b> Level 3 can be opened for testing only.</span>
-        </p>
+        <p class="small" style="margin:6px 0 0">When you qualify, the button becomes active and you can enter ISL.</p>
         <div class="row" style="margin-top:10px">
           <a class="btn gold" id="islBtn" href="isl.html" onclick="return false;">Enter Income Stack Lab</a>
           <span class="small" id="islHint">Locked until Level 3 eligibility.</span>
@@ -469,33 +497,30 @@
     <div class="panel">
       <b style="color:var(--green)">Rules (v2 — strict)</b>
       <ul class="small" style="margin:8px 0 0;line-height:1.55">
-        <li><b>Foundation completion requires writing:</b> Action + Proof must be filled.</li>
+        <li><b>Foundation completion requires writing:</b> Action + Proof.</li>
         <li><b>Sequence lock:</b> you cannot open Day N unless Day N-1 is completed.</li>
-        <li><b>Apprentice completion requires writing:</b> Plan + Proof + Reflection must be filled.</li>
+        <li><b>Apprentice week completion requires writing:</b> Plan + Proof + Reflection.</li>
         <li><b>Daily A1 credit requires proof:</b> all checks + Daily Proof Note.</li>
       </ul>
     </div>
 
     <div class="divider"></div>
 
+    <!-- Admin Test Mode Panel -->
     <div class="panel">
-      <div class="sectionHead" style="align-items:center">
+      <div class="sectionHead">
         <b style="color:var(--green)">Admin Test Mode</b>
-        <span class="lockedBadge on" id="testModeBadge">OFF</span>
+        <span class="okBadge" id="testModePill">OFF</span>
       </div>
       <p class="small" style="margin:8px 0 0">
         Test Mode is for admin testing only. It temporarily opens Apprentice/Level 3 without breaking the real rules.
       </p>
 
       <div class="row" style="margin-top:10px">
-        <button class="btn gold" id="toggleTestModeBtn" type="button" disabled>Loading…</button>
-        <button class="btn bad" id="clearTestModeBtn" type="button" disabled>Force OFF</button>
+        <button class="smallbtn gold" id="toggleTestBtn" type="button" disabled>Turn ON</button>
+        <button class="smallbtn bad" id="forceOffBtn" type="button" disabled>Force OFF</button>
       </div>
-
-      <div class="toast" id="toastAdmin"></div>
-      <p class="small" id="adminHint" style="margin:10px 0 0">
-        (This button becomes active only for admin accounts.)
-      </p>
+      <div class="finePrint" id="adminHint">Only admins can toggle Test Mode.</div>
     </div>
 
     <div class="divider"></div>
@@ -514,8 +539,8 @@
 
     <div class="divider"></div>
 
-    <p class="small">
-      If anything looks empty or not saving, tell me the exact section and I’ll fix it without breaking your structure.
+    <p class="small" id="authStatus">
+      Auth: checking…
     </p>
   </aside>
 
@@ -539,39 +564,56 @@
   </div>
 </div>
 
-<!-- Supabase (CDN + your config) -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./supabase.js"></script>
+<!-- PROOF MODAL -->
+<div class="overlay" id="proofOverlay">
+  <div class="overlayCard">
+    <div class="sectionHead">
+      <h2 style="margin:0;color:var(--green)">Submit Proof</h2>
+      <button class="smallbtn" id="closeProofBtn" type="button">Close</button>
+    </div>
 
-<script>
-/****************
- * SUPABASE HELPER
- ****************/
-function getSupabaseClientIfAvailable(){
-  try{
-    if(!window.supabase || !window.AGEX_SUPABASE) return null;
-    if(!window.supabaseClient){
-      window.supabaseClient = window.supabase.createClient(
-        window.AGEX_SUPABASE.url,
-        window.AGEX_SUPABASE.anon
-      );
-    }
-    return window.supabaseClient;
-  }catch(e){
-    return null;
-  }
-}
-</script>
+    <div class="divider"></div>
+
+    <div class="pill" id="proofTaskTitle">Task: —</div>
+
+    <div class="field">
+      <label for="proofText">Your Proof (text)</label>
+      <textarea id="proofText" placeholder="What did you do? Include measurable proof details."></textarea>
+    </div>
+
+    <div class="field">
+      <label for="proofLink">Proof Link (optional)</label>
+      <input id="proofLink" placeholder="Paste link (e.g. screenshot link, post URL, etc.)" />
+    </div>
+
+    <div class="field">
+      <label for="proofFile">Upload Screenshot (optional)</label>
+      <input id="proofFile" type="file" accept="image/*" />
+      <div class="finePrint">If you upload, it saves to Supabase Storage and becomes your proof link.</div>
+    </div>
+
+    <div class="row" style="margin-top:10px">
+      <button class="btn gold" id="submitProofBtn" type="button">Submit</button>
+    </div>
+
+    <div class="noteLine" id="proofMsg"></div>
+  </div>
+</div>
+
+<!-- ✅ MUST load Supabase CDN first -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Your config -->
+<script src="./supabase.js"></script>
 
 <script>
 /***************
  * STORAGE KEYS
  ***************/
-const KEY = "agex_academy_v2_singleflow";
-const TEST_KEY = "AGEX_TEST_MODE"; // "1" or "0"
+const KEY = "agex_academy_v2_singleflow_strict";
+const TEST_KEY = "AGEX_TEST_MODE";
 
 /***************
- * CONFIG (strict flow)
+ * CONFIG
  ***************/
 const FOUNDATION_DAYS = 21;
 const SP_PER_FOUNDATION_DAY = 100;
@@ -597,7 +639,7 @@ const weeks = [
 ];
 
 const foundationTeachings = [
-  { title:"Day 1 — Identity Before Income", text:`CHAPTER I\nIdentity Before Income\n\nMost people pursue wealth as an external event.\nStewards understand it as an internal condition.\n\nBefore money enters your account, it answers a deeper question:\nWho are you prepared to become?\n\nThose who sustain wealth resolved identity before opportunity arrived.` },
+  { title:"Day 1 — Identity Before Income", text:`CHAPTER I\nIdentity Before Income\n\nMost people pursue wealth as an external event.\nStewards understand it as an internal condition.\n\nBefore money enters your account, it answers a deeper question:\nWho are you prepared to become?\n\nThis is not philosophy.\nIt is pattern recognition.\n\nThose who sustain wealth resolved identity before opportunity arrived.` },
   { title:"Day 2 — Vision Beyond Immediate Gain", text:`Vision is discipline applied forward.\n\nShort-term thinking is expensive.\nStewards think in decades, not weeks.\nVision simplifies decisions and strengthens refusal.` },
   { title:"Day 3 — Discipline as Power", text:`Discipline is control.\nMoney responds to order.\nRoutine builds what intensity cannot sustain.\nExpansion amplifies whatever already exists.` }
 ];
@@ -627,14 +669,13 @@ function addDaysISO(iso, add){
   const dd = String(dt.getDate()).padStart(2,'0');
   return `${yy}-${mm}-${dd}`;
 }
-function toast(id, msg){
+function toast(id){
   const t = $(id);
   if(!t) return;
-  if(msg) t.textContent = msg;
   t.style.display="block";
-  setTimeout(()=>t.style.display="none", 1600);
+  setTimeout(()=>t.style.display="none", 1500);
 }
-function isTestModeOn(){
+function testModeOn(){
   return localStorage.getItem(TEST_KEY) === "1";
 }
 function setTestMode(on){
@@ -657,7 +698,7 @@ function defaultState(){
       }))
     },
     apprentice: {
-      approved:false, // can be synced from Supabase profile later
+      approved:false, // local fallback; real approval comes from DB later if you decide
       weeks: weeks.map(()=>({ plan:"", proof:"", reflection:"", done:false })),
       daily: { checks:{}, note:"", lastCreditDate:null }
     }
@@ -670,9 +711,7 @@ function loadState(){
     if(!raw) return defaultState();
     const data = JSON.parse(raw);
 
-    if(!data.foundation || !Array.isArray(data.foundation.days)) return defaultState();
-    if(data.foundation.days.length !== FOUNDATION_DAYS) return defaultState();
-
+    if(!data.foundation || !Array.isArray(data.foundation.days) || data.foundation.days.length !== FOUNDATION_DAYS) return defaultState();
     if(!data.apprentice || !Array.isArray(data.apprentice.weeks) || data.apprentice.weeks.length !== 13) return defaultState();
 
     if(typeof data.skillPoints !== "number") data.skillPoints = 0;
@@ -685,44 +724,33 @@ function loadState(){
     return defaultState();
   }
 }
-
+let state = loadState();
 function saveState(){ localStorage.setItem(KEY, JSON.stringify(state)); }
 
 /***************
- * FOUNDATION STRICT RULES
+ * PROGRESSION LOGIC (STRICT)
  ***************/
 function foundationCompletedCount(){ return state.foundation.days.filter(d => d && d.done).length; }
 function isFoundationComplete(){ return foundationCompletedCount() === FOUNDATION_DAYS; }
 
-function hasRequiredFoundationInputs(dayIndex){
-  const d = state.foundation.days[dayIndex];
-  const a = (d.action || "").trim();
-  const p = (d.proof || "").trim();
-  return a.length > 0 && p.length > 0;
-}
-
-// Strict unlocking: time + sequence
 function isDayUnlocked(dayIndex){
-  if(!state.foundation.startedAt){
-    return dayIndex === 0;
-  }
+  // time lock
+  if(!state.foundation.startedAt) return dayIndex === 0;
   const unlockDate = addDaysISO(state.foundation.startedAt, dayIndex);
-  const timeOk = todayISO() >= unlockDate;
-  const sequenceOk = (dayIndex === 0) ? true : !!state.foundation.days[dayIndex - 1]?.done;
-  return timeOk && sequenceOk;
+  const timeUnlocked = todayISO() >= unlockDate;
+
+  // sequence lock
+  const seqUnlocked = (dayIndex === 0) ? true : !!state.foundation.days[dayIndex - 1].done;
+
+  return timeUnlocked && seqUnlocked;
 }
 
 function maxUnlockedDayIndex(){
-  if(!state.foundation.startedAt) return 0;
-  let lastAllowed = 0;
-  for(let i=0;i<FOUNDATION_DAYS;i++){
-    const unlockDate = addDaysISO(state.foundation.startedAt, i);
-    const timeOk = todayISO() >= unlockDate;
-    const seqOk = (i === 0) ? true : !!state.foundation.days[i - 1]?.done;
-    if(timeOk && seqOk) lastAllowed = i;
-    else break;
+  // max day that is both time-unlocked and sequence-unlocked
+  for(let i=FOUNDATION_DAYS-1;i>=0;i--){
+    if(isDayUnlocked(i)) return i;
   }
-  return Math.max(0, Math.min(FOUNDATION_DAYS - 1, lastAllowed));
+  return 0;
 }
 
 function firstIncompleteDayIndex(){
@@ -732,31 +760,20 @@ function firstIncompleteDayIndex(){
   return FOUNDATION_DAYS-1;
 }
 
-/***************
- * APPRENTICE + LEVEL 3 RULES (continuous flow)
- ***************/
 function apprenticeWeeksCompleted(){ return state.apprentice.weeks.filter(w => w && w.done).length; }
-function isApprenticeEligibleReal(){
+
+function isApprenticeEligible(){
   return isFoundationComplete() && state.skillPoints >= SP_TO_UNLOCK_APPRENTICE;
 }
+
 function isApprenticeUnlocked(){
-  // Real unlock requires eligibility + approval
-  // Test mode override opens for admin testing
-  if(isTestModeOn() && isAdmin) return true;
-  return isApprenticeEligibleReal() && state.apprentice.approved === true;
+  // strict = eligible + approved, but TEST MODE bypasses
+  return testModeOn() || (isApprenticeEligible() && state.apprentice.approved === true);
 }
 
-function canAccessApprenticeUI(){
-  // Same as unlocked; keep single source of truth
-  return isApprenticeUnlocked();
-}
-
-function isLevel3EligibleReal(){
-  return isFoundationComplete() && apprenticeWeeksCompleted() === 13 && state.skillPoints >= SP_TO_UNLOCK_LEVEL3;
-}
 function isLevel3Eligible(){
-  if(isTestModeOn() && isAdmin) return true;
-  return isLevel3EligibleReal();
+  // strict = foundation + all weeks + SP, but TEST MODE bypasses access to button only (not credit)
+  return isFoundationComplete() && apprenticeWeeksCompleted() === 13 && state.skillPoints >= SP_TO_UNLOCK_LEVEL3;
 }
 
 /***************
@@ -786,20 +803,6 @@ function initWeekSelect(){
 /***************
  * RENDER
  ***************/
-function renderTestModeUI(){
-  const on = isTestModeOn();
-  $("testModeBadge").textContent = on ? "ON" : "OFF";
-  $("testModeBadge").className = on ? "okBadge" : "lockedBadge on";
-  $("toggleTestModeBtn").textContent = on ? "Turn OFF" : "Turn ON";
-  $("clearTestModeBtn").disabled = !isAdmin;
-  $("toggleTestModeBtn").disabled = !isAdmin;
-
-  $("adminHint").textContent = isAdmin
-    ? "Admin detected. You can toggle Test Mode for safe testing."
-    : "Only admins can toggle Test Mode.";
-  $("testModeNote").style.display = (isAdmin && on) ? "inline" : "none";
-}
-
 function renderTopPills(){
   $("spPill").textContent = String(state.skillPoints);
   $("a1Pill").textContent = String(state.a1Coins);
@@ -809,31 +812,30 @@ function renderTopPills(){
   $("spNeedPill").textContent = `${SP_TO_UNLOCK_APPRENTICE} SP (Apprentice) · ${SP_TO_UNLOCK_LEVEL3} SP (Level 3)`;
   $("todayBadge").textContent = `Today: ${todayISO()}`;
 
-  // Stage label
+  const tm = testModeOn();
+  $("testModeHint").style.display = tm ? "inline" : "none";
+  $("testModeHint2").style.display = tm ? "inline" : "none";
+
   if(!isFoundationComplete()){
     $("stageName").textContent = "Foundation";
-  }else if(isApprenticeEligibleReal() && !state.apprentice.approved){
+  }else if(isApprenticeEligible() && !state.apprentice.approved && !tm){
     $("stageName").textContent = "Awaiting Approval";
   }else if(isApprenticeUnlocked() && !isLevel3Eligible()){
     $("stageName").textContent = "Apprentice";
-  }else if(isLevel3Eligible()){
+  }else if(isLevel3Eligible() || tm){
     $("stageName").textContent = "Level 3 Eligible";
   }else{
-    $("stageName").textContent = "Active";
+    $("stageName").textContent = "Awaiting Apprentice Eligibility";
   }
 
-  if(!state.foundation.startedAt){
-    $("flowBadge").textContent = "Status: Start Day 1";
-  }else{
-    $("flowBadge").textContent = "Status: Active";
-  }
+  $("flowBadge").textContent = state.foundation.startedAt ? "Status: Active" : "Status: Start Day 1";
 
-  // Request button visibility (real eligibility only — test mode doesn't change the real approval flow)
-  const canRequest = isApprenticeEligibleReal() && !state.apprentice.approved;
-  $("requestApprenticeBtn").style.display = canRequest ? "inline-flex" : "none";
-  $("requestHint").textContent = canRequest ? "Eligible ✅ Submit request for approval." : "Not eligible yet.";
+  const canRequest = isApprenticeEligible() && !state.apprentice.approved;
+  $("requestApprenticeBtn").style.display = (canRequest && !tm) ? "inline-flex" : "none";
+  $("requestHint").textContent = tm ? "Admin Test Mode active." : (canRequest ? "Eligible ✅ Submit request for approval." : "Not eligible yet.");
 
-  renderTestModeUI();
+  // Test Mode pill
+  $("testModePill").textContent = tm ? "ON" : "OFF";
 }
 
 function renderFoundation(dayIndex){
@@ -843,16 +845,7 @@ function renderFoundation(dayIndex){
   if(!state.foundation.startedAt && dayIndex === 0){
     $("dayLockPill").textContent = "Ready to start (Day 1)";
   }else{
-    if(unlocked){
-      $("dayLockPill").textContent = "Unlocked ✅";
-    }else{
-      const unlockDate = state.foundation.startedAt ? addDaysISO(state.foundation.startedAt, dayIndex) : null;
-      const timeOk = unlockDate ? (todayISO() >= unlockDate) : (dayIndex === 0);
-      const seqOk = (dayIndex === 0) ? true : !!state.foundation.days[dayIndex - 1]?.done;
-      if(!seqOk) $("dayLockPill").textContent = "Locked ⛔ (complete previous day first)";
-      else if(!timeOk) $("dayLockPill").textContent = "Locked ⛔ (wait for next day)";
-      else $("dayLockPill").textContent = "Locked ⛔";
-    }
+    $("dayLockPill").textContent = unlocked ? "Unlocked ✅" : "Locked ⛔ (time/sequence locked)";
   }
 
   $("dayTeaching").value = getFoundationText(dayIndex+1);
@@ -860,43 +853,27 @@ function renderFoundation(dayIndex){
   $("dayProof").value = d.proof || "";
   $("dayDone").checked = !!d.done;
 
-  const alreadyDone = !!d.done;
-  const requiredFilled = ((d.action || "").trim().length > 0) && ((d.proof || "").trim().length > 0);
-  const disableInputs = !unlocked || alreadyDone;
-
-  $("dayAction").disabled = disableInputs;
-  $("dayProof").disabled = disableInputs;
+  const disabled = !unlocked || d.done;
+  $("dayAction").disabled = disabled;
+  $("dayProof").disabled = disabled;
   $("dayDone").disabled = !unlocked;
-  $("completeDayBtn").disabled = (!unlocked || alreadyDone || !requiredFilled);
-  $("copyDayBtn").disabled = (!d.action && !d.proof && !d.done);
+  $("completeDayBtn").disabled = disabled;
+
+  const hasAny = !!(d.action || d.proof || d.done);
+  $("copyDayBtn").disabled = !hasAny;
 
   $("foundationBadge").textContent = isFoundationComplete() ? "Completed ✅" : "21 Days";
 }
 
-function enforceWeekSequence(weekIndex){
-  // You cannot work on Week N unless Week N-1 is done (continuous flow)
-  if(weekIndex === 0) return true;
-  return !!state.apprentice.weeks[weekIndex - 1]?.done;
-}
-
 function renderApprentice(weekIndex){
-  const unlocked = canAccessApprenticeUI();
+  const eligible = isApprenticeEligible();
+  const unlocked = isApprenticeUnlocked();
 
-  if(unlocked){
-    $("apprenticeLockBadge").textContent = "Unlocked ✅";
-    $("apprenticeLockBadge").className = "okBadge";
-  }else{
-    if(isTestModeOn() && isAdmin){
-      $("apprenticeLockBadge").textContent = "Unlocked ✅ (Test Mode)";
-      $("apprenticeLockBadge").className = "okBadge";
-    }else if(isApprenticeEligibleReal()){
-      $("apprenticeLockBadge").textContent = "Eligible (Needs Approval)";
-      $("apprenticeLockBadge").className = "lockedBadge on";
-    }else{
-      $("apprenticeLockBadge").textContent = "Locked";
-      $("apprenticeLockBadge").className = "lockedBadge on";
-    }
-  }
+  $("apprenticeLockBadge").textContent =
+    unlocked ? "Unlocked ✅" : (eligible ? "Eligible (Needs Approval)" : "Locked");
+
+  $("apprenticeLockBadge").className =
+    unlocked ? "okBadge" : "lockedBadge on";
 
   $("apprenticeCard").style.opacity = unlocked ? "1" : ".62";
 
@@ -915,7 +892,6 @@ function renderApprentice(weekIndex){
   const ws = state.apprentice.weeks[weekIndex];
 
   $("weekObjective").value = w.objective;
-
   if(!ws.plan) ws.plan = w.plan;
   if(!ws.proof) ws.proof = w.proof;
 
@@ -923,23 +899,7 @@ function renderApprentice(weekIndex){
   $("weekProof").value = ws.proof;
   $("weekReflection").value = ws.reflection || "";
   $("weekDone").checked = !!ws.done;
-
-  // Continuous flow lock for week selection
-  const seqOk = enforceWeekSequence(weekIndex);
-  if(!seqOk && unlocked){
-    $("weekStatus").textContent = "Locked ⛔ (complete previous week first)";
-    $("weekPlan").disabled = true;
-    $("weekProof").disabled = true;
-    $("weekReflection").disabled = true;
-    $("weekDone").disabled = true;
-    $("nextWeekBtn").disabled = true;
-    $("copyWeekBtn").disabled = true;
-    $("copyDailyBtn").disabled = true;
-    $("resetDailyBtn").disabled = true;
-    ["a_checkin","a_log","a_total","a_refuse","a_proof","apprenticeDailyNote"].forEach(id=> $(id).disabled = true);
-  }else{
-    $("weekStatus").textContent = ws.done ? "Completed ✅" : "In Progress";
-  }
+  $("weekStatus").textContent = ws.done ? "Completed ✅" : "In Progress";
 
   const checks = state.apprentice.daily.checks || {};
   ["a_checkin","a_log","a_total","a_refuse","a_proof"].forEach(id=>{
@@ -950,17 +910,18 @@ function renderApprentice(weekIndex){
 
 function renderLevel3(){
   const eligible = isLevel3Eligible();
-  $("level3LockBadge").textContent = eligible ? "Unlocked ✅" : "Locked";
-  $("level3LockBadge").className = eligible ? "okBadge" : "lockedBadge on";
+  const tm = testModeOn();
+
+  $("level3LockBadge").textContent = (eligible || tm) ? "Unlocked ✅" : "Locked";
+  $("level3LockBadge").className = (eligible || tm) ? "okBadge" : "lockedBadge on";
 
   const btn = $("islBtn");
   const hint = $("islHint");
-  if(eligible){
+
+  if(eligible || tm){
     btn.onclick = null;
     btn.href = "isl.html";
-    hint.textContent = (isTestModeOn() && isAdmin && !isLevel3EligibleReal())
-      ? "Admin Test Mode ✅ You can enter ISL for testing."
-      : "Eligible ✅ You can enter ISL.";
+    hint.textContent = tm ? "Admin Test Mode: ISL access enabled for testing." : "Eligible ✅ You can enter ISL.";
   }else{
     btn.onclick = ()=>false;
     btn.href = "isl.html";
@@ -987,64 +948,85 @@ async function copyToClipboard(text){
 }
 
 /***************
- * SUPABASE: profile sync + request
+ * SUPABASE AUTH + ROLE
  ***************/
+let currentUser = null;
 let isAdmin = false;
 
-async function syncProfileFlags(){
-  const supabaseClient = getSupabaseClientIfAvailable();
-  if(!supabaseClient) return;
-
+async function hydrateAuth(){
   try{
-    const { data: u } = await supabaseClient.auth.getUser();
-    const user = u?.user;
-    if(!user) return;
+    if(!window.supabaseClient){
+      $("authStatus").textContent = "Auth: Supabase client not loaded.";
+      $("flowBadge").textContent = "Status: Supabase missing";
+      return;
+    }
 
-    const { data: profile, error } = await supabaseClient
+    const { data, error } = await window.supabaseClient.auth.getUser();
+    if(error || !data?.user){
+      currentUser = null;
+      isAdmin = false;
+      $("authStatus").textContent = "Auth: not signed in.";
+      $("adminHint").textContent = "Sign in from the Lodge/App to enable admin toggle.";
+      return;
+    }
+
+    currentUser = data.user;
+    $("authStatus").textContent = "Auth: signed in ✅";
+
+    // role check from profiles
+    const { data: prof, error: perr } = await window.supabaseClient
       .from("profiles")
-      .select("role,stage,apprentice_approved")
-      .eq("id", user.id)
+      .select("role")
+      .eq("id", currentUser.id)
       .maybeSingle();
 
-    if(error) return;
+    isAdmin = (!perr && prof?.role === "admin");
 
-    isAdmin = (profile?.role === "admin");
-
-    // If Supabase says approved, sync local
-    if(profile?.apprentice_approved === true || profile?.stage === "apprentice"){
-      state.apprentice.approved = true;
-      saveState();
+    if(isAdmin){
+      $("adminHint").textContent = "Admin detected ✅ You can toggle Test Mode.";
+      $("toggleTestBtn").disabled = false;
+      $("forceOffBtn").disabled = false;
+    }else{
+      $("adminHint").textContent = "Only admins can toggle Test Mode.";
+      $("toggleTestBtn").disabled = true;
+      $("forceOffBtn").disabled = true;
     }
-  }catch(e){}
+
+  }catch(e){
+    currentUser = null;
+    isAdmin = false;
+    $("authStatus").textContent = "Auth: error loading session.";
+  }
 }
 
+/***************
+ * SUPABASE: request apprentice unlock
+ ***************/
 async function requestApprenticeUnlock(){
-  if(!isApprenticeEligibleReal()){
+  if(!isApprenticeEligible()){
     alert("Not eligible yet.");
     return;
   }
-
-  const supabaseClient = getSupabaseClientIfAvailable();
-  if(!supabaseClient){
-    alert("Supabase not loaded on this page yet. Please check supabase.js path.");
+  if(!window.supabaseClient){
+    alert("Supabase not loaded on this page.");
     return;
   }
 
-  const { data: u } = await supabaseClient.auth.getUser();
+  const { data: u } = await window.supabaseClient.auth.getUser();
   const user = u?.user;
-  if (!user){
+  if(!user){
     alert("Please sign in first (from the Lodge/App).");
     return;
   }
 
-  const { error } = await supabaseClient.from("access_requests").insert([{
+  const { error } = await window.supabaseClient.from("access_requests").insert([{
     user_id: user.id,
     requested_stage: "apprentice",
     user_skill_points: state.skillPoints,
     status: "pending"
   }]);
 
-  if (error){
+  if(error){
     alert("Error: " + error.message);
     return;
   }
@@ -1053,7 +1035,161 @@ async function requestApprenticeUnlock(){
 }
 
 /***************
- * BINDINGS: FOUNDATION
+ * MICRO TASKS (LIVE)
+ ***************/
+let liveTasks = [];
+let selectedTask = null;
+
+async function loadLiveTasks(){
+  $("tasksBody").innerHTML = "";
+  $("tasksBadge").textContent = "Loading…";
+  $("tasksMsg").textContent = "";
+
+  // Only show tasks when Apprentice is unlocked (or test mode)
+  if(!isApprenticeUnlocked()){
+    $("tasksBadge").textContent = "Locked";
+    $("tasksMsg").textContent = "Micro Tasks appear when Apprentice is unlocked (or Admin Test Mode is ON).";
+    return;
+  }
+
+  if(!window.supabaseClient){
+    $("tasksBadge").textContent = "Error";
+    $("tasksMsg").textContent = "Supabase client not loaded.";
+    return;
+  }
+
+  const { data, error } = await window.supabaseClient
+    .from("tasks")
+    .select("id,title,category,reward_skill_points,proof_required,status,created_at")
+    .eq("status","open")
+    .order("created_at", { ascending:false })
+    .limit(25);
+
+  if(error){
+    $("tasksBadge").textContent = "Error";
+    $("tasksMsg").textContent = error.message;
+    return;
+  }
+
+  liveTasks = data || [];
+  $("tasksBadge").textContent = `${liveTasks.length} live`;
+
+  if(liveTasks.length === 0){
+    $("tasksMsg").textContent = "No open tasks yet. Create one from Creator Wing.";
+    return;
+  }
+
+  liveTasks.forEach(t=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><b>${t.title || "—"}</b><div class="small">${t.category || ""}</div></td>
+      <td><b>${t.reward_skill_points ?? 0}</b></td>
+      <td><b>${t.status}</b></td>
+      <td><button class="smallbtn gold" data-take="${t.id}">Submit Proof</button></td>
+    `;
+    $("tasksBody").appendChild(tr);
+  });
+}
+
+function openProofModal(taskId){
+  selectedTask = liveTasks.find(x => x.id === taskId) || null;
+  if(!selectedTask) return;
+
+  $("proofTaskTitle").textContent = `${selectedTask.title} — SP ${selectedTask.reward_skill_points ?? 0}`;
+  $("proofText").value = "";
+  $("proofLink").value = "";
+  $("proofFile").value = "";
+  $("proofMsg").textContent = "";
+  $("proofOverlay").style.display = "flex";
+}
+
+function closeProofModal(){
+  $("proofOverlay").style.display = "none";
+  selectedTask = null;
+}
+
+async function uploadProofImage(file){
+  // Upload to Supabase Storage bucket "task-proofs"
+  // Returns a public URL
+  const ext = (file.name.split(".").pop() || "png").toLowerCase();
+  const path = `${currentUser.id}/${Date.now()}-${Math.random().toString(16).slice(2)}.${ext}`;
+
+  const { error: upErr } = await window.supabaseClient
+    .storage
+    .from("task-proofs")
+    .upload(path, file, { upsert: true, contentType: file.type || "image/png" });
+
+  if(upErr) throw new Error(upErr.message);
+
+  // Public URL
+  const { data } = window.supabaseClient.storage.from("task-proofs").getPublicUrl(path);
+  if(!data?.publicUrl) throw new Error("Could not generate public URL.");
+  return data.publicUrl;
+}
+
+async function submitTaskProof(){
+  $("proofMsg").textContent = "";
+
+  if(!selectedTask){
+    $("proofMsg").textContent = "No task selected.";
+    return;
+  }
+
+  if(!window.supabaseClient){
+    $("proofMsg").textContent = "Supabase client not loaded.";
+    return;
+  }
+
+  const { data: u, error: uerr } = await window.supabaseClient.auth.getUser();
+  const user = u?.user;
+
+  // ✅ THIS FIXES YOUR ERROR: user_id was null because user not fetched
+  if(uerr || !user){
+    $("proofMsg").textContent = "Please sign in first (from the Lodge/App).";
+    return;
+  }
+
+  const text = ($("proofText").value || "").trim();
+  let link = ($("proofLink").value || "").trim();
+
+  const file = $("proofFile").files?.[0] || null;
+
+  // Require at least something
+  if(!text && !link && !file){
+    $("proofMsg").textContent = "Add proof text, a link, or upload a screenshot.";
+    return;
+  }
+
+  $("proofMsg").textContent = "Submitting…";
+
+  try{
+    if(file){
+      link = await uploadProofImage(file);
+    }
+  }catch(e){
+    $("proofMsg").textContent = "Upload error: " + e.message + " (Create storage bucket 'task-proofs' + allow uploads)";
+    return;
+  }
+
+  const { error } = await window.supabaseClient.from("task_submissions").insert([{
+    task_id: selectedTask.id,
+    user_id: user.id,
+    status: "pending",
+    proof_text: text || null,
+    proof_link: link || null
+  }]);
+
+  if(error){
+    $("proofMsg").textContent = "Error: " + error.message;
+    return;
+  }
+
+  $("proofMsg").textContent = "✅ Submitted. Await approval in Creator Wing.";
+  setTimeout(closeProofModal, 700);
+}
+
+/***************
+ * BINDINGS (FOUNDATION)
  ***************/
 function bindFoundation(){
   const sel = $("daySelect");
@@ -1061,10 +1197,8 @@ function bindFoundation(){
   sel.addEventListener("change", ()=>{
     const idx = parseInt(sel.value,10);
     const allowedMax = maxUnlockedDayIndex();
-
-    // Prevent selecting locked future day
     if(idx > allowedMax){
-      alert("That day is locked. Complete the previous day first (and wait for time unlock if needed).");
+      alert("That day is locked by time/sequence. Complete the previous day and wait.");
       sel.value = String(allowedMax);
       renderFoundation(allowedMax);
       return;
@@ -1076,7 +1210,6 @@ function bindFoundation(){
     const idx = parseInt(sel.value, 10);
     const d = state.foundation.days[idx];
 
-    // Start the clock on first edit of Day 1
     if(!state.foundation.startedAt && idx === 0){
       state.foundation.startedAt = todayISO();
     }
@@ -1085,7 +1218,7 @@ function bindFoundation(){
     d.proof = $("dayProof").value;
 
     saveState();
-    toast("toastFoundation", "Saved.");
+    toast("toastFoundation");
     renderTopPills();
     renderFoundation(idx);
     renderApprentice(parseInt($("weekSelect").value,10));
@@ -1093,8 +1226,22 @@ function bindFoundation(){
   }
 
   ["dayAction","dayProof"].forEach(id=>{
-    $(id).addEventListener("input", persistDay);
+    $(id).addEventListener("input", ()=>{
+      $("foundationMsg").textContent = "";
+      persistDay();
+    });
   });
+
+  function validateFoundationRequired(idx){
+    const d = state.foundation.days[idx];
+    const a = (d.action || "").trim();
+    const p = (d.proof || "").trim();
+    if(!a || !p){
+      $("foundationMsg").textContent = "Required: Fill Action + Proof before completing.";
+      return false;
+    }
+    return true;
+  }
 
   $("dayDone").addEventListener("change", ()=>{
     const idx = parseInt(sel.value,10);
@@ -1102,42 +1249,30 @@ function bindFoundation(){
 
     if(!isDayUnlocked(idx)){
       $("dayDone").checked = false;
-      alert("This day is locked. Complete the previous day (or wait for the next day).");
+      alert("This day is locked by time/sequence.");
       return;
     }
 
-    const actionText = ($("dayAction").value || "").trim();
-    const proofText  = ($("dayProof").value || "").trim();
+    if(!state.foundation.startedAt && idx === 0){
+      state.foundation.startedAt = todayISO();
+    }
 
-    // If trying to mark done, require content
+    // strict requirement
+    d.action = $("dayAction").value;
+    d.proof = $("dayProof").value;
+
     if($("dayDone").checked){
-      if(!actionText){
+      if(!validateFoundationRequired(idx)){
         $("dayDone").checked = false;
-        alert("You must write your Action before completing.");
-        $("dayAction").focus();
         return;
       }
-      if(!proofText){
-        $("dayDone").checked = false;
-        alert("You must write your Proof Note before completing.");
-        $("dayProof").focus();
-        return;
-      }
-
-      if(!state.foundation.startedAt && idx === 0){
-        state.foundation.startedAt = todayISO();
-      }
-
-      d.action = actionText;
-      d.proof  = proofText;
-
       if(!d.done){
         d.done = true;
         d.completedAt = todayISO();
         state.skillPoints += SP_PER_FOUNDATION_DAY;
       }
     }else{
-      // Allow undo (admin-like). If you want to DISALLOW undo, tell me.
+      // allow undo on device (optional)
       if(d.done){
         d.done = false;
         d.completedAt = null;
@@ -1146,14 +1281,19 @@ function bindFoundation(){
     }
 
     saveState();
-    toast("toastFoundation", "Saved.");
-    const nextAllowed = maxUnlockedDayIndex();
-    $("daySelect").value = String(Math.min(idx, nextAllowed));
-
+    toast("toastFoundation");
     renderTopPills();
-    renderFoundation(parseInt($("daySelect").value,10));
+
+    // move to next available day automatically
+    const next = firstIncompleteDayIndex();
+    const allowedMax = maxUnlockedDayIndex();
+    const show = Math.min(next, allowedMax);
+    sel.value = String(show);
+
+    renderFoundation(show);
     renderApprentice(parseInt($("weekSelect").value,10));
     renderLevel3();
+    loadLiveTasks();
   });
 
   $("completeDayBtn").addEventListener("click", ()=>{
@@ -1161,21 +1301,7 @@ function bindFoundation(){
     const d = state.foundation.days[idx];
 
     if(!isDayUnlocked(idx)){
-      alert("This day is locked. Complete the previous day (or wait for the next day).");
-      return;
-    }
-
-    const actionText = ($("dayAction").value || "").trim();
-    const proofText  = ($("dayProof").value || "").trim();
-
-    if(!actionText){
-      alert("You must write your Action before completing.");
-      $("dayAction").focus();
-      return;
-    }
-    if(!proofText){
-      alert("You must write your Proof Note before completing.");
-      $("dayProof").focus();
+      alert("This day is locked by time/sequence.");
       return;
     }
 
@@ -1183,26 +1309,34 @@ function bindFoundation(){
       state.foundation.startedAt = todayISO();
     }
 
-    d.action = actionText;
-    d.proof  = proofText;
+    // strict requirement
+    d.action = $("dayAction").value;
+    d.proof = $("dayProof").value;
+
+    if(!validateFoundationRequired(idx)){
+      return;
+    }
 
     if(!d.done){
       d.done = true;
       d.completedAt = todayISO();
       state.skillPoints += SP_PER_FOUNDATION_DAY;
+      $("dayDone").checked = true;
     }
 
     saveState();
-    toast("toastFoundation", "Completed ✅");
+    toast("toastFoundation");
 
-    // Move immediately to next allowed day (no refresh required)
-    const nextAllowed = maxUnlockedDayIndex();
-    sel.value = String(nextAllowed);
+    const next = firstIncompleteDayIndex();
+    const allowedMax = maxUnlockedDayIndex();
+    const show = Math.min(next, allowedMax);
+    sel.value = String(show);
 
     renderTopPills();
-    renderFoundation(nextAllowed);
+    renderFoundation(show);
     renderApprentice(parseInt($("weekSelect").value,10));
     renderLevel3();
+    loadLiveTasks();
   });
 
   $("copyDayBtn").addEventListener("click", async ()=>{
@@ -1229,25 +1363,11 @@ Date: ${todayISO()}
 }
 
 /***************
- * BINDINGS: APPRENTICE
+ * BINDINGS (APPRENTICE)
  ***************/
 function bindApprentice(){
   const sel = $("weekSelect");
-
-  sel.addEventListener("change", ()=>{
-    const idx = parseInt(sel.value,10);
-
-    // Block jumping to future week if previous not done (continuous flow)
-    if(idx > 0 && !state.apprentice.weeks[idx-1].done){
-      alert("This week is locked. Complete the previous week first.");
-      const fallback = Math.max(0, idx-1);
-      sel.value = String(fallback);
-      renderApprentice(fallback);
-      return;
-    }
-
-    renderApprentice(idx);
-  });
+  sel.addEventListener("change", ()=> renderApprentice(parseInt(sel.value,10)));
 
   function persistWeek(){
     const idx = parseInt(sel.value,10);
@@ -1258,62 +1378,61 @@ function bindApprentice(){
     ws.reflection = $("weekReflection").value;
 
     saveState();
-    toast("toastApprentice", "Saved.");
+    toast("toastApprentice");
     renderTopPills();
     renderApprentice(idx);
     renderLevel3();
   }
 
   ["weekPlan","weekProof","weekReflection"].forEach(id=>{
-    $(id).addEventListener("input", persistWeek);
+    $(id).addEventListener("input", ()=>{
+      $("apprenticeMsg").textContent = "";
+      persistWeek();
+    });
   });
 
-  function weekHasRequiredInputs(idx){
+  function validateWeekRequired(idx){
     const ws = state.apprentice.weeks[idx];
-    const plan = ($("weekPlan").value || ws.plan || "").trim();
-    const proof = ($("weekProof").value || ws.proof || "").trim();
-    const refl = ($("weekReflection").value || ws.reflection || "").trim();
-    return plan.length > 0 && proof.length > 0 && refl.length > 0;
+    const p = (ws.plan || "").trim();
+    const pr = (ws.proof || "").trim();
+    const r = (ws.reflection || "").trim();
+    if(!p || !pr || !r){
+      $("apprenticeMsg").textContent = "Required: Plan + Proof + Reflection before marking week completed.";
+      return false;
+    }
+    return true;
   }
 
   $("weekDone").addEventListener("change", ()=>{
-    if(!canAccessApprenticeUI()){
+    if(!isApprenticeUnlocked()){
       $("weekDone").checked = false;
-      alert("Apprentice is locked.");
+      alert("Apprentice is locked (requires approval) — unless Test Mode is ON.");
       return;
     }
 
     const idx = parseInt(sel.value,10);
-
-    // Sequence enforcement
-    if(!enforceWeekSequence(idx)){
-      $("weekDone").checked = false;
-      alert("Complete the previous week first.");
-      return;
-    }
-
-    // Required writing
-    if($("weekDone").checked && !weekHasRequiredInputs(idx)){
-      $("weekDone").checked = false;
-      alert("Fill Weekly Plan + Weekly Proof + Weekly Reflection before marking completed.");
-      if(!($("weekPlan").value || "").trim()) $("weekPlan").focus();
-      else if(!($("weekProof").value || "").trim()) $("weekProof").focus();
-      else $("weekReflection").focus();
-      return;
-    }
-
     const ws = state.apprentice.weeks[idx];
-    const wasDone = !!ws.done;
+
     ws.plan = $("weekPlan").value;
     ws.proof = $("weekProof").value;
     ws.reflection = $("weekReflection").value;
-    ws.done = $("weekDone").checked;
 
-    if(!wasDone && ws.done) state.skillPoints += SP_PER_APPRENTICE_WEEK_DONE;
-    if(wasDone && !ws.done) state.skillPoints = Math.max(0, state.skillPoints - SP_PER_APPRENTICE_WEEK_DONE);
+    const wasDone = !!ws.done;
+
+    if($("weekDone").checked){
+      if(!validateWeekRequired(idx)){
+        $("weekDone").checked = false;
+        return;
+      }
+      ws.done = true;
+      if(!wasDone) state.skillPoints += SP_PER_APPRENTICE_WEEK_DONE;
+    }else{
+      ws.done = false;
+      if(wasDone) state.skillPoints = Math.max(0, state.skillPoints - SP_PER_APPRENTICE_WEEK_DONE);
+    }
 
     saveState();
-    toast("toastApprentice", ws.done ? "Week completed ✅" : "Week unmarked");
+    toast("toastApprentice");
     renderTopPills();
     renderApprentice(idx);
     renderLevel3();
@@ -1322,35 +1441,29 @@ function bindApprentice(){
   const checkIds = ["a_checkin","a_log","a_total","a_refuse","a_proof"];
   checkIds.forEach(id=>{
     $(id).addEventListener("change", ()=>{
-      if(!canAccessApprenticeUI()) return;
-
-      const weekIdx = parseInt(sel.value,10);
-      if(!enforceWeekSequence(weekIdx)){
-        $(id).checked = false;
-        alert("Complete the previous week first.");
-        return;
-      }
+      if(!isApprenticeUnlocked()) return;
 
       const checks = state.apprentice.daily.checks || {};
       checks[id] = $(id).checked;
       state.apprentice.daily.checks = checks;
 
       const allDone = checkIds.every(cid => !!checks[cid]);
-      const note = ($("apprenticeDailyNote").value || "").trim();
+      const noteOk = !!(state.apprentice.daily.note || "").trim();
+
       const today = todayISO();
       const alreadyCreditedToday = state.apprentice.daily.lastCreditDate === today;
 
-      // Credit only if all checks + note, once per day
-      if(allDone && note.length > 0 && !alreadyCreditedToday){
+      // strict: all checks + note required
+      if(allDone && noteOk && !alreadyCreditedToday){
         state.apprentice.daily.lastCreditDate = today;
         state.a1Coins += 1;
-        state.apprenticeUsdCents += 1;
+        state.apprenticeUsdCents += 1; // 1 cent = $0.01
         state.skillPoints += SP_PER_APPRENTICE_DAY_CYCLE;
 
         saveState();
         renderTopPills();
         renderLevel3();
-        toast("toastApprentice", "A1 credited ✅ ($0.01) — Proof captured.");
+        toast("toastApprentice");
       }else{
         saveState();
       }
@@ -1358,24 +1471,23 @@ function bindApprentice(){
   });
 
   $("apprenticeDailyNote").addEventListener("input", ()=>{
-    if(!canAccessApprenticeUI()) return;
     state.apprentice.daily.note = $("apprenticeDailyNote").value;
     saveState();
-    toast("toastApprentice", "Saved.");
+    toast("toastApprentice");
   });
 
   $("resetDailyBtn").addEventListener("click", ()=>{
-    if(!canAccessApprenticeUI()) return;
+    if(!isApprenticeUnlocked()) return;
     state.apprentice.daily.checks = {};
     state.apprentice.daily.note = "";
     ["a_checkin","a_log","a_total","a_refuse","a_proof"].forEach(id=> $(id).checked=false);
     $("apprenticeDailyNote").value = "";
     saveState();
-    toast("toastApprentice", "Daily checklist reset.");
+    toast("toastApprentice");
   });
 
   $("copyDailyBtn").addEventListener("click", async ()=>{
-    if(!canAccessApprenticeUI()) return;
+    if(!isApprenticeUnlocked()) return;
     const idx = parseInt(sel.value,10);
     const checks = state.apprentice.daily.checks || {};
     const txt =
@@ -1397,7 +1509,7 @@ ${(state.apprentice.daily.note || "—").trim()}
   });
 
   $("copyWeekBtn").addEventListener("click", async ()=>{
-    if(!canAccessApprenticeUI()) return;
+    if(!isApprenticeUnlocked()) return;
     const idx = parseInt(sel.value,10);
     const w = weeks[idx];
     const ws = state.apprentice.weeks[idx];
@@ -1423,41 +1535,27 @@ Completed: ${ws.done ? "✅ Yes" : "❌ Not yet"}
   });
 
   $("nextWeekBtn").addEventListener("click", ()=>{
-    if(!canAccessApprenticeUI()) return;
+    if(!isApprenticeUnlocked()) return;
     const idx = parseInt(sel.value,10);
 
-    if(!enforceWeekSequence(idx)){
-      alert("Complete the previous week first.");
-      return;
-    }
-
-    // Force validation on next
-    const plan = ($("weekPlan").value || "").trim();
-    const proof = ($("weekProof").value || "").trim();
-    const refl = ($("weekReflection").value || "").trim();
-
-    if(!plan || !proof || !refl){
-      alert("Fill Weekly Plan + Proof + Reflection before moving to next week.");
-      if(!plan) $("weekPlan").focus();
-      else if(!proof) $("weekProof").focus();
-      else $("weekReflection").focus();
-      return;
-    }
-
-    // Mark done if not already
+    // enforce strict completion
     const ws = state.apprentice.weeks[idx];
-    const wasDone = !!ws.done;
-    ws.plan = plan;
-    ws.proof = proof;
-    ws.reflection = refl;
+    ws.plan = $("weekPlan").value;
+    ws.proof = $("weekProof").value;
+    ws.reflection = $("weekReflection").value;
 
     if(!ws.done){
+      $("weekDone").checked = true;
+      if(!validateWeekRequired(idx)){
+        $("weekDone").checked = false;
+        return;
+      }
       ws.done = true;
-      if(!wasDone) state.skillPoints += SP_PER_APPRENTICE_WEEK_DONE;
+      state.skillPoints += SP_PER_APPRENTICE_WEEK_DONE;
     }
 
     saveState();
-    toast("toastApprentice", "Week completed ✅");
+    toast("toastApprentice");
 
     const next = Math.min(idx + 1, 12);
     sel.value = String(next);
@@ -1466,6 +1564,42 @@ Completed: ${ws.done ? "✅ Yes" : "❌ Not yet"}
     renderLevel3();
   });
 }
+
+/***************
+ * ADMIN TEST MODE BUTTONS
+ ***************/
+function renderTestButtons(){
+  const tm = testModeOn();
+  $("testModePill").textContent = tm ? "ON" : "OFF";
+  $("toggleTestBtn").textContent = tm ? "Turn OFF" : "Turn ON";
+}
+
+$("toggleTestBtn").addEventListener("click", ()=>{
+  if(!isAdmin){
+    alert("Only admins can toggle Test Mode.");
+    return;
+  }
+  const tm = testModeOn();
+  setTestMode(!tm);
+  renderTestButtons();
+  renderTopPills();
+  renderApprentice(parseInt($("weekSelect").value,10));
+  renderLevel3();
+  loadLiveTasks();
+});
+
+$("forceOffBtn").addEventListener("click", ()=>{
+  if(!isAdmin){
+    alert("Only admins can force OFF Test Mode.");
+    return;
+  }
+  setTestMode(false);
+  renderTestButtons();
+  renderTopPills();
+  renderApprentice(parseInt($("weekSelect").value,10));
+  renderLevel3();
+  loadLiveTasks();
+});
 
 /***************
  * RESET
@@ -1478,65 +1612,49 @@ $("confirmResetBtn").addEventListener("click", ()=>{
 });
 
 /***************
- * ADMIN TEST MODE GATE (wired)
+ * PROOF MODAL EVENTS
  ***************/
-$("toggleTestModeBtn").addEventListener("click", ()=>{
-  if(!isAdmin){
-    alert("Only admins can toggle Test Mode.");
-    return;
-  }
-  const on = isTestModeOn();
-  setTestMode(!on);
-  toast("toastAdmin", !on ? "Test Mode ON ✅" : "Test Mode OFF ✅");
-  renderTopPills();
-  renderFoundation(parseInt($("daySelect").value,10));
-  renderApprentice(parseInt($("weekSelect").value,10));
-  renderLevel3();
-});
+$("closeProofBtn").addEventListener("click", closeProofModal);
+$("submitProofBtn").addEventListener("click", submitTaskProof);
 
-$("clearTestModeBtn").addEventListener("click", ()=>{
-  if(!isAdmin){
-    alert("Only admins can toggle Test Mode.");
-    return;
+document.body.addEventListener("click", (e)=>{
+  const el = e.target;
+  if(el?.dataset?.take){
+    openProofModal(el.dataset.take);
   }
-  setTestMode(false);
-  toast("toastAdmin", "Test Mode forced OFF ✅");
-  renderTopPills();
-  renderFoundation(parseInt($("daySelect").value,10));
-  renderApprentice(parseInt($("weekSelect").value,10));
-  renderLevel3();
 });
 
 /***************
  * INIT
  ***************/
-let state = loadState();
-
 initDaySelect();
 initWeekSelect();
 
-(async function boot(){
-  // Sync profile & admin role if Supabase available
-  await syncProfileFlags();
+const startDay = firstIncompleteDayIndex();
+$("daySelect").value = String(startDay);
 
-  const startDay = firstIncompleteDayIndex();
-  $("daySelect").value = String(Math.min(startDay, maxUnlockedDayIndex()));
+const firstIncompleteWeek = state.apprentice.weeks.findIndex(w => !w.done);
+$("weekSelect").value = String(firstIncompleteWeek === -1 ? 12 : firstIncompleteWeek);
 
-  const firstIncompleteWeek = state.apprentice.weeks.findIndex(w => !w.done);
-  $("weekSelect").value = String(firstIncompleteWeek === -1 ? 12 : Math.max(0, firstIncompleteWeek));
+renderTestButtons();
+renderTopPills();
+renderFoundation(startDay);
+renderApprentice(parseInt($("weekSelect").value,10));
+renderLevel3();
 
+bindFoundation();
+bindApprentice();
+
+$("requestApprenticeBtn").addEventListener("click", requestApprenticeUnlock);
+
+// hydrate auth + role, then load tasks
+(async ()=>{
+  await hydrateAuth();
+  renderTestButtons();
   renderTopPills();
-  renderFoundation(parseInt($("daySelect").value,10));
   renderApprentice(parseInt($("weekSelect").value,10));
   renderLevel3();
-
-  bindFoundation();
-  bindApprentice();
-
-  $("requestApprenticeBtn").addEventListener("click", requestApprenticeUnlock);
-
-  // Start badge
-  $("flowBadge").textContent = "Status: Active";
+  await loadLiveTasks();
 })();
 </script>
 
