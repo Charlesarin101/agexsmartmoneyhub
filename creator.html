@@ -515,13 +515,20 @@
       });
     }
 
-    async function setSubStatus(id, status){
-      const { error } = await window.supabaseClient.from("task_submissions")
-        .update({ status, reviewed_at:new Date().toISOString() })
-        .eq("id", id);
-      if(error){ alert("Submission update error: " + error.message); return; }
-      await loadSubs();
-    }
+    async function approveSubmission(submissionId){
+  const { error } = await window.supabaseClient.rpc(
+    "approve_submission_and_credit",
+    { p_submission_id: submissionId }
+  );
+
+  if(error){
+    alert("Approve failed: " + error.message);
+    return;
+  }
+
+  alert("Approved ✅ Skill points credited.");
+  await loadSubmissions();
+}
 
     async function saveIssuedKey(user){
       const name = ($("k_name").value || "").trim();
