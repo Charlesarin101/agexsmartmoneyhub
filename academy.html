@@ -1646,7 +1646,27 @@ bindFoundation();
 bindApprentice();
 
 $("requestApprenticeBtn").addEventListener("click", requestApprenticeUnlock);
+async function syncSkillPointsFromSupabase(){
+  const { data: u } = await window.supabaseClient.auth.getUser();
+  const user = u?.user;
+  if(!user) return;
 
+  const { data, error } = await window.supabaseClient
+    .from("profiles")
+    .select("skill_points")
+    .eq("id", user.id)
+    .single();
+
+  if(error) return;
+
+  // Use the higher value so your local progress doesn't “erase” server credits
+  const remote = data?.skill_points ?? 0;
+  if(remote > state.skillPoints){
+    state.skillPoints = remote;
+    saveState();
+    renderTopPills();
+  }
+}
 // hydrate auth + role, then load tasks
 (async ()=>{
   await hydrateAuth();
