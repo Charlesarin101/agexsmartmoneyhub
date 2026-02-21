@@ -1670,6 +1670,7 @@ async function syncSkillPointsFromSupabase(){
 // hydrate auth + role, then load tasks
 (async ()=>{
   await hydrateAuth();
+  await syncSkillPointsFromSupabase()
   renderTestButtons();
   renderTopPills();
   renderApprentice(parseInt($("weekSelect").value,10));
